@@ -4,7 +4,11 @@
   "description": "Catchy headline / cool graphic Who are the contributors (names should link to their github or portfolio page) Introduction This project was a brief 1-week sprint where our team tried to complete an MVP for an external user (Jane Doe)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-dev": "npx nodemon server",
+    "start": "npx webpack && node server",
+    "build-dev": "webpack --watch",
+    "build": "npx webpack",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,10 +24,18 @@
     "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
     "autoprefixer": "^10.4.20",
+    "babel-jest": "^29.7.0",
     "babel-loader": "^9.2.1",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.3",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-transform-css": "^6.0.2",
     "postcss": "^8.5.3",
     "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^10.1.5",
