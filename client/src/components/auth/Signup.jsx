@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+
 const Signup = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -11,6 +13,7 @@ const Signup = () => {
       alert('Passwords do not match');
       return;
     }
+    const request = {username, email, password};
     axios.post('/api/signup', request)
       .then(response => {
         console.log(response.data);

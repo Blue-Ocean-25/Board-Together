@@ -6,7 +6,9 @@ const path = require('path');
 const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/../client/dist')));
+
 app.use('/api', require('./routes/routes.js'));
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/../client/dist/index.html'));
 });

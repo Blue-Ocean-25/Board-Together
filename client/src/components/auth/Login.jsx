@@ -4,10 +4,9 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const username = formData.get('username');
     const email = formData.get('email');
     const password = formData.get('password');
-    const request = {username, email, password};
+    const request = {email, password};
     axios.post('/api/login', request)
       .then(response => {
         console.log(response.data);
@@ -20,10 +19,10 @@ const Login = () => {
     <div>
       <h1>Login To Board Together</h1>
       <form onSubmit={handleSubmit}>
-        <label>
+        {/* <label>
           Username:
           <input type="text" id="username" name="username" required />
-        </label>
+        </label> */}
         <label>
           Email:
           <input type="email" id="email" name="email" required />
