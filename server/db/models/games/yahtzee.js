@@ -1,22 +1,23 @@
-const mongoose, { Schema }  = require('mongoose');
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const yahtzeePlayerSchema = new Schema({
   player_id: Number,
-  player_name: {String, default: 'Player'},
-  aces: {Number, default: 0},
-  twos: {Number, default: 0},
-  threes: {Number, default: 0},
-  fours: {Number, default: 0},
-  fives: {Number, default: 0},
-  sixes: {Number, default: 0},
-  three_of_a_kind: {Number, default: 0},
-  four_of_a_kind: {Number, default: 0},
-  full_house: {Number, default: 0},
-  small_straight: {Number, default: 0},
-  large_straight: {Number, default: 0},
-  yahtzee: {Number, default: 0},
-  chance: {Number, default: 0},
-  yahtzee_bonus: {Number, default: 0}
+  player_name: {type: String, default: 'Player', required: true},
+  aces: {type: Number, default: 0, required: true},
+  twos: {type: Number, default: 0, required: true},
+  threes: {type: Number, default: 0, required: true},
+  fours: {type: Number, default: 0, required: true},
+  fives: {type: Number, default: 0, required: true},
+  sixes: {type: Number, default: 0, required: true},
+  three_of_a_kind: {type: Number, default: 0, required: true},
+  four_of_a_kind: {type: Number, default: 0, required: true},
+  full_house: {type: Number, default: 0, required: true},
+  small_straight: {type: Number, default: 0, required: true},
+  large_straight: {type: Number, default: 0, required: true},
+  yahtzee: {type: Number, default: 0, required: true},
+  chance: {type: Number, default: 0, required: true},
+  yahtzee_bonus: {type: Number, default: 0, required: true}
 });
 
 const yahtzeeSchema = new Schema({

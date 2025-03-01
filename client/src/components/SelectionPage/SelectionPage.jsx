@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import AddFriendModal from '../friends/AddFriendModal.jsx';
 
 //create modal for adding number of players, naming session, confirm button
 const demoUser = {
@@ -16,7 +17,7 @@ const SelectionPage = () => {
   const [user, setUser] = useState([]);
   const [friends, setFriends] = useState([]);
   const [sessions, setSessions] = useState([]);
-
+  const [addFriendModal, setAddFriendModal] = useState(false);
 
   const handleDelete = (event) => {
     var sessionId = event.target.value;
@@ -26,14 +27,18 @@ const SelectionPage = () => {
       })
   }
 
+  const openFriendModal = () => {
+    setAddFriendModal(true);
+  }
+
   // fetch friends
   useEffect(() => {
-    axios.get('/profiles')
+    axios.get('/api/profiles/:email')
       .then((results) => {
         setUser(results.data)
         setFriends(results.data.friends)
       })
-    axios.get('/sessions')
+    axios.get('/api/sessions')
       .then((results) => {
         setSessions(results.data)
       })
@@ -49,6 +54,8 @@ const SelectionPage = () => {
         <p>Friends: {demoUser.friends}</p>
       </div>
       <div className="friends">
+        <button onClick ={openFriendModal}>Add Friend By Username</button>
+        <AddFriendModal friends = {demoUser.friends} />
         {friends.map(friend => (
           <div key={friend.id}>
             <Link to='/profile/user/:id'>{friends.username}</Link>
