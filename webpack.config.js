@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
@@ -27,5 +28,11 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'postcss-loader'],
     }]
   },
-  plugins: [new HtmlWebpackPlugin({ template: path.join(__dirname, './public/index.html')})],
+  plugins: [new HtmlWebpackPlugin({ template: path.join(__dirname, './public/index.html')}),
+    new Dotenv({
+      path: path.resolve(__dirname, '.env'),
+      safe: true,
+      systemvars: true
+    })
+  ],
 }
