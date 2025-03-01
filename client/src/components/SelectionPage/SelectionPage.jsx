@@ -58,7 +58,7 @@ const SelectionPage = () => {
       <div className="gameSelection">
         <h2>Choose a game</h2>
         <div className="game"><Link to='/games/clue'>Clue</Link></div>
-        <div className="game"><Link to='/games/yahtzee'>Yatzee</Link></div>
+        <div className="game"><Link to='/games/yahtzee'>Yahtzee</Link></div>
         <div className="game"><Link to='/games/scrabble'>Scrabble</Link></div>
       </div>
       <div className="gameSessions">
