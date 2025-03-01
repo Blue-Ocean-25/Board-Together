@@ -1,8 +1,17 @@
 const express = require('express');
 const User = require('../db/models/profile/profile.js');
 
-const getProfile = async (req, res) => {
-  await User.find({ username: req.body.username });
+
+const createProfile = (username, email, phoneNumber) => {
+  return User.create({
+    username,
+    email,
+    phoneNumber
+  });
+};
+
+const getProfile = (req, res) => {
+  User.find({ username: req.body.username });
     .then((profile) => {
     res.status(200).send(profile);
   })
@@ -23,4 +32,4 @@ const addFriend = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, addFriend };
+module.exports = { createProfile, getProfile, addFriend };
