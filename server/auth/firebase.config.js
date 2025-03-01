@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
+const { initializeApp } = require('firebase/app');
+const { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut, updateProfile } = require('firebase/auth');
+const { getAnalytics } = require('firebase/analytics');
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,28 +21,12 @@ const auth = getAuth(app);
 // const googleProvider = new GoogleAuthProvider();
 // const analytics = getAnalytics(app);
 
-const createUser = (email, password, username) => {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log('User created:', user);
-    })
-    .catch((error) => {
-      alert('Error creating user', error.message);
-    });
+const createUser = (email, password) => {
+  return createUserWithEmailAndPassword(auth, email, password)
 }
 
-const signInUser = (email, password, username) => {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log('User signed in:', user);
-    })
-    .catch((error) => {
-      alert('Error signing in:', error.message);
-    });
+const signInUser = (email, password) => {
+  return signInWithEmailAndPassword(auth, email, password)
 }
 
 // const signInWithGoogle = () => {
@@ -77,6 +61,6 @@ const logOut = () => {
 }
 
 
-export { auth, createUser, signInUser, logOut };
+module.exports = { auth, createUser, signInUser, logOut };
 
 
