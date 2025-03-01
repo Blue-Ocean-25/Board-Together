@@ -2,14 +2,13 @@ const express = require('express');
 const User = require('../db/models/profile/profile.js');
 
 const getProfile = async (req, res) => {
-  //username or email?
-  await User.find({ email: req.body.email })
+  await User.find({ username: req.body.username });
     .then((profile) => {
-      res.status(200).send(profile);
-    })
-    .catch((err) => {
-      res.status(404).send(err);
-    })
+    res.status(200).send(profile);
+  })
+  .catch((err) => {
+    res.status(404).send(err);
+  })
 };
 
 const addFriend = async (req, res) => {
@@ -20,7 +19,8 @@ const addFriend = async (req, res) => {
     res.status(200).send('Friend added');
   } catch (err) {
     res.status(404).send(err);
+    console.error(err);
   }
 };
 
-module.exports.getProfile = getProfile;
+module.exports = { getProfile, addFriend };

@@ -14,16 +14,15 @@ const AddFriendModal = ({friends}) => {
         setSearchResults(results.data);
       }
     })
-  }
+  };
 
   const handleAddFriend = async (event) => {
     try{
       await axios.post('/api/profile/:userId', { friendId: event.target.value })
-
     } catch(err){
       console.error(err);
     }
-  }
+  };
 
   return (
     <div>
@@ -44,5 +43,4 @@ const AddFriendModal = ({friends}) => {
 
 export default AddFriendModal;
 
-//check if that friend is already added
-//set validation for if username doesnt exist
+
