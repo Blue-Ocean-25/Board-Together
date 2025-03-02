@@ -75,7 +75,7 @@ const SelectionPage = () => {
             <div key={session.id}>
               {session.name}
               <button><Link to='/session/:sessionId'>Continue</Link></button>
-              <button value={session.id} onClick={handleDelete}>Delete</buttono>
+              <button value={session.id} onClick={handleDelete}>Delete</button>
             </div>
           ))
         ) :
