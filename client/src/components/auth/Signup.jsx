@@ -1,7 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 const Signup = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const formData = new FormData(event.target);
@@ -11,16 +15,30 @@ const Signup = () => {
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Passwords do not match!',
+      });
       return;
     }
     const request = {username, email, password, phoneNumber};
     axios.post('/api/signup', request)
       .then(response => {
-        console.log(response.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Account Created',
+          text: 'Your account has been successfully created!',
+        }).then(() => {
+          navigate('/login');
+        });
       })
       .catch(error => {
-        console.error('Error logging in:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Signup Failed',
+          text: 'There was an error signing up. Please try again later.',
+        });
       });
   }
   return (
@@ -30,15 +48,15 @@ const Signup = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Username:</span>
-            </label>
-            <input type="text" id="username" name="username" className="input input-bordered" required />
-          </div>
-          <div className="form-control">
-            <label className="label">
               <span className="label-text">Email Address:</span>
             </label>
             <input type="email" id="email" name="email" className="input input-bordered" required />
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Username:</span>
+            </label>
+            <input type="text" id="username" name="username" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
@@ -59,7 +77,8 @@ const Signup = () => {
             <input type="password" id="confirmPassword" name="confirmPassword" className="input input-bordered" required />
           </div>
           <button className="btn btn-accent w-full" type="submit">Signup</button>
-          <button className="btn btn-neutral w-full" type="button"><Link to='/login'>Go To Login</Link></button>
+
+          <Link className="btn btn-neutral w-full" to='/login'>Go To Login</Link>
         </form>
       </div>
     </div>

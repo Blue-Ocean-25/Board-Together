@@ -1,7 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 const Login = () => {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -10,10 +13,20 @@ const Login = () => {
     const request = {email, password};
     axios.post('/api/login', request)
       .then(response => {
-        console.log(response.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: 'You have successfully logged in.',
+        }).then(() => {
+          navigate('/');
+        });
       })
       .catch(error => {
-        console.error('Error logging in:', error);
+        Swal.fire({
+                  icon: 'error',
+                  title: 'Login Failed',
+                  text: 'There was an error login in. Please try again later.',
+                });
       });
   }
   return (
@@ -34,7 +47,7 @@ const Login = () => {
             <input type="password" id="password" name="password" className="input input-bordered" required />
           </div>
           <button className="btn btn-accent w-full" type="submit">Login</button>
-          <button className="btn btn-neutral w-full" type="button"><Link to='/signup'>Go To Signup</Link></button>
+          <Link className="btn btn-neutral w-full" to='/signup'>Go To Signup</Link>
         </form>
       </div>
     </div>
