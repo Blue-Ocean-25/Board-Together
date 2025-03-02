@@ -1,8 +1,14 @@
 import React from 'react';
+import Swal from 'sweetalert2';
 
 const NavBar = () => {
   const handleNotification = () => {
-
+    Swal.fire({
+      title: 'Info',
+      text: 'This will be a feature implemented in the future.',
+      icon: 'info',
+      confirmButtonText: 'OK'
+    });
   };
   return (
     <div className="navbar bg-base-100 shadow-sm">
