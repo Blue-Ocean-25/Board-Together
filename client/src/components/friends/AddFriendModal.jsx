@@ -8,7 +8,7 @@ const AddFriendModal = ({friends}) => {
   const handleSearch = (event) => {
     event.preventDefault();
     const friendSearch = event.target.friendSearch.value;
-    axios.get(`/api/profiles/${friendSearch}`)
+    axios.get(`/api/profile/${friendSearch}`)
     .then((results) => {
       if (!friends.includes(results.data.id)) {
         setSearchResults(results.data);
@@ -18,7 +18,7 @@ const AddFriendModal = ({friends}) => {
 
   const handleAddFriend = async (event) => {
     try{
-      await axios.post('/api/profile/:userId', { friendId: event.target.value })
+      await axios.post('/api/profile/:userId/addFriend', { friendId: event.target.value })
     } catch(err){
       console.error(err);
     }
