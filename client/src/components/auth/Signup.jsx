@@ -16,7 +16,16 @@ const Signup = () => {
     const confirmPassword = formData.get('confirmPassword');
     if (password !== confirmPassword) {
       Swal.fire({
+        buttonsStyling: false,
         icon: 'warning',
+        background: "#ffdba6",
+        customClass: {
+          popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+          icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+          title: 'text-lg font-bold text-center mt-3',
+          htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+          confirmButton: 'btn btn-accent',
+        },
         title: 'Oops...',
         text: 'Passwords do not match!',
       });
@@ -26,7 +35,16 @@ const Signup = () => {
     axios.post('/api/signup', request)
       .then(response => {
         Swal.fire({
+          buttonsStyling: false,
           icon: 'success',
+          background: "#ffdba6",
+          customClass: {
+            popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+            icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+            title: 'text-lg font-bold text-center mt-3',
+            htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+            confirmButton: 'btn btn-accent',
+          },
           title: 'Account Created',
           text: 'Your account has been successfully created!',
         }).then(() => {
@@ -35,7 +53,16 @@ const Signup = () => {
       })
       .catch(error => {
         Swal.fire({
+          buttonsStyling: false,
           icon: 'error',
+          background: "#ffdba6",
+          customClass: {
+            popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+            icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+            title: 'text-lg font-bold text-center mt-3',
+            htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+            confirmButton: 'btn btn-accent',
+          },
           title: 'Signup Failed',
           text: 'There was an error signing up. Please try again later.',
         });
