@@ -1,7 +1,6 @@
 const express = require('express');
 const User = require('../db/models/profile/profile.js');
 
-
 const createProfile = (username, email, phoneNumber) => {
   return User.create({
     username,
