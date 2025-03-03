@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../db/models/profile/profile.js');
+const User = require('../../db/models/profile/profile.js');
 
 const createProfile = (username, email, phoneNumber) => {
   return User.create({
@@ -10,9 +10,9 @@ const createProfile = (username, email, phoneNumber) => {
 };
 
 const getProfile = (req, res) => {
-  User.find({ username: req.body.username });
+  User.find({ username: req.body.username })
     .then((profile) => {
-    res.status(200).send(profile);
+    res.status(200).send(profile)
   })
   .catch((err) => {
     res.status(404).send(err);

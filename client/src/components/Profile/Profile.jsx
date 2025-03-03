@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import  AddFriendModal from '../friends/AddFriendModal.jsx';
+import axios from 'axios';
 
+const demoUser = {
+  id: '01234',
+  username: 'test',
+  email: 'test@gmail.com',
+  gamesPlayed: 2,
+  gameHistory: ['abc', '123'],
+  friends: ['12345', '67890'],
+}
 
-const Profile = () => {
+const Profile = ({openFriendModal}) => {
   const [user, setUser] = useState([]);
   const [friends, setFriends] = useState([]);
 
@@ -14,10 +24,6 @@ const Profile = () => {
       .then((results) => {
         setUser(results.data)
         setFriends(results.data.friends)
-      })
-    axios.get('/api/sessions')
-      .then((results) => {
-        setSessions(results.data)
       })
   }, [])
 
@@ -33,12 +39,14 @@ const Profile = () => {
       <div className="friends">
         <button onClick={openFriendModal}>Add Friend By Username</button>
         <AddFriendModal friends={demoUser.friends} />
-        {friends.map(friend => (
+        {friends !== undefined ? friends.map(friend => (
           <div key={friend.id}>
             <Link to='/profile/:id'>{friends.username}</Link>
           </div>
-        ))}
+        )) : null}
       </div>
     </div>
   )
 };
+
+export default Profile;
