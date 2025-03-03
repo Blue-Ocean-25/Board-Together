@@ -8,9 +8,7 @@ import Scrabble from './games/Scrabble.jsx';
 import NavBar from './NavBar.jsx';
 import SelectionPage from './SelectionPage/SelectionPage.jsx';
 import { Routes, Route } from 'react-router-dom';
-
-import Profile from './profile/Profile.jsx';
-import SelectionPage from './SelectionPage/SelectionPage.jsx';
+import Profile from './Profile/Profile.jsx';
 
 const App = () => {
   return (

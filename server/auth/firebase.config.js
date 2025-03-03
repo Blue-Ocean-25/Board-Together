@@ -1,5 +1,5 @@
 const { initializeApp } = require('firebase/app');
-const { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut, updateProfile } = require('firebase/auth');
+const { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut, updateProfile, setPersistence, inMemoryPersistence } = require('firebase/auth');
 const { getAnalytics } = require('firebase/analytics');
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -18,8 +18,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// const googleProvider = new GoogleAuthProvider();
-// const analytics = getAnalytics(app);
+
+setPersistence(auth, inMemoryPersistence);
 
 const createUser = (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password)
@@ -28,27 +28,6 @@ const createUser = (email, password) => {
 const signInUser = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
 }
-
-// const signInWithGoogle = () => {
-//   signInWithPopup(auth, googleProvider)
-//     .then((result) => {
-//       const user = result.user;
-//       // Signed in
-//       console.log('User signed in with Google:', user);
-//     }).catch((error) => {
-//       console.error('Google login failed:', error.message);
-//     });
-// }
-
-// const signInAsGuest = async () => {
-//   try {
-//     await signInAnonymously(auth);
-//     // Signed in
-//     console.log('User signed in as guest:');
-//   } catch (error) {
-//     console.error('Guest login failed:', error.message);
-//   }
-// };
 
 
 const logOut = () => {
@@ -60,7 +39,10 @@ const logOut = () => {
     });
 }
 
-
+const createCookie = (idToken) => {
+  const expiresIn = 60 * 60 * 24 * 5 * 1000;
+  return auth.createSessionCookie(idToken, { expiresIn })
+}
 module.exports = { auth, createUser, signInUser, logOut };
 
 
