@@ -20,11 +20,9 @@ const Profile = ({ openFriendModal }) => {
 
 
   useEffect(() => {
-    console.log('EMAIL:  ', email);
     if (email.length > 0) {
       axios.get(`/api/profile/${email}`)
         .then((results) => {
-          console.log('RESULTS:  ', results.data);
           setUser(results.data[0]);
           // setFriends(results.data.friends);
         }).catch((err) => {
@@ -33,7 +31,7 @@ const Profile = ({ openFriendModal }) => {
     }
   }, [email]);
 
-  
+
   return (
     <div>
       <div className="profile">

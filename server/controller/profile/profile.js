@@ -10,10 +10,8 @@ const createProfile = (username, email, phoneNumber) => {
 };
 
 const getProfile = (req, res) => {
-  console.log('REQ PARAMS', req.params);
   User.find({ email: req.params.email })
     .then((profile) => {
-      console.log('PROFILE', profile);
       res.status(200).send(profile)
     })
     .catch((err) => {
