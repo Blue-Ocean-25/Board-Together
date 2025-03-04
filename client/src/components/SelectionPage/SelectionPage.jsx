@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AddFriendModal from '../friends/AddFriendModal.jsx';
 import Profile from '../Profile/Profile.jsx';
+import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
 const demoUser = {
   id: '01234',
@@ -18,6 +19,7 @@ const SelectionPage = () => {
   const [sessions, setSessions] = useState([]);
   const [addFriendModal, setAddFriendModal] = useState(false);
 
+  useVerifyLogin();
   const handleDelete = (event) => {
     var sessionId = event.target.value;
     axios.delete(`/games/${sessionid}`)
@@ -36,6 +38,7 @@ const SelectionPage = () => {
   //       setSessions(results.data)
   //     })
   // }, [])
+
 
   return (
     <div>

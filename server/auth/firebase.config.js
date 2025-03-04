@@ -1,6 +1,9 @@
+require('dotenv').config();
 const { initializeApp } = require('firebase/app');
+const admin = require('firebase-admin');
 const { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut, updateProfile, setPersistence, inMemoryPersistence } = require('firebase/auth');
 const { getAnalytics } = require('firebase/analytics');
+const serviceAccount = require('./selectionKey/' + process.env.SERVICE_ACCOUNT_URL);
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -15,8 +18,12 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
+const firebaseAdminConfig = {...firebaseConfig, credential: admin.credential.cert(serviceAccount)}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const adminApp = admin.initializeApp(firebaseAdminConfig);
+const adminAuth = adminApp.auth();
 const auth = getAuth(app);
 
 setPersistence(auth, inMemoryPersistence);
@@ -39,10 +46,14 @@ const logOut = () => {
     });
 }
 
-const createCookie = (idToken) => {
-  const expiresIn = 60 * 60 * 24 * 5 * 1000;
-  return auth.createSessionCookie(idToken, { expiresIn })
+const createCookie = (idToken, expiresIn) => {
+  return adminAuth.createSessionCookie(idToken, { expiresIn })
 }
-module.exports = { auth, createUser, signInUser, logOut };
+
+const verifySessionCookie = (cookie) => {
+  return adminAuth.verifySessionCookie(cookie, true)
+}
+
+module.exports = { auth, createUser, signInUser, logOut, createCookie, verifySessionCookie };
 
 
