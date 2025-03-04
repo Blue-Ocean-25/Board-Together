@@ -5,10 +5,14 @@ import Swal from 'sweetalert2';
 
 const useVerifyLogin = (restricted) => {
   const [loggedIn, setLoggedIn] = useState(null);
+  const [email, setEmail] = useState('');
+
+
   const navigate = useNavigate();
   useEffect(() => {
     axios.get('/api/verifyLogin')
       .then((res) => {
+        setEmail(res.data);
         setLoggedIn(true);
       })
       .catch(err => {
@@ -30,9 +34,9 @@ const useVerifyLogin = (restricted) => {
             text: 'You need to login before accessing this page!',
           });
         }
-})
+      })
   })
-  return loggedIn;
+  return { loggedIn, email };
 };
 
 export default useVerifyLogin;

@@ -24,7 +24,7 @@ router.get('/scrabble/:gameKey', getScrabbleGame);
 router.get('/clue/:gameKey', getClueGame) // :(
 // Profile routes
 router.post('/profile', createProfile);
-router.get('/profile/:id', getProfile);
+router.get('/profile/:email', getProfile);
 router.post('/profile/:id/addFriend', addFriend);
 
 module.exports = router;
