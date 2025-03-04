@@ -21,4 +21,12 @@ const makeYahtzee = async (req, res) => {
     .catch((err) => res.status(500).send(err));
 }
 
-module.exports = { makeYahtzee };
+
+const getYahtzeeGame = async (req, res) => {
+  const { gameKey } = req.params;
+  const gameState = await YahtzeeSession.findOne({ _id: gameKey });
+  res.status(200).send(gameState);
+}
+
+
+module.exports = { makeYahtzee, getYahtzeeGame };
