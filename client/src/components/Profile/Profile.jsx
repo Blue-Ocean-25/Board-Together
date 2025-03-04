@@ -31,7 +31,7 @@ const Profile = ({ openFriendModal }) => {
   }, [email]);
 
   return (
-    <div id="profile" className="flex flex-col items-center mt-50">
+    <div id="profile" className="flex flex-col items-center mt-30">
       <div id="profile-header" className="profile text-center">
         <img src="https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png" alt="profile-pic" className="w-50 h-50 mx-auto" />
         <h1 className="text-3xl">Welcome, {user.username}!</h1>

@@ -42,7 +42,7 @@ const SelectionPage = () => {
 
   return (
     <div>
-      <Profile openFriendModal = {openFriendModal}/>
+      {/* <Profile openFriendModal = {openFriendModal}/> */}
       <div className="gameSelection">
         <h2>Choose a game</h2>
         <div className="game"><Link to='/clue'>Clue</Link></div>
