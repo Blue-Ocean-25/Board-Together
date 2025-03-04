@@ -1,6 +1,9 @@
+require('dotenv').config();
 const { initializeApp } = require('firebase/app');
-const { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut, updateProfile } = require('firebase/auth');
+const admin = require('firebase-admin');
+const { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut, updateProfile, setPersistence, inMemoryPersistence } = require('firebase/auth');
 const { getAnalytics } = require('firebase/analytics');
+const serviceAccount = require('./selectionKey/' + process.env.SERVICE_ACCOUNT_URL);
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -15,11 +18,15 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
+const firebaseAdminConfig = {...firebaseConfig, credential: admin.credential.cert(serviceAccount)}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const adminApp = admin.initializeApp(firebaseAdminConfig);
+const adminAuth = adminApp.auth();
 const auth = getAuth(app);
-// const googleProvider = new GoogleAuthProvider();
-// const analytics = getAnalytics(app);
+
+setPersistence(auth, inMemoryPersistence);
 
 const createUser = (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password)
@@ -28,27 +35,6 @@ const createUser = (email, password) => {
 const signInUser = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
 }
-
-// const signInWithGoogle = () => {
-//   signInWithPopup(auth, googleProvider)
-//     .then((result) => {
-//       const user = result.user;
-//       // Signed in
-//       console.log('User signed in with Google:', user);
-//     }).catch((error) => {
-//       console.error('Google login failed:', error.message);
-//     });
-// }
-
-// const signInAsGuest = async () => {
-//   try {
-//     await signInAnonymously(auth);
-//     // Signed in
-//     console.log('User signed in as guest:');
-//   } catch (error) {
-//     console.error('Guest login failed:', error.message);
-//   }
-// };
 
 
 const logOut = () => {
@@ -60,7 +46,14 @@ const logOut = () => {
     });
 }
 
+const createCookie = (idToken, expiresIn) => {
+  return adminAuth.createSessionCookie(idToken, { expiresIn })
+}
 
-module.exports = { auth, createUser, signInUser, logOut };
+const verifySessionCookie = (cookie) => {
+  return adminAuth.verifySessionCookie(cookie, true)
+}
+
+module.exports = { auth, createUser, signInUser, logOut, createCookie, verifySessionCookie };
 
 
