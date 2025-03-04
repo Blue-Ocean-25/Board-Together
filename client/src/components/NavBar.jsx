@@ -5,10 +5,18 @@ import { Link } from 'react-router-dom';
 const NavBar = () => {
   const handleNotification = () => {
     Swal.fire({
-      title: 'Info',
-      text: 'This will be a feature implemented in the future.',
+      buttonsStyling: false,
       icon: 'info',
-      confirmButtonText: 'OK'
+      background: "#ffdba6",
+      customClass: {
+      popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+      icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+      title: 'text-lg font-bold text-center mt-3',
+      htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+      confirmButton: 'btn btn-accent',
+      },
+      title: 'Future Implementation',
+      text: 'This feature will be implemented in the future. Stay tuned for updates!',
     });
   };
   return (
@@ -21,6 +29,7 @@ const NavBar = () => {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            <li><Link to="/profile">Profile</Link></li>
             <li><Link to="/">Home page</Link></li>
             <li><Link to="/selection">Selection page</Link></li>
           </ul>

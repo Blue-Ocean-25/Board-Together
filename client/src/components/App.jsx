@@ -8,6 +8,7 @@ import Scrabble from './games/Scrabble.jsx';
 import NavBar from './NavBar.jsx';
 import SelectionPage from './SelectionPage/SelectionPage.jsx';
 import { Routes, Route } from 'react-router-dom';
+import Profile from './Profile/Profile.jsx';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />}/>
         <Route path="/signup" element={<Signup />}/>
+        <Route path="/profile" element={<Profile />}/>
         <Route path="/yahtzee" element={<Yahtzee />}/>
         <Route path="/scrabble" element={<Scrabble />}/>
         <Route path="/clue" element={<Clue />} />

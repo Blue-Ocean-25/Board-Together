@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AddFriendModal from '../friends/AddFriendModal.jsx';
+import Profile from '../Profile/Profile.jsx';
+import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
-//create modal for adding number of players, naming session, confirm button
 const demoUser = {
   id: '01234',
   username: 'test',
@@ -14,11 +15,11 @@ const demoUser = {
 }
 
 const SelectionPage = () => {
-  const [user, setUser] = useState([]);
-  const [friends, setFriends] = useState([]);
+
   const [sessions, setSessions] = useState([]);
   const [addFriendModal, setAddFriendModal] = useState(false);
 
+  useVerifyLogin();
   const handleDelete = (event) => {
     var sessionId = event.target.value;
     axios.delete(`/games/${sessionid}`)
@@ -31,42 +32,22 @@ const SelectionPage = () => {
     setAddFriendModal(true);
   }
 
-  // fetch friends
-  useEffect(() => {
-    axios.get('/api/profiles/:email')
-      .then((results) => {
-        setUser(results.data)
-        setFriends(results.data.friends)
-      })
-    axios.get('/api/sessions')
-      .then((results) => {
-        setSessions(results.data)
-      })
-  }, [])
+  // useEffect(() => {
+  //   axios.get('/api/sessions')
+  //     .then((results) => {
+  //       setSessions(results.data)
+  //     })
+  // }, [])
+
 
   return (
     <div>
-      <div className="profile">
-        <h1>Welcome, {demoUser.username}!</h1>
-        <p>Email: {demoUser.email}</p>
-        <p>Games Played: {demoUser.gamesPlayed}</p>
-        <p>Game History: {demoUser.gameHistory}</p>
-        <p>Friends: {demoUser.friends}</p>
-      </div>
-      <div className="friends">
-        <button onClick ={openFriendModal}>Add Friend By Username</button>
-        <AddFriendModal friends = {demoUser.friends} />
-        {friends.map(friend => (
-          <div key={friend.id}>
-            <Link to='/profile/user/:id'>{friends.username}</Link>
-          </div>
-        ))}
-      </div >
+      <Profile openFriendModal = {openFriendModal}/>
       <div className="gameSelection">
         <h2>Choose a game</h2>
-        <div className="game"><Link to='/games/clue'>Clue</Link></div>
-        <div className="game"><Link to='/games/yahtzee'>Yahtzee</Link></div>
-        <div className="game"><Link to='/games/scrabble'>Scrabble</Link></div>
+        <div className="game"><Link to='/clue'>Clue</Link></div>
+        <div className="game"><Link to='/yahtzee'>Yahtzee</Link></div>
+        <div className="game"><Link to='/scrabble'>Scrabble</Link></div>
       </div>
       <div className="gameSessions">
         <h2>Games in Progress</h2>
@@ -81,7 +62,7 @@ const SelectionPage = () => {
         ) :
           (<p>No games in progress</p>)}
       </div>
-    </div >
+    </div>
   )
 }
 
