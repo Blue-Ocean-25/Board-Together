@@ -1,5 +1,5 @@
-const { makeYahtzee } = require('./games/yahtzee');
-const { makeClue } = require('./games/clue');
-const { makeScrabble } = require('./games/scrabble');
+const { makeYahtzee, getYahtzeeGame } = require('./games/yahtzee');
+const { makeClue, getClueGame } = require('./games/clue');
+const { makeScrabble, getScrabbleGame } = require('./games/scrabble');
 
-module.exports = { makeYahtzee, makeClue, makeScrabble };
+module.exports = { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame };

@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const { login, signup } = require('../controller/auth.js');
-const { makeYahtzee, makeClue, makeScrabble } = require('../controller/index');
+const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame } = require('../controller/index');
 const { createProfile, getProfile, addFriend } = require('../controller/profile/profile');
 
 // Example route
@@ -18,7 +18,9 @@ router.post('/signup', signup);
 router.post('/yahtzee', makeYahtzee);
 router.post('/clue', makeClue);
 router.post('/scrabble', makeScrabble);
-
+router.get('/yahtzee/:gameKey', getYahtzeeGame);
+router.get('/scrabble/:gameKey', getScrabbleGame);
+router.get('/clue/:gameKey', getClueGame) // :(
 // Profile routes
 router.post('/profile', createProfile);
 router.get('/profile/:id', getProfile);

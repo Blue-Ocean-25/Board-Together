@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+
 const { ClueSession, CluePlayer } = require('../../db/models/games/clue');
 
 const makeClue = async (req, res) => {
@@ -24,4 +25,10 @@ const makeClue = async (req, res) => {
       });
 }
 
-module.exports = { makeClue };
+const getClueGame = async (req, res) => {
+  const { gameKey } = req.params;
+  const gameState = await ClueSession.findOne({ _id: gameKey });
+  res.status(200).send(gameState);
+}
+
+module.exports = { makeClue, getClueGame };
