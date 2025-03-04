@@ -60,4 +60,9 @@ const verifyLogin = (req, res) => {
     })
 }
 
-module.exports = {login, signup, verifyLogin};
+const logOut = (req, res) => {
+  res.clearCookie('session');
+  res.status(204).send('Logged Out');
+}
+
+module.exports = {login, signup, verifyLogin, logOut};
