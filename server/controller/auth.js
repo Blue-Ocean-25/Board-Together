@@ -1,5 +1,5 @@
 const {createUser, signInUser, createCookie, verifySessionCookie} = require('../auth/firebase.config.js');
-const {createProfile} = require('./profiles.js');
+const {createProfile} = require('./profile/profile.js');
 
 const login = (req, res) => {
   const { email, password } = req.body;
@@ -34,18 +34,18 @@ const signup = (req, res) => {
   const { username, phoneNumber, email, password } = req.body;
   createUser(email, password)
     .then((userCredential) => {
-      // Signed in
+      // Signed in.
       const user = userCredential.user;
       createProfile(username, email, phoneNumber)
         .then(() => {
           res.status(200).send();
         })
         .catch((error) => {
-          res.status(500).send('Error creating user', error.message);
+          res.status(500).send('Error creating user' + error.message);
         });
     })
     .catch((error) => {
-      res.status(500).send('Error creating user', error.message);
+      res.status(500).send('Error creating user' + error.message);
     });
 };
 
