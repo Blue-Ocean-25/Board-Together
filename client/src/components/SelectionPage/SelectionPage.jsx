@@ -41,22 +41,24 @@ const SelectionPage = () => {
 
 
   return (
-    <div>
-      {/* <Profile openFriendModal = {openFriendModal}/> */}
-      <div className="gameSelection">
-        <h2>Choose a game</h2>
-        <div className="game"><Link to='/clue'>Clue</Link></div>
-        <div className="game"><Link to='/yahtzee'>Yahtzee</Link></div>
-        <div className="game"><Link to='/scrabble'>Scrabble</Link></div>
+    <div className="flex flex-col items-center mt-40">
+      <div className="gameSelection flex flex-col items-center">
+        <h1 className="text-3xl mb-20 font-bold">Choose a game:</h1>
+        <div className="flex justify-between w-full max-w-md mb-10">
+          <Link className="btn btn-accent mx-6" id="clue" to='/clue'>Clue</Link>
+          <Link className="btn btn-accent mx-6" id="yahtzee" to='/yahtzee'>Yahtzee</Link>
+          <Link className="btn btn-accent mx-6" id="scrabble" to='/scrabble'>Scrabble</Link>
+        </div>
       </div>
-      <div className="gameSessions">
-        <h2>Games in Progress</h2>
+      <div className="divider mt-10" />
+      <div className="flex flex-col items-center gameSessions mt-10">
+        <h1 className="text-3xl mb-20 font-bold">Games in Progress:</h1>
         {sessions.length ? (
           sessions.map(session => (
-            <div key={session.id}>
-              {session.name}
-              <button><Link to='/session/:sessionId'>Continue</Link></button>
-              <button value={session.id} onClick={handleDelete}>Delete</button>
+            <div className="mx-6" key={session.id}>
+              <h3 className="text-xl">{session.name}</h3>
+              <Link className="btn btn-neutral" to='/session/:sessionId'>Continue</Link>
+              <button className="btn btn-secondary" value={session.id} onClick={handleDelete}>Delete</button>
             </div>
           ))
         ) :
