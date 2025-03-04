@@ -8,6 +8,14 @@ const Yahtzee = () => {
   const [gameKey, setGameKey] = useState('');
   const queryClient = useQueryClient();
 
+  const handlePlayers = (e) => {
+    const value = e.target.value;
+    if (value < 1 || value > 5) {
+      return;
+    }
+    setPlayers(value);
+  }
+
   const createGame = async () => {
     const response = await axios.post('/api/yahtzee', {
       room_name: roomName,
@@ -70,7 +78,7 @@ const Yahtzee = () => {
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Number of Players</span>
-              <input type="number" placeholder="Enter Number of Players"  min="1" max="5" value={players} onChange={(e) => setPlayers(e.target.value)} />
+              <input type="number" placeholder="Enter Number of Players"  min="1" max="5" value={players} onChange={handlePlayers} />
             </label>
           </div>
           <div className="pt-4 pb-4">
