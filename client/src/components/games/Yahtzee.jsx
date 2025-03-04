@@ -6,6 +6,7 @@ const Yahtzee = () => {
   const [roomName, setRoomName] = useState('');
   const [players, setPlayers] = useState(1);
   const [gameKey, setGameKey] = useState('');
+  const [saveButton, setSaveButton] = useState(false);
   const queryClient = useQueryClient();
 
   const handlePlayers = (e) => {
@@ -32,17 +33,6 @@ const Yahtzee = () => {
     }
   })
 
-  const updateGame = (game_id, player_id, score) => {
-    axios.put(`/api/yahtzee/${game_id}`, {
-      player_id: player_id,
-      score: score
-    })
-    .then((res) => {
-      queryClient.setQueryData(['yahtzeeState'], res.data);
-    })
-    .catch((err) => console.error(err));
-  }
-
   const fetchGame = () => {
     if (!gameKey) {
       return null;
@@ -62,6 +52,21 @@ const Yahtzee = () => {
     queryFn: fetchGame,
     // refetchInterval: 1000
   });
+
+  const handleChange = (e, key, playerId) => {
+    setSaveButton(true);
+    console.log(e, key, playerId);
+    data.players[playerId - 1][key] = e;
+    console.log(data.players[playerId - 1]);
+  }
+
+  const saveChanges = () => {
+    axios.put(`/api/yahtzee/${gameKey}`, data)
+    .then((res) => {
+      setSaveButton(false);
+    })
+    .catch((err) => console.error(err));
+  }
 
 
   if (!gameKey) {
@@ -112,7 +117,7 @@ const Yahtzee = () => {
             {data.players.map((player, index) => {
               return (
                 <tr key={player._id}>
-                  <th><input className="input" type="text" defaultValue={player.player_name}/></th>
+                  <th><input className="input" type="text" defaultValue={player.player_name} onChange={() => handleChange(event.target.value, 'player_name', player.player_id)}/></th>
                   <td>{player.aces}</td>
                   <td>{player.twos}</td>
                   <td>{player.threes}</td>
@@ -179,6 +184,7 @@ const Yahtzee = () => {
         <div>
           {lowerScoreSheet}
         </div>
+        {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
       </div>
     </div>
   );

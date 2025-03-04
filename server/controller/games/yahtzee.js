@@ -28,5 +28,23 @@ const getYahtzeeGame = async (req, res) => {
   res.status(200).send(gameState);
 }
 
+const updateYahtzeeGame = async (req, res) => {
+  console.log('BODY: ', req.body, 'PARAMS:  ', req.params);
+  const { gameKey } = req.params;
+  const { players } = req.body;
 
-module.exports = { makeYahtzee, getYahtzeeGame };
+  try {
+    const game = await YahtzeeSession.findOne({ _id: gameKey });
+    if (!game) {
+      res.status(404).send('Game not found');
+    }
+    game.players = players;
+    await game.save();
+    res.status(200).send(game);
+  } catch (err) {
+    res.status(500).send('Server Error: ', err);
+  }
+}
+
+
+module.exports = { makeYahtzee, getYahtzeeGame, updateYahtzeeGame };
