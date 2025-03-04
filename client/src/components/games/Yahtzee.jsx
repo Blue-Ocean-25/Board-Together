@@ -71,7 +71,7 @@ const Yahtzee = () => {
 
   if (!gameKey) {
     return (
-      <div className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen">
+      <div className="bg-base-300 flex-col justify-items-center content-center w-screen h-screen">
         <h1 className="text-xl font-bold">Yahtzee</h1>
         <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
