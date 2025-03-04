@@ -3,7 +3,7 @@ const { initializeApp } = require('firebase/app');
 const admin = require('firebase-admin');
 const { getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut, updateProfile, setPersistence, inMemoryPersistence } = require('firebase/auth');
 const { getAnalytics } = require('firebase/analytics');
-const serviceAccount = require('./board-together-6cc0b-firebase-adminsdk-fbsvc-c5d75005c7.json');
+const serviceAccount = require(process.env.SERVICE_ACCOUNT_URL);
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries

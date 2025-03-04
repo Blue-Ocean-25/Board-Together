@@ -16,7 +16,6 @@ const login = (req, res) => {
         createCookie(idToken, expiresIn)
           .then((cookie) => {
             res.cookie('session', cookie, {maxAge: expiresIn, httpOnly: true, secure: true});
-            console.log(res.cookies)
             res.status(200).send();
           })
           .catch((error) => {
@@ -33,12 +32,10 @@ const login = (req, res) => {
 
 const signup = (req, res) => {
   const { username, phoneNumber, email, password } = req.body;
-  console.log(phoneNumber);
   createUser(email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      console.log('User created:', user);
       createProfile(username, email, phoneNumber)
         .then(() => {
           res.status(200).send();
@@ -54,10 +51,8 @@ const signup = (req, res) => {
 
 const verifyLogin = (req, res) => {
   const cookie = req.cookies.session || '';
-  console.log(cookie);
   verifySessionCookie(cookie)
     .then((results)=> {
-      console.log(results);
       res.send(results)
     })
     .catch((error) => {
