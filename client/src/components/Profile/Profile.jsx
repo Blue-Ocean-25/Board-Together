@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import  AddFriendModal from '../friends/AddFriendModal.jsx';
+import AddFriendModal from '../friends/AddFriendModal.jsx';
 import axios from 'axios';
+import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
 const demoUser = {
   id: '01234',
@@ -12,41 +13,51 @@ const demoUser = {
   friends: ['12345', '67890'],
 }
 
-const Profile = ({openFriendModal}) => {
+const Profile = ({ openFriendModal }) => {
   const [user, setUser] = useState([]);
   const [friends, setFriends] = useState([]);
+  const { email } = useVerifyLogin(true);
 
-
-  // fetch friends
   useEffect(() => {
-    // TO DO -> touch base with Beto and Kevin about cookie or login info
-    axios.get('/api/profiles/:email')
-      .then((results) => {
-        setUser(results.data)
-        setFriends(results.data.friends)
-      })
-  }, [])
+    if (email.length > 0) {
+      axios.get(`/api/profile/${email}`)
+        .then((results) => {
+          setUser(results.data[0]);
+          // setFriends(results.data.friends);
+        }).catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [email]);
 
   return (
-    <div>
-      <div className="profile">
-        <h1>Welcome, {demoUser.username}!</h1>
-        <p>Email: {demoUser.email}</p>
-        <p>Games Played: {demoUser.gamesPlayed}</p>
-        <p>Game History: {demoUser.gameHistory}</p>
-        <p>Friends: {demoUser.friends}</p>
+    <div id="profile" className="flex flex-col items-center mt-50">
+      <div id="profile-header" className="profile text-center">
+        <img src="https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png" alt="profile-pic" className="w-50 h-50 mx-auto" />
+        <h1 className="text-3xl">Welcome, {user.username}!</h1>
       </div>
-      <div className="friends">
-        <button onClick={openFriendModal}>Add Friend By Username</button>
-        <AddFriendModal friends={demoUser.friends} />
-        {friends !== undefined ? friends.map(friend => (
-          <div key={friend.id}>
-            <Link to='/profile/:id'>{friends.username}</Link>
-          </div>
-        )) : null}
+      <div id="profile-details" className="text-center mt-4">
+        <h1 className="text-2xl">Profile Details</h1>
+        <p className="text-lg">Email: {user.email}</p>
+        <p className="text-lg">Games Played: {user.gamesPlayed}</p>
+        <p className="text-lg">Game History: {user.gameHistory}</p>
       </div>
     </div>
-  )
+  );
 };
 
 export default Profile;
+
+
+
+
+// friends feature
+{/* <div className="friends">
+          <button onClick={openFriendModal}>Add Friend By Username</button>
+          <AddFriendModal friends={demoUser.friends} />
+          {friends !== undefined ? friends.map(friend => (
+            <div key={friend.id}>
+              <Link to='/profile/:id'>{friends.username}</Link>
+            </div>
+          )) : null}
+        </div> */}
