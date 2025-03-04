@@ -19,7 +19,7 @@ const SelectionPage = () => {
   const [sessions, setSessions] = useState([]);
   const [addFriendModal, setAddFriendModal] = useState(false);
 
-  const loggedIn = useVerifyLogin();
+  useVerifyLogin();
   const handleDelete = (event) => {
     var sessionId = event.target.value;
     axios.delete(`/games/${sessionid}`)
