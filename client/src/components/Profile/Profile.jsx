@@ -18,7 +18,6 @@ const Profile = ({ openFriendModal }) => {
   const [friends, setFriends] = useState([]);
   const { email } = useVerifyLogin(true);
 
-
   useEffect(() => {
     if (email.length > 0) {
       axios.get(`/api/profile/${email}`)
@@ -31,27 +30,34 @@ const Profile = ({ openFriendModal }) => {
     }
   }, [email]);
 
-
   return (
-    <div>
-      <div className="profile">
-        <h1>Welcome, {user.username}!</h1>
-        <p>Email: {user.email}</p>
-        <p>Games Played: {user.gamesPlayed}</p>
-        <p>Game History: {user.gameHistory}</p>
-        {/* <p>Friends: {user.friends}</p> */}
+    <div id="profile" className="flex flex-col items-center mt-50">
+      <div id="profile-header" className="profile text-center">
+        <img src="https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png" alt="profile-pic" className="w-50 h-50 mx-auto" />
+        <h1 className="text-3xl">Welcome, {user.username}!</h1>
       </div>
-      <div className="friends">
-        <button onClick={openFriendModal}>Add Friend By Username</button>
-        <AddFriendModal friends={demoUser.friends} />
-        {friends !== undefined ? friends.map(friend => (
-          <div key={friend.id}>
-            <Link to='/profile/:id'>{friends.username}</Link>
-          </div>
-        )) : null}
+      <div id="profile-details" className="text-center mt-4">
+        <h1 className="text-2xl">Profile Details</h1>
+        <p className="text-lg">Email: {user.email}</p>
+        <p className="text-lg">Games Played: {user.gamesPlayed}</p>
+        <p className="text-lg">Game History: {user.gameHistory}</p>
       </div>
     </div>
-  )
+  );
 };
 
 export default Profile;
+
+
+
+
+// friends feature
+{/* <div className="friends">
+          <button onClick={openFriendModal}>Add Friend By Username</button>
+          <AddFriendModal friends={demoUser.friends} />
+          {friends !== undefined ? friends.map(friend => (
+            <div key={friend.id}>
+              <Link to='/profile/:id'>{friends.username}</Link>
+            </div>
+          )) : null}
+        </div> */}
