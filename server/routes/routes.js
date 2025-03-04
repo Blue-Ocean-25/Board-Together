@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 // Auth routes
 router.post('/login', login);
 router.post('/signup', signup);
-router.post('/verifyLogin', verifyLogin);
+router.get('/verifyLogin', verifyLogin);
 
 // Game routes
 router.post('/yahtzee', makeYahtzee);

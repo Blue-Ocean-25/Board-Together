@@ -1,4 +1,4 @@
-const {createUser, signInUser} = require('../auth/firebase.config.js');
+const {createUser, signInUser, createCookie, verifySessionCookie} = require('../auth/firebase.config.js');
 const {createProfile} = require('./profiles.js');
 
 const login = (req, res) => {
@@ -12,7 +12,17 @@ const login = (req, res) => {
         // Session login endpoint is queried and the session cookie is set.
         // CSRF protection should be taken into account.
         // ...
-        console.log(idToken);
+        const expiresIn = 60 * 60 * 24 * 5 * 1000;
+        createCookie(idToken, expiresIn)
+          .then((cookie) => {
+            res.cookie('session', cookie, {maxAge: expiresIn, httpOnly: true, secure: true});
+            console.log(res.cookies)
+            res.status(200).send();
+          })
+          .catch((error) => {
+            console.error('Error creating session cookie:', error.message);
+            res.status(401).send('UNAUTHORIZED REQUEST!');
+          })
         // postIdTokenToSessionLogin('/sessionLogin', idToken, csrfToken);
       })
     })
@@ -43,7 +53,16 @@ const signup = (req, res) => {
 };
 
 const verifyLogin = (req, res) => {
-
+  const cookie = req.cookies.session || '';
+  console.log(cookie);
+  verifySessionCookie(cookie)
+    .then((results)=> {
+      console.log(results);
+      res.send(results)
+    })
+    .catch((error) => {
+      res.status(401).send('UNAUTHORIZED REQUEST!');
+    })
 }
 
 module.exports = {login, signup, verifyLogin};
