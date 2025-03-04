@@ -3,4 +3,4 @@ package-lock.json
 node_modules
 dist
 coverage
-server/auth/board-together-6cc0b-firebase-adminsdk-fbsvc-c5d75005c7.json
+selectionKey
