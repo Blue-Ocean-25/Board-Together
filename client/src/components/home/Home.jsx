@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 const Home = () => {
-  const loggedIn = useVerifyLogin(false);
+  const { loggedIn } = useVerifyLogin(false);
   if (loggedIn === null) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-base-300">

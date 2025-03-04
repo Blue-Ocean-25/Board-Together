@@ -10,13 +10,15 @@ const createProfile = (username, email, phoneNumber) => {
 };
 
 const getProfile = (req, res) => {
-  User.find({ username: req.body.username })
+  console.log('REQ PARAMS', req.params);
+  User.find({ email: req.params.email })
     .then((profile) => {
-    res.status(200).send(profile)
-  })
-  .catch((err) => {
-    res.status(404).send(err);
-  })
+      console.log('PROFILE', profile);
+      res.status(200).send(profile)
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    })
 };
 
 const addFriend = async (req, res) => {
