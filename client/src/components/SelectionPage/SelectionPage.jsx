@@ -14,9 +14,15 @@ const demoUser = {
   friends: ['12345', '67890'],
 }
 
+const sessions = [
+  { id: 1, name: 'Clue' },
+  { id: 2, name: 'Yahtzee' },
+  { id: 3, name: 'Scrabble' },
+]
+
 const SelectionPage = () => {
 
-  const [sessions, setSessions] = useState([]);
+  // const [sessions, setSessions] = useState([]);
   const [addFriendModal, setAddFriendModal] = useState(false);
 
   useVerifyLogin(true);
@@ -41,27 +47,34 @@ const SelectionPage = () => {
 
 
   return (
-    <div>
-      <Profile openFriendModal = {openFriendModal}/>
-      <div className="gameSelection">
-        <h2>Choose a game</h2>
-        <div className="game"><Link to='/clue'>Clue</Link></div>
-        <div className="game"><Link to='/yahtzee'>Yahtzee</Link></div>
-        <div className="game"><Link to='/scrabble'>Scrabble</Link></div>
+    <div className="flex flex-col items-center mt-40">
+      <div className="gameSelection flex flex-col items-center">
+        <h1 className="text-3xl mb-20 font-bold">Choose a game:</h1>
+        <div className="flex justify-between w-full max-w-md mb-10">
+          <Link className="btn btn-lg btn-accent mx-6 " id="clue" to='/clue'>Clue</Link>
+          <Link className="btn btn-lg btn-accent mx-6" id="yahtzee" to='/yahtzee'>Yahtzee</Link>
+          <Link className="btn btn-lg btn-accent mx-6" id="scrabble" to='/scrabble'>Scrabble</Link>
+        </div>
       </div>
-      <div className="gameSessions">
-        <h2>Games in Progress</h2>
+      <div className="divider mt-10 mb-10" />
+      <h1 className="text-3xl mb-10 font-bold">Games in Progress:</h1>
+      <ul className="list bg-base-100 rounded-box shadow-md mt-10">
         {sessions.length ? (
           sessions.map(session => (
-            <div key={session.id}>
-              {session.name}
-              <button><Link to='/session/:sessionId'>Continue</Link></button>
-              <button value={session.id} onClick={handleDelete}>Delete</button>
-            </div>
+            <li className="list-row flex justify-between" key={session.id}>
+              <div className=''>
+                <h3 className="text-xl mr-5">{session.name + ': '}</h3>
+              </div>
+              <div className="join">
+                <Link className="btn btn-neutral join-item" to={`/session/${session.id}`}>Continue</Link>
+                <button className="btn btn-secondary join-item" value={session.id} onClick={handleDelete}>Delete</button>
+              </div>
+            </li>
           ))
-        ) :
-          (<p>No games in progress</p>)}
-      </div>
+        ) : (
+          <p>No games in progress</p>
+        )}
+      </ul>
     </div>
   )
 }
