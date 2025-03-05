@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const express = require('express');
 const { ScrabbleSession, ScrabblePlayer } = require('../../db/models/games/scrabble');
 
-
-
 const makeScrabble = async (req, res) => {
   const { room_name, players } = req.body;
 
@@ -29,5 +27,23 @@ const getScrabbleGame = async (req, res) => {
   res.status(200).send(gameState);
 }
 
+const updateScrabbleGame = async (req, res) => {
+  const { gameKey } = req.params;
+  const { players } = req.body;
 
-module.exports = { makeScrabble, getScrabbleGame };
+  try {
+    const game = await ScrabbleSession.findOne({ _id: gameKey });
+    if (!game) {
+      res.status(404).send('Game not found');
+    }
+    game.players = players;
+    await game.save();
+    res.status(200).send(game);
+  } catch (err) {
+    res.status(500).send('Server Error: ', err);
+  }
+}
+
+
+
+module.exports = { makeScrabble, getScrabbleGame,updateScrabbleGame};

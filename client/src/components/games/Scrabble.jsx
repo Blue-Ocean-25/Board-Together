@@ -11,6 +11,15 @@ const Scrabble = () => {
 
   const queryClient = useQueryClient();
 
+  const handlePlayers = (e) => {
+    const value = e.target.value;
+    if (value < 1 || value > 5) {
+      return;
+    }
+    setPlayers(value);
+  }
+
+
   const createGame = async () => {
     const response = await axios.post('/api/scrabble', {
       room_name: roomName,
@@ -65,7 +74,7 @@ const Scrabble = () => {
     refetchInterval: 1000
   });
 
-  const handleChange = (e, key, playerId) => {
+  const handleChangeName = (e, key, playerId) => {
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = e;
   }
@@ -118,37 +127,42 @@ const Scrabble = () => {
 
   if (!data) {
     return (
-      <div>
-        ...LOADING
-      </div>
+      <div>...LOADING</div>
     )
   }
 
 
   return (
-    <div>
-      <h1>{data.room_name}</h1>
+    <div className="mt-20">
+      <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Scrabble</h1>
+      <div className="pb-16">
+        <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
+        <span className="font-bold text-lg/7 underline">{data._id}</span>
+      </div>
+      <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
       <table className="table table-compact">
+        <caption>Scrabble Scorecard</caption>
         <thead className="border border-primary">
-          <tr>
+          <tr className="text-neutral border border-primary">
             <th className="text-neutral border border-primary">Player </th>
             <th className="text-neutral border border-primary">Score </th>
           </tr>
         </thead>
         <tbody>
         {data.players.map((player, index) => (
-          <tr key={player._id}>
+          <tr key={player._id} className="text-neutral border border-primary">
             {/* <td className="border border-primary">{player.name}</td>
             <td className="border border-primary">{player.score}</td> */}
 
             <td className="border border-primary"><p>{player.name}</p><input className="input w-21" min='0' type='text' placeholder="" onChange={() => handleChange(event.target.value, 'name', player.player_id)}/></td>
-            <td className="border border-primary"><p>{player.score}</p><input className="input w-21" min='0' type='number' placeholder="0" onChange={() => handleChange(event.target.value, 'score', player.player_id)}/></td>
+            <td className="border border-primary"><p>{player.score}</p><input className="input w-21"  type='number' placeholder="0" onBlur={() => handleChange(Number(event.target.value), 'score', player.player_id)}/><span onClick={saveChanges}>add to score</span></td>
           </tr>
           ))}
         </tbody>
       </table>
+      </div>
+      {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
     </div>
-
   )
 }
 
