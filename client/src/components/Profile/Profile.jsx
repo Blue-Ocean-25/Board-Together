@@ -22,12 +22,10 @@ const Profile = ({ openFriendModal }) => {
   const { email } = useVerifyLogin(true);
 
   useEffect(() => {
-    console.log('EMAIL: ', email);
     if (email.length > 0) {
       axios.get(`/api/profile/${email}`)
         .then((results) => {
           setUser(results.data[0]);
-          console.log(results.data[0]);
           let url = transformBuffer(results.data[0].profilePic.data.data, results.data[0].profilePic.contentType);
           setProfilePicBlob(url);
         }).catch((err) => {
@@ -40,7 +38,6 @@ const Profile = ({ openFriendModal }) => {
     <div className="mt-2">
       <form>
       <input type="file" accept="image/*" className="file-input" onChange={(e) => {
-        console.log(e.target.value);
         handleFileUpload(e.target.files[0]);
       }}/>
       <p className="mt-2">
@@ -88,7 +85,7 @@ const Profile = ({ openFriendModal }) => {
   return (
     <div id="profile" className="flex flex-col items-center mt-30">
       <div id="profile-header" className="profile text-center">
-        {profilePicBlob ? <img src={profilePicBlob} alt="profile-pic" className="w-50 h-50 mx-auto" /> : <img src='https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png' alt="profile-pic" className="w-50 h-50 mx-auto" />}
+        {profilePicBlob ? <img src={profilePicBlob} alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" /> : <img src='https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png' alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" />}
         {edit ? editView : <button className="btn btn-sm mt-2" onClick={() => setEdit(true)}>Edit Profile</button>}
         <h1 className="text-3xl">Welcome, {user.username}!</h1>
       </div>

@@ -33,7 +33,7 @@ const cluePlayerCardSchema = new Schema({
 })
 
 const clueSchema = new Schema({
-  room_name: { type: String, required: true},
+  room_name: {type: String},
   players: [cluePlayerCardSchema],
 });
 
