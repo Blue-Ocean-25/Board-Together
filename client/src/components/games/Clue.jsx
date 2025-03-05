@@ -63,7 +63,7 @@ const Clue = () => {
 
   if (!gameKey) {
     return (
-      <div className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen">
+      <div className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen content-center">
         <h1 className="text-xl font-bold">Clue</h1>
         <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
@@ -102,7 +102,7 @@ const Clue = () => {
 
   return (
     <>
-      <div>
+      <div className="mt-20">
         <h1>{data.room_name}</h1>
         <h2><span className="font-bold">Share this key to invite friends:</span> {gameKey}</h2>
         {data.players.map((player, index) => <div key={player._id}>{player.name}</div>)}
