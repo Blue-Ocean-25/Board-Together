@@ -87,7 +87,6 @@ const Scrabble = () => {
   }
 
   const handleCompleteGame = () => {
-    console.log(data.players)
     document.getElementById('winner_modal').showModal()
   }
 

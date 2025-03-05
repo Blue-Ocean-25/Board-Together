@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AddFriendModal from '../friends/AddFriendModal.jsx';
 import axios from 'axios';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
+import { format } from 'date-fns';
 
 const demoUser = {
   id: '01234',
@@ -54,7 +55,7 @@ const Profile = ({ openFriendModal }) => {
             <div>
               <p>Game: {game.game}</p>
               <p>Game Key: {game.gameKey}</p>
-              <p>Date: {game.createdAt}</p>
+              <p>Date: {format(game.createdAt, 'MM/dd/yyyy')}</p>
               <p>Players: {game.players.join(', ')}</p>
               <p>Winner: {game.winner}</p>
             </div>
