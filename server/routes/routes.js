@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const { login, signup, verifyLogin, logOut } = require('../controller/auth.js');
-const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueName, updateClueGame } = require('../controller/index');
+const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueName, updateClueGame, saveGameHistory, getGameHistory } = require('../controller/index');
 const { createProfile, getProfile, addFriend } = require('../controller/profile/profile');
 
 // Example route
@@ -30,5 +30,7 @@ router.put('/scrabble/:gameKey', updateScrabbleGame);
 router.post('/profile', createProfile);
 router.get('/profile/:email', getProfile);
 router.post('/profile/:id/addFriend', addFriend);
+router.post('/gameHistory', saveGameHistory);
+router.get('/gameHistory/:email', getGameHistory);
 
 module.exports = router;

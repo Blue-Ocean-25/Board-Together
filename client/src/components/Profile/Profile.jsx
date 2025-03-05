@@ -16,6 +16,7 @@ const demoUser = {
 const Profile = ({ openFriendModal }) => {
   const [user, setUser] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [gameHistory, setGameHistory] = useState([]);
   const { email } = useVerifyLogin(true);
 
   useEffect(() => {
@@ -27,7 +28,13 @@ const Profile = ({ openFriendModal }) => {
         }).catch((err) => {
           console.error(err);
         });
+      axios.get(`api/gameHistory/${email}`)
+      .then((results) => {
+        console.log(results.data)
+        setGameHistory(results.data)
+      })
     }
+
   }, [email]);
 
   return (
@@ -39,8 +46,21 @@ const Profile = ({ openFriendModal }) => {
       <div id="profile-details" className="text-center mt-4">
         <h1 className="text-2xl">Profile Details</h1>
         <p className="text-lg">Email: {user.email}</p>
-        <p className="text-lg">Games Played: {user.gamesPlayed}</p>
+        <p className="text-lg">Games Played: {gameHistory.length}</p>
         <p className="text-lg">Game History: {user.gameHistory}</p>
+        {gameHistory?.length ? (
+          gameHistory.map((game) => {
+          return (
+            <div>
+              <p>Game: {game.game}</p>
+              <p>Game Key: {game.gameKey}</p>
+              <p>Date: {game.createdAt}</p>
+              <p>Players: {game.players.join(', ')}</p>
+              <p>Winner: {game.winner}</p>
+            </div>
+          )
+          })
+        ) : <p>No games played</p>}
       </div>
     </div>
   );
