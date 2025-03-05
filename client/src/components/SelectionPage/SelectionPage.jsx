@@ -16,7 +16,8 @@ const demoUser = {
 
 const sessions = [
   { id: 1, name: 'Clue' },
-  { id: 2, name: 'Yahtzee' }
+  { id: 2, name: 'Yahtzee' },
+  { id: 3, name: 'Scrabble' },
 ]
 
 const SelectionPage = () => {
