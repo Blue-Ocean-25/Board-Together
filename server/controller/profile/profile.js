@@ -33,15 +33,24 @@ const getFriendsByUsername = (req, res) => {
 
 
 const addFriend = async (req, res) => {
-  const userEmail = req.params.email;
-  const friendUsername = req.body.friendUsername;
+  const userEmail = req.body.email;
+  const friendUsername = req.body.addUsername;
+  
   try {
-    await User.findOneAndUpdate({ email: userEmail }, { $push: { friends: friendUsername }, new: true });
+    const user = await User.findOneAndUpdate(
+      { email: userEmail },
+      { $addToSet: { friends: friendUsername } },
+      { new: true });
     res.status(200).send('Friend added');
   } catch (err) {
     console.error(err);
     res.status(404).send(err);
   }
 };
+
+
+
+
+
 
 module.exports = { createProfile, getProfile, addFriend, getFriendsByUsername };

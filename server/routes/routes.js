@@ -32,6 +32,6 @@ router.put('/scrabble/:gameKey', updateScrabbleGame);
 router.post('/profile', createProfile);
 router.get('/profile/:email', getProfile);
 router.get('/profile/:username', getFriendsByUsername);
-router.post('/profile/:email/addFriend', addFriend);
+router.post('/profile/addFriend', addFriend);
 
 module.exports = router;

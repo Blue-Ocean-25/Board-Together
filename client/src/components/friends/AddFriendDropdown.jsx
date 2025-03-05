@@ -8,51 +8,55 @@ const AddFriendDropdown = ({ email }) => {
   const [searchFriendQuery, setSearchFriendQuery] = useState('');
   const [friends, setFriends] = useState([]);
 
+  useEffect(() => {
+    axios.get(`/api/profile/${email}`)
+      .then(res => {
+        setFriends(res.data[0].friends);
+      })
+      .catch(err => console.error(''));
+  }, [email]);
 
   const handleSearch = (event) => {
-    // event.preventDefault();
     if (event.key === 'Enter') {
-      axios.get(`/api/profile/${email}`)
-        .then(res => {
-          setFriends(res.data[0].friends);
-        })
-
       const friendUsername = event.target.value;
-      if (!friends.includes(friendUsername)) {
+
+      if (!friends.includes(friendUsername) && friends) {
         handleAddFriend(friendUsername);
-        setFriends(...friends, friendUsername);
+        setFriends([...friends, friendUsername]);
         window.alert('Friend added');
       } else {
         window.alert('Friend already added');
       }
     }
-
-    // axios.get(``)
   };
 
   const handleAddFriend = async (addUsername) => {
     try {
-      await axios.post(`/api/profile/${email}/addFriend`, addUsername);
+      await axios.post(`/api/profile/addFriend`, { addUsername, email });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // async
+  const handleChange = async (e) => {
+    setShowDropdown(!showDropdown);
+    const value = e.target.value;
+    console.log('VALUE', value)
+    setSearchFriendQuery(value);
+    try {
+      const res = await axios.get(`/api/profile/${value}`);
+      console.log('RES', res.data);
+      // setSearchResults(res.data);
     } catch (err) {
       console.error(err);
     }
   };
 
 
-  const handleChange = (e) => {
-    setShowDropdown(!showDropdown);
-    const value = e.target.value;
-    setSearchFriendQuery(value);
-    axios.get('/profile/:username', searchFriendQuery)
-      .then(res => {
-        console.log(res.data);
-      })
-  };
-
-
-  const handleSelect = () => {
-
-  };
+  // const handleSelect = () => {
+  //   handleAddFriend()
+  // };
 
   console.log('FRIENDS', friends)
 
@@ -70,10 +74,10 @@ const AddFriendDropdown = ({ email }) => {
       {showDropdown && (
         <div>
           <ul>
-            {searchResults.length && (searchResults.map((result) => {
-              <li key={result._id} onClick={handleSelect}>
+            {searchResults.length > 0 && (searchResults.map((result) => {
+              <li key={result._id} onClick={() => handleAddFriend(result.username)}>
                 <p>{result.username}</p>
-                <button onClick={handleAddFriend} value={result._id}>Add Friend</button>
+                <button onClick={() => handleAddFriend(result.username)}>Add Friend</button>
               </li>
             }))}
           </ul>
