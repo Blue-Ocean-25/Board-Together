@@ -50,9 +50,9 @@ const SelectionPage = () => {
       <div className="gameSelection flex flex-col items-center">
         <h1 className="text-3xl mb-20 font-bold">Choose a game:</h1>
         <div className="flex justify-between w-full max-w-md mb-10">
-          <Link className="btn btn-accent mx-6" id="clue" to='/clue'>Clue</Link>
-          <Link className="btn btn-accent mx-6" id="yahtzee" to='/yahtzee'>Yahtzee</Link>
-          <Link className="btn btn-accent mx-6" id="scrabble" to='/scrabble'>Scrabble</Link>
+          <Link className="btn btn-lg btn-accent mx-6 " id="clue" to='/clue'>Clue</Link>
+          <Link className="btn btn-lg btn-accent mx-6" id="yahtzee" to='/yahtzee'>Yahtzee</Link>
+          <Link className="btn btn-lg btn-accent mx-6" id="scrabble" to='/scrabble'>Scrabble</Link>
         </div>
       </div>
       <div className="divider mt-10 mb-10" />
