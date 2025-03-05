@@ -14,9 +14,14 @@ const demoUser = {
   friends: ['12345', '67890'],
 }
 
+const sessions = [
+  { id: 1, name: 'Clue' },
+  { id: 2, name: 'Yahtzee' }
+]
+
 const SelectionPage = () => {
 
-  const [sessions, setSessions] = useState([]);
+  // const [sessions, setSessions] = useState([]);
   const [addFriendModal, setAddFriendModal] = useState(false);
 
   useVerifyLogin(true);
@@ -50,20 +55,25 @@ const SelectionPage = () => {
           <Link className="btn btn-accent mx-6" id="scrabble" to='/scrabble'>Scrabble</Link>
         </div>
       </div>
-      <div className="divider mt-10" />
-      <div className="flex flex-col items-center gameSessions mt-10">
-        <h1 className="text-3xl mb-20 font-bold">Games in Progress:</h1>
+      <div className="divider mt-10 mb-10" />
+      <h1 className="text-3xl mb-10 font-bold">Games in Progress:</h1>
+      <ul className="list bg-base-100 rounded-box shadow-md mt-10">
         {sessions.length ? (
           sessions.map(session => (
-            <div className="mx-6" key={session.id}>
-              <h3 className="text-xl">{session.name}</h3>
-              <Link className="btn btn-neutral" to='/session/:sessionId'>Continue</Link>
-              <button className="btn btn-secondary" value={session.id} onClick={handleDelete}>Delete</button>
-            </div>
+            <li className="list-row flex justify-between" key={session.id}>
+              <div className=''>
+                <h3 className="text-xl mr-5">{session.name + ': '}</h3>
+              </div>
+              <div className="join">
+                <Link className="btn btn-neutral join-item" to={`/session/${session.id}`}>Continue</Link>
+                <button className="btn btn-secondary join-item" value={session.id} onClick={handleDelete}>Delete</button>
+              </div>
+            </li>
           ))
-        ) :
-          (<p>No games in progress</p>)}
-      </div>
+        ) : (
+          <p>No games in progress</p>
+        )}
+      </ul>
     </div>
   )
 }
