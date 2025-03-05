@@ -11,17 +11,19 @@ export default function ClueSession({data}) {
 
 
   console.log('data: ', data);
+  console.log(playerId);
 
   return (
     <>
     <div>
       <select id="player-select" onChange={handlePlayerChange} value={playerId}>
+        <option>Please Select a Board:</option>
         {data.players.map((player, index) => (<option value={index}>{player.player_id}</option>))}
       </select>
     </div>
 
     {
-      playerId && <ClueCard playerData={data.players[playerId]} />
+      playerId !== '' && <ClueCard playerData={data.players[playerId]} gameSession={data._id} />
     }
 
     </>
