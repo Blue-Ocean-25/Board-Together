@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const { login, signup, verifyLogin, logOut } = require('../controller/auth.js');
-const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame } = require('../controller/index');
+const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueGame, updateClueName } = require('../controller/index');
 const { createProfile, getProfile, addFriend } = require('../controller/profile/profile');
 
 // Example route
