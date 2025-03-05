@@ -22,10 +22,24 @@ const Clue = () => {
     return response.data;
   }
 
+  const findGame = async (event) => {
+    event.preventDefault();
+    var gkey = event.target[0].value;
+    const response = await axios.get(`/api/clue/${gkey}`);
+    setGameKey(response.data._id);
+    return response.data;
+  }
+
   const mutation = useMutation({
     mutationFn: createGame,
     onSuccess: (data) => {
-      console.log('mutate data: ', data);
+      queryClient.setQueryData(['clueState'], data);
+    }
+  })
+
+  const mutationFind = useMutation({
+    mutationFn: findGame,
+    onSuccess: (data) => {
       queryClient.setQueryData(['clueState'], data);
     }
   })
@@ -34,7 +48,7 @@ const Clue = () => {
     if (!gameKey) {
       return null;
     }
-    return axios.get(`/api/clue/${gameKey}`) // :c :( D:
+    return axios.get(`/api/clue/${gameKey}`)
     .then((res) => {
       return res.data;
     })
@@ -67,6 +81,12 @@ const Clue = () => {
           <div className="pt-4 pb-4">
           <button onClick={() => mutation.mutate()} className="btn btn-md btn-accent shadow-lg w-43">Start Game</button>
           </div>
+          <div className="pt-4 pb-4">
+            <form onSubmit={(e) => mutationFind.mutate(e)}>
+              <input id="findClue" className="input input-accent shadow-lg w-43" placeholder="Paste an Invite Code"/>
+              <button className="btn btn-md btn-accent shadow-lg w-43" type="submit">Find Game</button>
+            </form>
+          </div>
         </div>
       </div>
     )
@@ -84,6 +104,7 @@ const Clue = () => {
     <>
       <div>
         <h1>{data.room_name}</h1>
+        <h2><span className="font-bold">Share this key to invite friends:</span> {gameKey}</h2>
         {data.players.map((player, index) => <div key={player._id}>{player.name}</div>)}
       </div>
       <div>

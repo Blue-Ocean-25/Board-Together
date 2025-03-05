@@ -18,6 +18,8 @@ router.put('/logOut', logOut);
 // Game routes
 router.post('/yahtzee', makeYahtzee);
 router.post('/clue', makeClue);
+router.put('/clue/:gameKey/:playerId', updateClueName)
+router.put('/clue/:gameKey', updateClueGame);
 router.post('/scrabble', makeScrabble);
 router.get('/yahtzee/:gameKey', getYahtzeeGame);
 router.get('/scrabble/:gameKey', getScrabbleGame);

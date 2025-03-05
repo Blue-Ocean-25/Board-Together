@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const cluePlayerCardSchema = new Schema({
-  player_id: {type: Number, required: true},
+  player_id: {type: String, required: true},
   suspects: {
    colonel_mustard: {type: Boolean, required: true, default: true},
    professor_plum: {type: Boolean, required: true, default: true},
