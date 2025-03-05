@@ -4,7 +4,7 @@ const router = express.Router();
 const { login, signup, verifyLogin, logOut } = require('../controller/auth.js');
 const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueName, updateClueGame } = require('../controller/index');
 const { createProfile, getProfile, addFriend } = require('../controller/profile/profile');
-
+const { createMessage, findMessages } = require('../controller/messages/messages.js')
 // Example route
 router.get('/', (req, res) => {
   res.send('Welcome to Board Together API');
@@ -27,6 +27,9 @@ router.get('/clue/:gameKey', getClueGame) // :(
 router.put('/yahtzee/:gameKey', updateYahtzeeGame);
 router.put('/scrabble/:gameKey', updateScrabbleGame);
 // Profile routes
+router.post('/messages', createMessage);
+router.get('/messages/:gameKey', findMessages);
+
 router.post('/profile', createProfile);
 router.get('/profile/:email', getProfile);
 router.post('/profile/:id/addFriend', addFriend);
