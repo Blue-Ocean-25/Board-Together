@@ -3,51 +3,19 @@ import Swal from 'sweetalert2';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import useVerifyLogin from './utils/useVerifyLogin.jsx';
-import AddFriendModal from './friends/AddFriendModal.jsx';
+import AddFriendDropdown from './friends/AddFriendDropdown.jsx';
 
 const NavBar = () => {
   const { loggedIn, email } = useVerifyLogin(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [searchFriendQuery, setSearchFriendQuery] = useState('');
-
-  const demoUser = {
-    id: '01234',
-    username: 'test',
-    email: 'test@gmail.com',
-    gamesPlayed: 2,
-    gameHistory: ['abc', '123'],
-    friends: ['12345', '67890'],
-  }
-
-
-  const handleChange = (e) => {
-    setShowDropdown(!showDropdown);
-    const value = e.target.value;
-    setSearchFriendQuery(value);
-    handleAddFriend(value)
-  };
-
-  const handleAddFriend = async (friendUsername) => {
-    try {
-      await axios.post(`/api/profile/${email}/addFriend`, friendUsername);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-
-  // const handleSelect = () => { };
-
-
-
   const handleLogout = () => {
     axios.put('/api/logOut')
       .then(() => navigate('/login'))
       .catch(err => console.error(err)) //make a swal if the server has an error
   }
+  
   const handleNotification = () => {
     Swal.fire({
       buttonsStyling: false,
@@ -87,11 +55,7 @@ const NavBar = () => {
       <div className="navbar-end">
         {location.pathname === '/profile' &&
           <div className="friends">
-            <button
-              onClick={() => setOpenFriendModal(true)}
-            >
-            </button>
-            <AddFriendModal friends={demoUser.friends} />
+            <AddFriendDropdown email={email} />
           </div>
         }
         <button onClick={handleNotification} className="btn btn-ghost btn-circle">

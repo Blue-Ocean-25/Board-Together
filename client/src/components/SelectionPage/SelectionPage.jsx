@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import AddFriendModal from '../friends/AddFriendModal.jsx';
+import AddFriendDropdown from '../friends/AddFriendDropdown.jsx';
 import Profile from '../Profile/Profile.jsx';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 

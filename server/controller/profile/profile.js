@@ -10,6 +10,7 @@ const createProfile = (username, email, phoneNumber) => {
 };
 
 const getProfile = (req, res) => {
+  // console.log('EMAIL', req.params.email)
   User.find({ email: req.params.email })
     .then((profile) => {
       res.status(200).send(profile)
@@ -19,16 +20,16 @@ const getProfile = (req, res) => {
     })
 };
 
-const getFriendsByUsername = (req, res) => {
-  console.log(req.params.username, '***')
-  User.find({ username: req.params.username })
-    .then((profile) => {
-      res.status(200).send(profile)
-    })
-    .catch((err) => {
-      res.status
-    })
-};
+// const getFriendsByUsername = (req, res) => {
+//   console.log(req.params.username, '***')
+//   User.find({ username: req.params.username })
+//     .then((profile) => {
+//       res.status(200).send(profile)
+//     })
+//     .catch((err) => {
+//       res.status
+//     })
+// };
 
 
 const addFriend = async (req, res) => {
@@ -43,4 +44,4 @@ const addFriend = async (req, res) => {
   }
 };
 
-module.exports = { createProfile, getProfile, addFriend, getFriendsByUsername };
+module.exports = { createProfile, getProfile, addFriend };
