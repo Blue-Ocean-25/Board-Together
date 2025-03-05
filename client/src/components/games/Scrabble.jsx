@@ -152,7 +152,7 @@ const Scrabble = () => {
       </div>
       <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
       <table className="table table-compact">
-        <caption>Scrabble Scorecard</caption>
+        <caption className="font-bold text-primary text-lg/7 underline">Scrabble Scorecard</caption>
         <thead className="border border-primary">
           <tr className="text-neutral border border-primary">
             <th className="text-neutral border border-primary">Player </th>

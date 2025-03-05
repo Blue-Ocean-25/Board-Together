@@ -6,14 +6,16 @@ export default function ClueSession({data}) {
   const [playerId, setPlayerId] = useState('');
 
   const handlePlayerChange = (event) => {
-    setPlayerId(Number(event.target.value));
+    if (event.target.value !== "no player selected") {
+      setPlayerId(Number(event.target.value));
+    }
   };
 
   return (
     <>
     <div>
       <select id="player-select" onChange={handlePlayerChange} value={playerId}>
-        <option>Please Select a Board:</option>
+        <option value={"no player selected"}>Please Select a Board:</option>
         {data.players.map((player, index) => (<option value={index}>{player.player_id}</option>))}
       </select>
     </div>
