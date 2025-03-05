@@ -1,12 +1,25 @@
 import React, { useState }  from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 const Scrabble = () => {
   const [roomName, setRoomName] = useState('');
   const [players, setPlayers] = useState(1);
   const [gameKey, setGameKey] = useState('');
+  const [dataClone, setDataClone] = useState({});
+  const [saveButton, setSaveButton] = useState(false);
+
   const queryClient = useQueryClient();
+
+  const handlePlayers = (e) => {
+    const value = e.target.value;
+    if (value < 1 || value > 5) {
+      return;
+    }
+    setPlayers(value);
+  }
+
 
   const createGame = async () => {
     const response = await axios.post('/api/scrabble', {
@@ -16,6 +29,22 @@ const Scrabble = () => {
     setGameKey(response.data._id);
     return response.data;
   }
+
+  const joinGame = () => {
+    Swal.fire({
+      title: 'Enter Room Key',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Join',
+      showLoaderOnConfirm: true,
+    }).then((result) => {
+      setGameKey(result.value);
+    });
+  }
+
 
   const mutation = useMutation({
     mutationFn: createGame,
@@ -46,12 +75,39 @@ const Scrabble = () => {
     refetchInterval: 1000
   });
 
+  const handleChangeName = (e, key, playerId) => {
+    setSaveButton(true);
+    dataClone.players[playerId - 1][key] = e;
+  }
+
+  const handleChangeScore = (e, key, playerId) => {
+    setSaveButton(true);
+    dataClone.players[playerId - 1][key] = data.players[playerId - 1][key] + e;
+  }
+
+  const saveChanges = () => {
+    axios.put(`/api/scrabble/${gameKey}`, dataClone)
+    .then((res) => {
+      setSaveButton(false);
+      setDataClone(res.data);
+      const input = document.querySelectorAll('.input');
+      input.forEach((element) => {
+        element.value = '';
+      });
+    })
+    .catch((err) => console.error(err));
+  }
+
+  if (JSON.stringify(dataClone) === '{}' && data) {
+    setDataClone(data);
+  }
+
   if (!gameKey) {
     return (
-      <div className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen">
-        <h1 className="text-2xl font-bold">Scrabble</h1>
+      <div className="bg-base-300 flex-col justify-items-center content-center w-screen h-screen">
+        <h1 className="text-xl font-bold">Scrabble</h1>
         <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
-        <div className="pt-4">
+          <div className="pt-4">
             <label className="input w-86">
               <span className="label">Room Name</span>
               <input type="text" placeholder="Enter Room Name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
@@ -60,40 +116,59 @@ const Scrabble = () => {
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Number of Players</span>
-              <input type="number" placeholder="Enter Number of Players"  min="1" max="5" value={players} onChange={(e) => setPlayers(e.target.value)} />
+              <input type="number" placeholder="Enter Number of Players"  min="2" max="5" value={players} onChange={handlePlayers} />
             </label>
           </div>
           <div className="pt-4 pb-4">
             <button className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
+            <div className="divider">OR</div>
+            <button className="btn btn-md btn-accent shadow-lg w-43" onClick={joinGame}>Join Game</button>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
 
 
+  if (!data) {
+    return (
+      <div>...LOADING</div>
+    )
+  }
+
+
   return (
-    <div>
-      <h1>{data ? data.room_name : '...LOADING'}</h1>
+    <div className="mt-20">
+      <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Scrabble</h1>
+      <div className="pb-16">
+        <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
+        <span className="font-bold text-lg/7 underline">{data._id}</span>
+      </div>
+      <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
       <table className="table table-compact">
-        <thead>
-          <tr>
-            <th>name </th>
-            <th>score </th>
+        <caption>Scrabble Scorecard</caption>
+        <thead className="border border-primary">
+          <tr className="text-neutral border border-primary">
+            <th className="text-neutral border border-primary">Player </th>
+            <th className="text-neutral border border-primary">Score </th>
           </tr>
         </thead>
         <tbody>
         {data.players.map((player, index) => (
-          <tr key={player._id}>
-            <td>{player.name}</td>
-            <td>{player.score}</td>
+          <tr key={player._id} className="text-neutral border border-primary">
+            {/* <td className="border border-primary">{player.name}</td>
+            <td className="border border-primary">{player.score}</td> */}
+
+            <td className="border border-primary"><p>{player.name}</p><input className="input w-21" min='0' type='text' placeholder="" onChange={() => handleChangeName(event.target.value, 'name', player.player_id)}/></td>
+            <td className="border border-primary"><p>{player.score}</p><input className="input w-21"  type='number' placeholder="0" onBlur={() => handleChangeScore(Number(event.target.value), 'score', player.player_id)}/><span onClick={saveChanges}>add to score</span></td>
           </tr>
           ))}
         </tbody>
       </table>
+      </div>
+      {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
     </div>
-
   )
 }
 
