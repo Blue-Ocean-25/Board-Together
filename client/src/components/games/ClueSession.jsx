@@ -6,7 +6,7 @@ export default function ClueSession({data}) {
   const [playerId, setPlayerId] = useState('');
 
   const handlePlayerChange = (event) => {
-    if (!event.target.value === "no player selected") {
+    if (event.target.value !== "no player selected") {
       setPlayerId(Number(event.target.value));
     }
   };
