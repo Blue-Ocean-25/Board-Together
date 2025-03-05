@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AddFriendModal = ({friends}) => {
-
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (event) => {
