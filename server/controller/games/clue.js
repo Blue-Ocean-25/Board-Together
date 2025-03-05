@@ -51,10 +51,6 @@ const updateClueGame = async (req, res) => {
 const updateClueName = async (req, res) => {
   const { gameKey, playerId } = req.params;
   const {playerName } = req.body;
-  console.log(gameKey, playerId, playerName);
-  // const curGame = await ClueSession.findOne({ _id: gameKey, 'players.player_id': playerId }, { 'players.$': 1 });
-
-  // const player = curGame.players[0];
 
   await ClueSession.updateOne(
     { _id: gameKey, 'players.player_id': playerId},

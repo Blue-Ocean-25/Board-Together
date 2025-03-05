@@ -17,7 +17,6 @@ export default function ClueCard({ playerData, gameSession }) {
   const mutation = useMutation({
     mutationFn: updateGame,
     onSuccess: (data) => {
-      console.log('mutate data: ', data);
       queryClient.setQueryData(['scrabbleState'], data);
     }
   })
@@ -38,7 +37,6 @@ export default function ClueCard({ playerData, gameSession }) {
   const mutationName = useMutation({
     mutationFn: updateName,
     onSuccess: (data) => {
-      console.log('mutate data: ', data);
       queryClient.setQueryData(['scrabbleState'], data);
     }
   })

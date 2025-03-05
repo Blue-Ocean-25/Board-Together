@@ -9,10 +9,6 @@ export default function ClueSession({data}) {
     setPlayerId(Number(event.target.value));
   };
 
-
-  console.log('data: ', data);
-  console.log(playerId);
-
   return (
     <>
     <div>

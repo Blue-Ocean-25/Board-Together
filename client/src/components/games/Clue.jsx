@@ -22,9 +22,7 @@ const Clue = () => {
   const findGame = async (event) => {
     event.preventDefault();
     var gkey = event.target[0].value;
-    console.log(gkey);
     const response = await axios.get(`/api/clue/${gkey}`);
-    console.log(response.data);
     setGameKey(response.data._id);
     return response.data;
   }
@@ -32,7 +30,6 @@ const Clue = () => {
   const mutation = useMutation({
     mutationFn: createGame,
     onSuccess: (data) => {
-      console.log('mutate data: ', data);
       queryClient.setQueryData(['clueState'], data);
     }
   })
@@ -40,13 +37,11 @@ const Clue = () => {
   const mutationFind = useMutation({
     mutationFn: findGame,
     onSuccess: (data) => {
-      console.log('mutate data: ', data);
       queryClient.setQueryData(['clueState'], data);
     }
   })
 
   const fetchGame = () => {
-    console.log('FETCHED')
     if (!gameKey) {
       return null;
     }
