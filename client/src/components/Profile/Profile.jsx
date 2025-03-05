@@ -13,7 +13,7 @@ const demoUser = {
   friends: ['12345', '67890'],
 }
 
-const Profile = ({ openFriendModal }) => {
+const Profile = () => {
   const [user, setUser] = useState([]);
   const [friends, setFriends] = useState([]);
   const { email } = useVerifyLogin(true);
@@ -23,7 +23,7 @@ const Profile = ({ openFriendModal }) => {
       axios.get(`/api/profile/${email}`)
         .then((results) => {
           setUser(results.data[0]);
-          // setFriends(results.data.friends);
+          setFriends(results.data.friends);
         }).catch((err) => {
           console.error(err);
         });
@@ -42,6 +42,12 @@ const Profile = ({ openFriendModal }) => {
         <p className="text-lg">Games Played: {user.gamesPlayed}</p>
         <p className="text-lg">Game History: {user.gameHistory}</p>
       </div>
+      <div className='divider'></div>
+      {demoUser.friends !== undefined && demoUser.friends.map((friend, index) => (
+        <div key={index}>
+          <Link to='/profile/:username'>{friend.username}</Link>
+        </div>
+      ))}
     </div>
   );
 };
@@ -51,13 +57,3 @@ export default Profile;
 
 
 
-// friends feature
-{/* <div className="friends">
-          <button onClick={openFriendModal}>Add Friend By Username</button>
-          <AddFriendModal friends={demoUser.friends} />
-          {friends !== undefined ? friends.map(friend => (
-            <div key={friend.id}>
-              <Link to='/profile/:id'>{friends.username}</Link>
-            </div>
-          )) : null}
-        </div> */}

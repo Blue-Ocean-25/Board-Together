@@ -1,44 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AddFriendModal = ({friends}) => {
+const AddFriendModal = ({ friends }) => {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (event) => {
-    event.preventDefault();
-    const friendSearch = event.target.friendSearch.value;
-    axios.get(`/api/profile/${friendSearch}`)
-    .then((results) => {
-      if (!friends.includes(results.data.id)) {
-        setSearchResults(results.data);
-      }
-    })
-  };
-
-  const handleAddFriend = async (event) => {
-    try{
-      await axios.post('/api/profile/:userId/addFriend', { friendId: event.target.value })
-    } catch(err){
-      console.error(err);
+    if (event.key === 'Enter') {
+      const friendUsername = event.target.friendUsername.value;
+      console.log(friendUsername, '+++')
+      axios.get(`/api/profile/${friendUsername}`)
+        .then((results) => {
+          if (!friends.includes(results.data.id)) {
+            setSearchResults(results.data);
+          }
+        })
     }
   };
 
+
   return (
     <div>
-      <form onSubmit={handleSearch}>
-        <label>Search for a user:</label>
-        <input type="text" id="friendSearch" name="friendSearch" />
-        <button type="submit">Search</button>
-      </form>
+      <input
+        type="text"
+        id="friendUsername"
+        name="friendUsername"
+        className="input input-bordered w-full max-w-xs bg-white"
+        placeholder='Add Friend By Username'
+        onKeyDown={handleSearch}
+      />
       {searchResults.length ? (searchResults.map((result) => {
         <div key={result._id}>
           <p>{result.username}</p>
-          <button onClick = {handleAddFriend} value = {result._id}>Add Friend</button>
+          <button onClick={handleAddFriend} value={result._id}>Add Friend</button>
         </div>
       })) : null}
     </div>
   )
-}
+};
 
 export default AddFriendModal;
 

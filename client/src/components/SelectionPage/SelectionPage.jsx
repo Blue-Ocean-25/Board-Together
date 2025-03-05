@@ -5,14 +5,6 @@ import AddFriendModal from '../friends/AddFriendModal.jsx';
 import Profile from '../Profile/Profile.jsx';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
-const demoUser = {
-  id: '01234',
-  username: 'test',
-  email: 'test@gmail.com',
-  gamesPlayed: 2,
-  gameHistory: ['abc', '123'],
-  friends: ['12345', '67890'],
-}
 
 const sessions = [
   { id: 1, name: 'Clue' },
@@ -23,7 +15,6 @@ const sessions = [
 const SelectionPage = () => {
 
   // const [sessions, setSessions] = useState([]);
-  const [addFriendModal, setAddFriendModal] = useState(false);
 
   useVerifyLogin(true);
   const handleDelete = (event) => {
@@ -34,9 +25,6 @@ const SelectionPage = () => {
       })
   }
 
-  const openFriendModal = () => {
-    setAddFriendModal(true);
-  }
 
   // useEffect(() => {
   //   axios.get('/api/sessions')
