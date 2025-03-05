@@ -20,28 +20,28 @@ const getProfile = (req, res) => {
     })
 };
 
-// const getFriendsByUsername = (req, res) => {
-//   console.log(req.params.username, '***')
-//   User.find({ username: req.params.username })
-//     .then((profile) => {
-//       res.status(200).send(profile)
-//     })
-//     .catch((err) => {
-//       res.status
-//     })
-// };
+const getFriendsByUsername = (req, res) => {
+  console.log(req.params.username, '***')
+  User.find({ username: req.params.username })
+    .then((profile) => {
+      res.status(200).send(profile)
+    })
+    .catch((err) => {
+      res.status
+    })
+};
 
 
 const addFriend = async (req, res) => {
   const userEmail = req.params.email;
   const friendUsername = req.body.friendUsername;
   try {
-    await User.findByIdAndUpdate(userEmail, { $push: { friends: friendUsername } });
+    await User.findOneAndUpdate({ email: userEmail }, { $push: { friends: friendUsername }, new: true });
     res.status(200).send('Friend added');
   } catch (err) {
-    res.status(404).send(err);
     console.error(err);
+    res.status(404).send(err);
   }
 };
 
-module.exports = { createProfile, getProfile, addFriend };
+module.exports = { createProfile, getProfile, addFriend, getFriendsByUsername };

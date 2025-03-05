@@ -10,6 +10,7 @@ const AddFriendDropdown = ({ email }) => {
 
 
   const handleSearch = (event) => {
+    // event.preventDefault();
     if (event.key === 'Enter') {
       axios.get(`/api/profile/${email}`)
         .then(res => {
@@ -18,39 +19,16 @@ const AddFriendDropdown = ({ email }) => {
 
       const friendUsername = event.target.value;
       if (!friends.includes(friendUsername)) {
+        handleAddFriend(friendUsername);
         setFriends(...friends, friendUsername);
         window.alert('Friend added');
       } else {
         window.alert('Friend already added');
       }
     }
+
+    // axios.get(``)
   };
-
-  // console.log('FRIENDS', friends)
-
-
-  const handleChange = (e) => {
-    setShowDropdown(!showDropdown);
-    const value = e.target.value;
-    setSearchFriendQuery(value);
-  };
-
-
-
-  const handleSelect = () => {
-
-  };
-
-
-
-  // const demoUser = {
-  //   id: '01234',
-  //   username: 'test',
-  //   email: 'test@gmail.com',
-  //   gamesPlayed: 2,
-  //   gameHistory: ['abc', '123'],
-  //   friends: ['12345', '67890'],
-  // }
 
   const handleAddFriend = async (addUsername) => {
     try {
@@ -61,6 +39,23 @@ const AddFriendDropdown = ({ email }) => {
   };
 
 
+  const handleChange = (e) => {
+    setShowDropdown(!showDropdown);
+    const value = e.target.value;
+    setSearchFriendQuery(value);
+    axios.get('/profile/:username', searchFriendQuery)
+      .then(res => {
+        console.log(res.data);
+      })
+  };
+
+
+  const handleSelect = () => {
+
+  };
+
+  console.log('FRIENDS', friends)
+
   return (
     <div>
       <input
@@ -69,14 +64,21 @@ const AddFriendDropdown = ({ email }) => {
         name="friendUsername"
         className="input input-bordered w-full max-w-xs bg-white"
         placeholder='Add Friend By Username'
+        onChange={handleChange}
         onKeyDown={handleSearch}
       />
-      {searchResults.length ? (searchResults.map((result) => {
-        <div key={result._id}>
-          <p>{result.username}</p>
-          <button onClick={handleAddFriend} value={result._id}>Add Friend</button>
+      {showDropdown && (
+        <div>
+          <ul>
+            {searchResults.length && (searchResults.map((result) => {
+              <li key={result._id} onClick={handleSelect}>
+                <p>{result.username}</p>
+                <button onClick={handleAddFriend} value={result._id}>Add Friend</button>
+              </li>
+            }))}
+          </ul>
         </div>
-      })) : null}
+      )}
     </div>
   )
 };

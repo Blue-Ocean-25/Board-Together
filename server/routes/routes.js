@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { login, signup, verifyLogin, logOut } = require('../controller/auth.js');
 const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueName, updateClueGame } = require('../controller/index');
-const { createProfile, getProfile, addFriend } = require('../controller/profile/profile');
+const { createProfile, getProfile, addFriend, getFriendsByUsername } = require('../controller/profile/profile');
 
 // Example route
 router.get('/', (req, res) => {
@@ -31,7 +31,7 @@ router.put('/scrabble/:gameKey', updateScrabbleGame);
 // Profile routes
 router.post('/profile', createProfile);
 router.get('/profile/:email', getProfile);
-// router.get('/profile/:username', getFriendsByUsername);
-router.post('/profile/:id/addFriend', addFriend);
+router.get('/profile/:username', getFriendsByUsername);
+router.post('/profile/:email/addFriend', addFriend);
 
 module.exports = router;
