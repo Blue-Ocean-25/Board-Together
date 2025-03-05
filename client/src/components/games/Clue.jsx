@@ -11,6 +11,9 @@ const Clue = () => {
   const queryClient = useQueryClient();
 
   const createGame = async () => {
+    if (players < 1 || players > 5) {
+      return;
+    }
     const response = await axios.post('/api/clue', {
       room_name: roomName,
       players: players
