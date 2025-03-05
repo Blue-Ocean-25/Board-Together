@@ -107,7 +107,7 @@ const Yahtzee = () => {
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Number of Players</span>
-              <input type="number" placeholder="Enter Number of Players"  min="1" max="5" value={players} onChange={handlePlayers} />
+              <input type="number" placeholder="Enter Number of Players"  min="" max="5" value={players} onChange={handlePlayers} />
             </label>
           </div>
           <div className="pt-4 pb-4">

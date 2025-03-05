@@ -28,6 +28,8 @@ const getScrabbleGame = async (req, res) => {
 }
 
 const updateScrabbleGame = async (req, res) => {
+
+
   const { gameKey } = req.params;
   const { players } = req.body;
 

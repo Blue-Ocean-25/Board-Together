@@ -1,5 +1,6 @@
 import React, { useState }  from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 const Scrabble = () => {
@@ -79,6 +80,11 @@ const Scrabble = () => {
     dataClone.players[playerId - 1][key] = e;
   }
 
+  const handleChangeScore = (e, key, playerId) => {
+    setSaveButton(true);
+    dataClone.players[playerId - 1][key] = data.players[playerId - 1][key] + e;
+  }
+
   const saveChanges = () => {
     axios.put(`/api/scrabble/${gameKey}`, dataClone)
     .then((res) => {
@@ -154,8 +160,8 @@ const Scrabble = () => {
             {/* <td className="border border-primary">{player.name}</td>
             <td className="border border-primary">{player.score}</td> */}
 
-            <td className="border border-primary"><p>{player.name}</p><input className="input w-21" min='0' type='text' placeholder="" onChange={() => handleChange(event.target.value, 'name', player.player_id)}/></td>
-            <td className="border border-primary"><p>{player.score}</p><input className="input w-21"  type='number' placeholder="0" onBlur={() => handleChange(Number(event.target.value), 'score', player.player_id)}/><span onClick={saveChanges}>add to score</span></td>
+            <td className="border border-primary"><p>{player.name}</p><input className="input w-21" min='0' type='text' placeholder="" onChange={() => handleChangeName(event.target.value, 'name', player.player_id)}/></td>
+            <td className="border border-primary"><p>{player.score}</p><input className="input w-21"  type='number' placeholder="0" onBlur={() => handleChangeScore(Number(event.target.value), 'score', player.player_id)}/><span onClick={saveChanges}>add to score</span></td>
           </tr>
           ))}
         </tbody>
