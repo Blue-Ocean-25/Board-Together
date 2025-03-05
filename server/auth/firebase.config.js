@@ -36,16 +36,6 @@ const signInUser = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
 }
 
-
-const logOut = () => {
-  signOut(auth)
-    .then(() => {
-      console.log('User signed out');
-    }).catch((error) => {
-      console.error('Logout failed:', error.message);
-    });
-}
-
 const createCookie = (idToken, expiresIn) => {
   return adminAuth.createSessionCookie(idToken, { expiresIn })
 }
@@ -54,6 +44,6 @@ const verifySessionCookie = (cookie) => {
   return adminAuth.verifySessionCookie(cookie, true)
 }
 
-module.exports = { auth, createUser, signInUser, logOut, createCookie, verifySessionCookie };
+module.exports = { createUser, signInUser, createCookie, verifySessionCookie };
 
 

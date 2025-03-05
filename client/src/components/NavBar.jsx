@@ -1,8 +1,17 @@
 import React from 'react';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import useVerifyLogin from './utils/useVerifyLogin.jsx';
 
 const NavBar = () => {
+  const loggedIn = useVerifyLogin(false);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    axios.put('/api/logOut')
+      .then(() => navigate('/login'))
+      .catch(err => console.error(err)) //make a swal if the server has an error
+  }
   const handleNotification = () => {
     Swal.fire({
       buttonsStyling: false,
@@ -20,7 +29,7 @@ const NavBar = () => {
     });
   };
   return (
-    <div className="navbar bg-base-200 shadow-sm">
+    <div className="navbar bg-base-200 shadow-sm fixed top-0 left-0 w-full z-10">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -32,6 +41,7 @@ const NavBar = () => {
             <li><Link to="/profile">Profile</Link></li>
             <li><Link to="/">Home page</Link></li>
             <li><Link to="/selection">Selection page</Link></li>
+            {loggedIn ? <li><button onClick={handleLogout}>Logout</button></li> : <li><Link to="/login">Login</Link></li>}
           </ul>
         </div>
       </div>

@@ -17,7 +17,6 @@ export default function ClueSession({data}) {
         {data.players.map((player, index) => (<option value={index}>{player.player_id}</option>))}
       </select>
     </div>
-
     {
       playerId !== '' && <ClueCard playerData={data.players[playerId]} gameSession={data._id} />
     }
