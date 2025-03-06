@@ -2,13 +2,40 @@ import React, { useState, useRef }  from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ClueSession from "./ClueSession.jsx";
 import axios from 'axios';
-
+import MessageBoard from './messages/MessageBoard.jsx';
+import Swal from 'sweetalert2';
+import gameNotFound from './../utils/gameNotFound.js';
+import useVerifyLogin from './../utils/useVerifyLogin.jsx';
 
 const Clue = () => {
   const [roomName, setRoomName] = useState('');
   const [players, setPlayers] = useState(1);
   const [gameKey, setGameKey] = useState('');
   const queryClient = useQueryClient();
+  const [invalid, setInvalid] = useState(false);
+  const { email } = useVerifyLogin(false);
+
+    const joinGame = () => {
+      Swal.fire({
+        title: 'Enter Room Key',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Join',
+        background: "#ffdba6",
+            customClass: {
+              popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+              icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+              title: 'text-lg font-bold text-center mt-3',
+              htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+              confirmButton: 'btn-lg btn-accent',
+            },
+      }).then((result) => {
+        mutationFind.mutate(result.value);
+      });
+    }
 
   const createGame = async () => {
     if (players < 1 || players > 5) {
@@ -16,15 +43,14 @@ const Clue = () => {
     }
     const response = await axios.post('/api/clue', {
       room_name: roomName,
-      players: players
+      players: players,
+      email
     });
     setGameKey(response.data._id);
     return response.data;
   }
 
-  const findGame = async (event) => {
-    event.preventDefault();
-    var gkey = event.target[0].value;
+  const findGame = async (gkey) => {
     const response = await axios.get(`/api/clue/${gkey}`);
     setGameKey(response.data._id);
     return response.data;
@@ -52,12 +78,19 @@ const Clue = () => {
     .then((res) => {
       return res.data;
     })
-    .catch((err) => console.error(err));
-  }
+    .catch((err) => {
 
+      throw new Error;
+    })
+  }
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
   const { data, isLoading, error } = useQuery({
     queryKey: ['clueState'],
     queryFn: fetchGame,
+    retry: 0,
     refetchInterval: 1000
   });
 
@@ -80,12 +113,8 @@ const Clue = () => {
           </div>
           <div className="pt-4 pb-4">
           <button onClick={() => mutation.mutate()} className="btn btn-md btn-accent shadow-lg w-43">Start Game</button>
-          </div>
-          <div className="pt-4 pb-4">
-            <form onSubmit={(e) => mutationFind.mutate(e)}>
-              <input id="findClue" className="input input-accent shadow-lg w-43" placeholder="Paste an Invite Code"/>
-              <button className="btn btn-md btn-accent shadow-lg w-43" type="submit">Find Game</button>
-            </form>
+          <div className="divider">OR</div>
+          <button className="btn btn-md btn-accent shadow-lg w-43" onClick={joinGame}>Join Game</button>
           </div>
         </div>
       </div>
@@ -109,6 +138,7 @@ const Clue = () => {
       </div>
       <div>
         <ClueSession data={data}/>
+        <MessageBoard gameId={gameKey}/>
       </div>
     </>
   )

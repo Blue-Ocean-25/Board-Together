@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const express = require('express');
 
 const { ClueSession, CluePlayer } = require('../../db/models/games/clue');
-
+const User = require('../../db/models/profile/profile.js');
 const makeClue = async (req, res) => {
   // req.body should contain the room_name, players
-  const { room_name, players } = req.body;
+  const { room_name, players, email } = req.body;
     let newPlayers = Array.from({ length: players }, (_, index) => ({
       player_id: String(index + 1),
     }));
@@ -17,7 +17,13 @@ const makeClue = async (req, res) => {
 
     newSession.save()
       .then((game) => {
-        res.status(201).send(game);
+        User.updateOne({email}, {$push: {gamesInProgress: `Clue: ${JSON.parse(JSON.stringify(game._id))}`}})
+          .then((result) => {
+            res.status(201).send(game);
+          })
+          .catch((err) => {
+            res.status(500).send(err);
+          })
       })
       .catch((err) => {
         console.error(err);
@@ -27,8 +33,16 @@ const makeClue = async (req, res) => {
 
 const getClueGame = async (req, res) => {
   const { gameKey } = req.params;
-  const gameState = await ClueSession.findOne({ _id: gameKey });
-  res.status(200).send(gameState);
+  ClueSession.findOne({ _id: gameKey })
+    .then((gameState) => {
+      if (gameState === null) {
+        throw new Error
+      }
+      res.status(200).send(gameState);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    })
 }
 
 const updateClueGame = async (req, res) => {

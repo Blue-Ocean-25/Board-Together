@@ -24,8 +24,16 @@ const makeYahtzee = async (req, res) => {
 
 const getYahtzeeGame = async (req, res) => {
   const { gameKey } = req.params;
-  const gameState = await YahtzeeSession.findOne({ _id: gameKey });
-  res.status(200).send(gameState);
+  YahtzeeSession.findOne({ _id: gameKey })
+    .then((gameState) => {
+      if (gameState === null) {
+        throw new Error
+      }
+      res.status(200).send(gameState);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    })
 }
 
 const updateYahtzeeGame = async (req, res) => {

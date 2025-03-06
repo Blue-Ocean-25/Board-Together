@@ -23,8 +23,16 @@ const makeScrabble = async (req, res) => {
 
 const getScrabbleGame = async (req, res) => {
   const { gameKey } = req.params;
-  const gameState = await ScrabbleSession.findOne({ _id: gameKey });
-  res.status(200).send(gameState);
+    ScrabbleSession.findOne({ _id: gameKey })
+      .then((gameState) => {
+        if (gameState === null) {
+          throw new Error
+        }
+        res.status(200).send(gameState);
+      })
+      .catch((err) => {
+        res.status(404).send(err);
+      })
 }
 
 const updateScrabbleGame = async (req, res) => {
@@ -42,7 +50,7 @@ const updateScrabbleGame = async (req, res) => {
     await game.save();
     res.status(200).send(game);
   } catch (err) {
-    res.status(500).send('Server Error: ', err);
+    res.status(500).send('Server Error: ' + err);
   }
 }
 

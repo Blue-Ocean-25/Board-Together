@@ -3,6 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import MessageBoard from './messages/MessageBoard.jsx';
+import gameNotFound from './../utils/gameNotFound.js';
 
 const Yahtzee = () => {
   const [roomName, setRoomName] = useState('');
@@ -10,6 +12,7 @@ const Yahtzee = () => {
   const [gameKey, setGameKey] = useState('');
   const [saveButton, setSaveButton] = useState(false);
   const [dataClone, setDataClone] = useState({});
+  const [invalid, setInvalid] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -39,7 +42,14 @@ const Yahtzee = () => {
       },
       showCancelButton: true,
       confirmButtonText: 'Join',
-      showLoaderOnConfirm: true,
+      background: "#ffdba6",
+          customClass: {
+            popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+            icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+            title: 'text-lg font-bold text-center mt-3',
+            htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+            confirmButton: 'btn-lg btn-accent',
+          },
     }).then((result) => {
       setGameKey(result.value);
     });
@@ -61,13 +71,19 @@ const Yahtzee = () => {
       return res.data;
     })
     .catch((err) => {
-      console.error(err);
+      setGameKey('');
+      setInvalid(true);
+      throw new Error;
     })
   }
-
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
   const { data, isLoading, error } = useQuery({
     queryKey: ['yahtzeeState'],
     queryFn: fetchGame,
+    retry: 0,
     refetchInterval: 1000
   });
 
@@ -189,7 +205,7 @@ const Yahtzee = () => {
                 <tr key={player._id} className="border border-primary">
                   <th className="w-250">{player.player_name}</th>
                   <td className="border border-primary"><p>{player.three_of_a_kind}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => {handleChange(event.target.value, 'three_of_a_kind', player.player_id)}}/></td>
-                  <td className="border border-primary"><p>{player.four_of_a_kind}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'four', player.player_id)}/></td>
+                  <td className="border border-primary"><p>{player.four_of_a_kind}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'four_of_a_kind', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.full_house}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'full_house', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.small_straight}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'small_straight', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.large_straight}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'large_straight', player.player_id)}/></td>
@@ -205,29 +221,32 @@ const Yahtzee = () => {
   );
 
   return (
-    <div className="mt-20">
-      <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Yahtzee</h1>
-      <div>
-        <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
-        <span className="font-bold text-lg/7 underline">{data._id}</span>
-      </div>
-      <div>
-        <h2 className="text-primary font-bold text-lg/7">Room Name: {data.room_name}</h2>
-        <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
-          <div>
-            {upperScoreSheet}
+    <div className="flex flex-col mt-20">
+      <div className="overflow-y-scroll flex-grow max-h-1/2">
+        <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Yahtzee</h1>
+        <div >
+          <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
+          <span className="font-bold text-lg/7 underline">{data._id}</span>
+        </div>
+        <div>
+          <h2 className="text-primary font-bold text-lg/7">Room Name: {data.room_name}</h2>
+          <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
+            <div>
+              {upperScoreSheet}
+            </div>
+            <div className="divider bg-primary -ml-4 -mr-4"></div>
+            <div>
+              {lowerScoreSheet}
+            </div>
           </div>
-          <div className="divider bg-primary -ml-4 -mr-4"></div>
-          <div>
-            {lowerScoreSheet}
-          </div>
-          <div className="flex flex-row gap-4">
+          <div className={saveButton ? "flex flex-row gap-4 justify-between m-2" : "flex flex-row gap-4 justify-end m-2"}>
             {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
             <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
           </div>
           <WinnerModal players = {data.players.map((player) => {return player.player_name})} gameKey = {gameKey} game = {"Yahtzee"}/>
         </div>
       </div>
+      <MessageBoard gameId={gameKey}/>
     </div>
   );
 };
