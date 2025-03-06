@@ -7,26 +7,31 @@ import { format } from 'date-fns';
 
 const Profile = ({ friends, setFriends }) => {
   const [user, setUser] = useState([]);
-  const [friends, setFriends] = useState([]);
   const [gameHistory, setGameHistory] = useState([]);
   const [edit, setEdit] = useState(false);
   const [profilePicBlob, setProfilePicBlob] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { email } = useVerifyLogin(true);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     if (email.length > 0) {
-      axios.get(`/api/profile/${email}`)
-        .then((results) => {
-          setUser(results.data[0]);
-          setFriends(results.data[0].friends);
-        }).catch((err) => {
-          console.error(err);
-        }).finally(() => setLoading(false));
+      Promise.all([
+        axios.get(`/api/profile/${email}`),
+        axios.get(`/api/gameHistory/${email}`)
+      ])
+      .then(([profile, history]) => {
+        setGameHistory(history.data);
+        setUser(profile.data[0]);
+        setFriends(profile.data[0].friends);
+        let url = transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType);
+        setProfilePicBlob(url);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setIsLoading(false));
     }
   }, [email]);
+
 
   const handleDelete = async (friendName) => {
     try {
@@ -37,70 +42,6 @@ const Profile = ({ friends, setFriends }) => {
     }
   };
 
-
-  return (
-    <div id="profile" className="flex flex-col items-center mt-30">
-      {loading ? (
-        <p className="text-lg font-bold">Loading profile...</p>
-      ) : (
-        <>
-          <div id="profile-header" className="profile text-center">
-            <img src="https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png"
-              alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" />
-            <h1 className="text-3xl mt-4">Welcome, {user.username}!</h1>
-          </div>
-
-          <div id="profile-details" className="text-center mt-4">
-            <h1 className="text-2xl">Profile Details</h1>
-            <p className="text-lg">Email: {user.email}</p>
-            <p className="text-lg">Games Played: {user.gamesPlayed}</p>
-            <p className="text-lg">Game History: {user.gameHistory}</p>
-          </div>
-
-          <div className='divider'></div>
-
-          <h3 className='text-3xl mb-10 font-bold'>Friends List</h3>
-          {friends?.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4">
-              {friends.map((friend, index) => (
-                <div key={index} className="card shadow-lg compact bg-base-100">
-                  <div className="card-body flex flex-row justify-between items-center">
-                    <Link to='/profile' className="text-lg font-semibold mr-40">{friend}</Link>
-                    <button
-                      className='btn btn-error btn-sm'
-                      onClick={() => handleDelete(friend)}>
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No Friends Found</p>
-          )}
-        </>
-      )}
-=======
-      setIsLoading(true);
-
-      Promise.all([
-        axios.get(`/api/profile/${email}`),
-        axios.get(`/api/gameHistory/${email}`)
-      ])
-      .then(([profile, history]) => {
-        setGameHistory(history.data);
-        setUser(profile.data[0]);
-        let url = transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType);
-        setProfilePicBlob(url);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-    }
-  }, [email]);
 
   const editView = (
     <div className="mt-2">
@@ -133,7 +74,6 @@ const Profile = ({ friends, setFriends }) => {
           console.error(error);
         });
       }
-
     reader.readAsArrayBuffer(file);
     setEdit(false);
   }
@@ -145,7 +85,6 @@ const Profile = ({ friends, setFriends }) => {
     return url;
   }
 
-
   if (user.length === 0 || isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-base-300">
@@ -155,7 +94,7 @@ const Profile = ({ friends, setFriends }) => {
   }
 
   return (
-    <div id="profile" className="flex flex-col items-center mt-30">
+    <div id="profile" className="flex flex-col justify-items-center content-center mt-30">
       <div id="profile-header" className="profile text-center">
         {profilePicBlob ? <img src={profilePicBlob} alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" /> : <img src='https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png' alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" />}
         {edit ? editView : <button className="btn btn-sm mt-2" onClick={() => setEdit(true)}>Edit Profile</button>}
@@ -181,6 +120,27 @@ const Profile = ({ friends, setFriends }) => {
           })
         ) : <p>No games played</p>}
         </div>
+        <div className='divider'></div>
+
+          <h3 className='text-3xl mb-10 font-bold'>Friends List</h3>
+          {friends?.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4">
+              {friends.map((friend, index) => (
+                <div key={index} className="card shadow-lg compact bg-base-100">
+                  <div className="card-body flex flex-row justify-between items-center">
+                    <Link to='/profile' className="text-lg font-semibold mr-40">{friend}</Link>
+                    <button
+                      className='btn btn-error btn-sm'
+                      onClick={() => handleDelete(friend)}>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No Friends Found</p>
+          )}
       </div>
     </div>
   );
