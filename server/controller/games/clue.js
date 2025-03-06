@@ -27,8 +27,13 @@ const makeClue = async (req, res) => {
 
 const getClueGame = async (req, res) => {
   const { gameKey } = req.params;
-  const gameState = await ClueSession.findOne({ _id: gameKey });
-  res.status(200).send(gameState);
+  ClueSession.findOne({ _id: gameKey })
+    .then((gameState) => {
+      res.status(200).send(gameState);
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    })
 }
 
 const updateClueGame = async (req, res) => {

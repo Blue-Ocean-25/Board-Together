@@ -4,7 +4,6 @@ const Message = require('../../db/models/messages/messages.js');
 const createMessage = (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
-      console.log(user)
       const message = user.username + ': ' + req.body.message;
       Message.create({
         gameId: req.body.gameId,
@@ -27,7 +26,6 @@ const findMessages = (req, res) => {
   Message.find({ gameId })
     .sort({ createdAt: -1 })
     .then((messages) => {
-      console.log(messages);
       res.status(200).send(messages);
     })
     .catch((err) => {

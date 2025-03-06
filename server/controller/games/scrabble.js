@@ -23,8 +23,13 @@ const makeScrabble = async (req, res) => {
 
 const getScrabbleGame = async (req, res) => {
   const { gameKey } = req.params;
-  const gameState = await ScrabbleSession.findOne({ _id: gameKey });
-  res.status(200).send(gameState);
+    ScrabbleSession.findOne({ _id: gameKey })
+      .then((gameState) => {
+        res.status(200).send(gameState);
+      })
+      .catch((err) => {
+        res.status(404).send(err);
+      })
 }
 
 const updateScrabbleGame = async (req, res) => {

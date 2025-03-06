@@ -4,12 +4,15 @@ import ClueSession from "./ClueSession.jsx";
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
 import Swal from 'sweetalert2';
+import gameNotFound from './../utils/gameNotFound.js';
+
 
 const Clue = () => {
   const [roomName, setRoomName] = useState('');
   const [players, setPlayers] = useState(1);
   const [gameKey, setGameKey] = useState('');
   const queryClient = useQueryClient();
+  const [invalid, setInvalid] = useState(false);
 
     const joinGame = () => {
       Swal.fire({
@@ -73,12 +76,19 @@ const Clue = () => {
     .then((res) => {
       return res.data;
     })
-    .catch((err) => console.error(err));
-  }
+    .catch((err) => {
 
+      throw new Error;
+    })
+  }
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
   const { data, isLoading, error } = useQuery({
     queryKey: ['clueState'],
     queryFn: fetchGame,
+    retry: 0,
     refetchInterval: 1000
   });
 
