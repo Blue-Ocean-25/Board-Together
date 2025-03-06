@@ -22,7 +22,6 @@ export default function ClueSession({data}) {
     {
       playerId !== '' && <ClueCard data={data} playerData={data.players[playerId]} gameSession={data._id} />
     }
-
     </>
   )
 }
