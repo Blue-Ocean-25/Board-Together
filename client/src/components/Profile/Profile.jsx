@@ -86,8 +86,12 @@ const Profile = ({ openFriendModal }) => {
   }
 
 
-  if (!user) {
-    return <div>...Loading</div>
+  if (!user || !gameHistory.length) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-base-300">
+        <h1 className="text-6xl font-bold mb-25">Loading...</h1>
+      </div>
+    )
   }
 
   return (
@@ -102,10 +106,11 @@ const Profile = ({ openFriendModal }) => {
         <p className="text-lg">Email: {user.email}</p>
         <p className="text-lg">Games Played: {gameHistory.length}</p>
         <p className="text-lg">Game History: {user.gameHistory}</p>
+        <div className = "flex flex-row flex-wrap gap-2">
         {gameHistory?.length ? (
           gameHistory.map((game) => {
           return (
-            <div>
+            <div className = "bg-base-100 rounded-box shadow-md p-4 border-base-200">
               <p>Game: {game.game}</p>
               <p>Game Key: {game.gameKey}</p>
               <p>Date: {format(game.createdAt, 'MM/dd/yyyy')}</p>
@@ -115,6 +120,7 @@ const Profile = ({ openFriendModal }) => {
           )
           })
         ) : <p>No games played</p>}
+        </div>
       </div>
     </div>
   );

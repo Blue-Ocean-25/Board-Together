@@ -49,12 +49,12 @@ export default function ClueCard({ data, playerData, gameSession }) {
 
   return (
   <div>
-    <div className="pt-4 pb-4">
+    <div className="pt-4 pb-4 flex flex-row gap-4">
       <form onSubmit={(e) => mutationName.mutate(e)}>
         <input id="setName" className="input input-accent shadow-lg w-43" placeholder="Set your Username"/>
         <button className="btn btn-md btn-accent shadow-lg w-43" type="submit">Set Name</button>
       </form>
-      <button onClick = {handleCompleteGame}>Complete Game</button>
+      <button onClick = {handleCompleteGame} className="btn btn-md btn-accent shadow-lg w-43">Complete Game</button>
     </div>
       <div>
       <table id="suspects" className="table">
@@ -110,7 +110,7 @@ export default function ClueCard({ data, playerData, gameSession }) {
         </tbody>
       </table>
       </div>
-      <WinnerModal players = {data.players.map((player) => {return player.player_id})} gameKey = {gameSession} game = {"clue"}/>
+      <WinnerModal players = {data.players.map((player) => {return player.player_id})} gameKey = {gameSession} game = {"Clue"}/>
     </div>
   )
 }
