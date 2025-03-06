@@ -35,4 +35,7 @@ router.post('/profile', createProfile);
 router.get('/profile/:email', getProfile);
 router.post('/profile/:id/addFriend', addFriend);
 router.put('/profile/:id/profilePicture', upload.single('imageBlob'), addProfilePic);
+router.post('/gameHistory', saveGameHistory);
+router.get('/gameHistory/:email', getGameHistory);
+
 module.exports = router;
