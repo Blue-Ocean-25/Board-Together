@@ -1,11 +1,13 @@
 const express = require('express');
+const multer = require('multer');
 const User = require('../../db/models/profile/profile.js');
+
 
 const createProfile = (username, email, phoneNumber) => {
   return User.create({
     username,
     email,
-    phoneNumber
+    phoneNumber,
   });
 };
 
@@ -31,4 +33,23 @@ const addFriend = async (req, res) => {
   }
 };
 
-module.exports = { createProfile, getProfile, addFriend };
+const addProfilePic = async (req, res) => {
+  const userId = req.params.id;
+  const { buffer, mimetype } = req.file;
+  try {
+    const user = await User.findOne({ _id: userId })
+    if (!user) {
+      res.status(404).send('User not found');
+      return;
+    }
+    user.profilePic = { data: buffer, contentType: mimetype };
+    await user.save();
+    res.status(200).send(user);
+    return;
+  } catch (err) {
+    res.status(500).send('Server Error: ', err);
+    return;
+  }
+}
+
+module.exports = { createProfile, getProfile, addFriend, addProfilePic };
