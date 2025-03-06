@@ -197,7 +197,7 @@ const Yahtzee = () => {
                 <tr key={player._id} className="border border-primary">
                   <th className="w-250">{player.player_name}</th>
                   <td className="border border-primary"><p>{player.three_of_a_kind}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => {handleChange(event.target.value, 'three_of_a_kind', player.player_id)}}/></td>
-                  <td className="border border-primary"><p>{player.four_of_a_kind}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'four', player.player_id)}/></td>
+                  <td className="border border-primary"><p>{player.four_of_a_kind}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'four_of_a_kind', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.full_house}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'full_house', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.small_straight}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'small_straight', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.large_straight}</p><input className="input w-21" type="number" min="0" placeholder="0" onChange={() => handleChange(event.target.value, 'large_straight', player.player_id)}/></td>
