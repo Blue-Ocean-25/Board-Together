@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const AddFriendDropdown = ({ email }) => {
+const AddFriendDropdown = ({ email, friends, setFriends }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchFriendQuery, setSearchFriendQuery] = useState('');
-  const [friends, setFriends] = useState([]);
+  // const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     axios.get(`/api/profile/${email}`)

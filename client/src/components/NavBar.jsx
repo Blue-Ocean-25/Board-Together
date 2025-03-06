@@ -5,7 +5,7 @@ import axios from 'axios';
 import useVerifyLogin from './utils/useVerifyLogin.jsx';
 import AddFriendDropdown from './friends/AddFriendDropdown.jsx';
 
-const NavBar = () => {
+const NavBar = ({ friends, setFriends }) => {
   const { loggedIn, email } = useVerifyLogin(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,7 +15,7 @@ const NavBar = () => {
       .then(() => navigate('/login'))
       .catch(err => console.error(err)) //make a swal if the server has an error
   }
-  
+
   const handleNotification = () => {
     Swal.fire({
       buttonsStyling: false,
@@ -55,7 +55,10 @@ const NavBar = () => {
       <div className="navbar-end">
         {location.pathname === '/profile' &&
           <div className="friends">
-            <AddFriendDropdown email={email} />
+            <AddFriendDropdown
+              friends={friends}
+              setFriends={setFriends}
+              email={email} />
           </div>
         }
         <button onClick={handleNotification} className="btn btn-ghost btn-circle">

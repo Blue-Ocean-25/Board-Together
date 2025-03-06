@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AddFriendDropdown from '../friends/AddFriendDropdown.jsx';
 import axios from 'axios';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
 
-const Profile = () => {
+const Profile = ({ friends, setFriends }) => {
   const [user, setUser] = useState([]);
-  const [friends, setFriends] = useState([]);
   const { email } = useVerifyLogin(true);
+  // const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     if (email.length > 0) {
