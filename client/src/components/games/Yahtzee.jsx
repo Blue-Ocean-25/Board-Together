@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import MessageBoard from './messages/MessageBoard.jsx';
 
 const Yahtzee = () => {
   const [roomName, setRoomName] = useState('');
@@ -212,21 +213,24 @@ const Yahtzee = () => {
   );
 
   return (
-    <div className="mt-20">
-      <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Yahtzee</h1>
-      <div>
-        <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
-        <span className="font-bold text-lg/7 underline">{data._id}</span>
-      </div>
-      <div>
-        <h2 className="text-primary font-bold text-lg/7">Room Name: {data.room_name}</h2>
-        <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
-          <div>
-            {upperScoreSheet}
-          </div>
-          <div className="divider bg-primary -ml-4 -mr-4"></div>
-          <div>
-            {lowerScoreSheet}
+    <div className="flex flex-col mt-20">
+      <div className="overflow-y-scroll flex-grow max-h-1/2">
+        <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Yahtzee</h1>
+        <div >
+          <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
+          <span className="font-bold text-lg/7 underline">{data._id}</span>
+        </div>
+        <div>
+          <h2 className="text-primary font-bold text-lg/7">Room Name: {data.room_name}</h2>
+          <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
+            <div>
+              {upperScoreSheet}
+            </div>
+            <div className="divider bg-primary -ml-4 -mr-4"></div>
+            <div>
+              {lowerScoreSheet}
+            </div>
+            {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
           </div>
           <div className="flex flex-row gap-4">
             {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
@@ -235,6 +239,7 @@ const Yahtzee = () => {
           <WinnerModal players = {data.players.map((player) => {return player.player_name})} gameKey = {gameKey} game = {"Yahtzee"}/>
         </div>
       </div>
+      <MessageBoard gameId={gameKey}/>
     </div>
   );
 };

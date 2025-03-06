@@ -2,7 +2,7 @@ import React, { useState, useRef }  from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ClueSession from "./ClueSession.jsx";
 import axios from 'axios';
-
+import MessageBoard from './messages/MessageBoard.jsx';
 
 const Clue = () => {
   const [roomName, setRoomName] = useState('');
@@ -109,6 +109,7 @@ const Clue = () => {
       </div>
       <div>
         <ClueSession data={data}/>
+        <MessageBoard gameId={gameKey}/>
       </div>
     </>
   )

@@ -20,26 +20,31 @@ const Profile = ({ openFriendModal }) => {
   const [gameHistory, setGameHistory] = useState([]);
   const [edit, setEdit] = useState(false);
   const [profilePicBlob, setProfilePicBlob] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { email } = useVerifyLogin(true);
 
   useEffect(() => {
     if (email.length > 0) {
-      axios.get(`/api/profile/${email}`)
-        .then((results) => {
-          setUser(results.data[0]);
-          let url = transformBuffer(results.data[0].profilePic.data.data, results.data[0].profilePic.contentType);
-          setProfilePicBlob(url);
-        }).catch((err) => {
-          console.error(err);
-        });
-      axios.get(`api/gameHistory/${email}`)
-      .then((results) => {
-        console.log(results.data)
-        setGameHistory(results.data)
-      })
-    }
+      setIsLoading(true);
 
+      Promise.all([
+        axios.get(`/api/profile/${email}`),
+        axios.get(`/api/gameHistory/${email}`)
+      ])
+      .then(([profile, history]) => {
+        setGameHistory(history.data);
+        setUser(profile.data[0]);
+        let url = transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType);
+        setProfilePicBlob(url);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+    }
   }, [email]);
 
   const editView = (
@@ -86,7 +91,7 @@ const Profile = ({ openFriendModal }) => {
   }
 
 
-  if (!user) {
+  if (user.length === 0 || isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-base-300">
         <h1 className="text-6xl font-bold mb-25">Loading...</h1>

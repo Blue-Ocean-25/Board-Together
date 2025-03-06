@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import MessageBoard from './messages/MessageBoard.jsx';
 
 const Scrabble = () => {
   const [roomName, setRoomName] = useState('');
@@ -57,7 +58,7 @@ const Scrabble = () => {
   const mutation = useMutation({
     mutationFn: createGame,
     onSuccess: (data) => {
-      console.log('mutate data: ', data);
+      //console.log('mutate data: ', data);
       queryClient.setQueryData(['scrabbleState'], data);
 
     }
@@ -69,7 +70,7 @@ const Scrabble = () => {
     }
     return axios.get(`/api/scrabble/${gameKey}`)
     .then((res) => {
-      // console.log('GET DATA: ', res.data);
+      //console.log('GET DATA: ', res.data);
       return res.data;
     })
     .catch((err) => {
@@ -184,6 +185,7 @@ const Scrabble = () => {
         {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
         <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
       </div>
+      <MessageBoard gameId={gameKey}/>
     </div>
   )
 }
