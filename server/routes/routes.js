@@ -3,7 +3,7 @@ const multer = require('multer');
 
 const router = express.Router();
 const { login, signup, verifyLogin, logOut } = require('../controller/auth.js');
-const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueGame, updateClueName } = require('../controller/index');
+const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueGame, updateClueName, saveGameHistory, getGameHistory } = require('../controller/index');
 const { createProfile, getProfile, addFriend, addProfilePic } = require('../controller/profile/profile');
 
 const storage = multer.memoryStorage();
