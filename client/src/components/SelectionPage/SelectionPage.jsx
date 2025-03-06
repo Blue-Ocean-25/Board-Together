@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import AddFriendModal from '../friends/AddFriendModal.jsx';
+import AddFriendDropdown from '../friends/AddFriendDropdown.jsx';
 import Profile from '../Profile/Profile.jsx';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
-const demoUser = {
-  id: '01234',
-  username: 'test',
-  email: 'test@gmail.com',
-  gamesPlayed: 2,
-  gameHistory: ['abc', '123'],
-  friends: ['12345', '67890'],
-}
 
 const sessions = [
   { id: 1, name: 'Clue' },
@@ -23,7 +15,6 @@ const sessions = [
 const SelectionPage = () => {
 
   // const [sessions, setSessions] = useState([]);
-  const [addFriendModal, setAddFriendModal] = useState(false);
 
   useVerifyLogin(true);
   const handleDelete = (event) => {
@@ -33,17 +24,6 @@ const SelectionPage = () => {
         console.log('successfully deleted game session')
       })
   }
-
-  const openFriendModal = () => {
-    setAddFriendModal(true);
-  }
-
-  // useEffect(() => {
-  //   axios.get('/api/sessions')
-  //     .then((results) => {
-  //       setSessions(results.data)
-  //     })
-  // }, [])
 
 
   return (
@@ -63,7 +43,7 @@ const SelectionPage = () => {
           sessions.map(session => (
             <li className="list-row flex justify-between" key={session.id}>
               <div className=''>
-                <h3 className="text-xl mr-5">{session.name + ': '}</h3>
+                <h3 className="text-xl mr-40">{session.name}</h3>
               </div>
               <div className="join">
                 <Link className="btn btn-neutral join-item" to={`/session/${session.id}`}>Continue</Link>
