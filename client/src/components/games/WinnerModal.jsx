@@ -30,15 +30,15 @@ const WinnerModal = ({players, gameKey, game}) => {
     <dialog id="winner_modal" className="modal">
       <div className="modal-box">
         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick = {handleClose}>✕</button>
-        <form method="dialog" onSubmit = {handleSubmit}>
+        <form method="dialog" onSubmit = {handleSubmit} className="flex flex-col gap-4">
           {/* if there is a button in form, it will close the modal */}
-          <select value={winner} onChange = {(e) => {setWinner(e.target.value)}}>
+          <select className = "select select-accent" value={winner} onChange = {(e) => {setWinner(e.target.value)}}>
             <option>Select Winner</option>
             {players.map((player) => {
               return <option value = {player}>{player}</option>
             })}
           </select>
-          <button type="submit">Submit</button>
+          <button type="submit" className="btn btn-md btn-accent shadow-lg w-43">Submit</button>
         </form>
       </div>
     </dialog>

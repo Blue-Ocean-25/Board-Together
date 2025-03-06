@@ -173,7 +173,7 @@ const Scrabble = () => {
         </tbody>
       </table>
       </div>
-      <WinnerModal players = {data.players.map((player) => {return player.name})} gameKey = {gameKey} game = {"scrabble"}/>
+      <WinnerModal players = {data.players.map((player) => {return player.name})} gameKey = {gameKey} game = {"Scrabble"}/>
       <div className="flex flex-row gap-4">
         {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
         <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>

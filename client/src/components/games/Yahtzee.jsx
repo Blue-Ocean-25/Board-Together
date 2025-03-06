@@ -229,7 +229,7 @@ const Yahtzee = () => {
             {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
             <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
           </div>
-          <WinnerModal players = {data.players.map((player) => {return player.player_name})} gameKey = {gameKey} game = {"yahtzee"}/>
+          <WinnerModal players = {data.players.map((player) => {return player.player_name})} gameKey = {gameKey} game = {"Yahtzee"}/>
         </div>
       </div>
       <MessageBoard gameId={gameKey}/>
