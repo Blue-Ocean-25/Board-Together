@@ -5,7 +5,7 @@ const router = express.Router();
 const { login, signup, verifyLogin, logOut } = require('../controller/auth.js');
 const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueGame, updateClueName, saveGameHistory, getGameHistory } = require('../controller/index');
 const { createProfile, getProfile, addFriend, addProfilePic } = require('../controller/profile/profile');
-
+const { createMessage, findMessages } = require('../controller/messages/messages.js')
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -31,6 +31,9 @@ router.get('/clue/:gameKey', getClueGame) // :(
 router.put('/yahtzee/:gameKey', updateYahtzeeGame);
 router.put('/scrabble/:gameKey', updateScrabbleGame);
 // Profile routes
+router.post('/messages', createMessage);
+router.get('/messages/:gameKey', findMessages);
+
 router.post('/profile', createProfile);
 router.get('/profile/:email', getProfile);
 router.post('/profile/:id/addFriend', addFriend);
