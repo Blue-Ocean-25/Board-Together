@@ -29,16 +29,20 @@ const AddFriendDropdown = ({ email }) => {
   //   }
   // };
 
-  const handleAddFriend = async (event) => {
+  const handleAddFriend = async (addUsername) => {
     try {
-      const addUsername = event.target.value;
+      if (friends.includes(addUsername)) {
+        alert('Friend already added');
+        return;
+      }
       if (!friends.includes(addUsername)) {
         await axios.post(`/api/profile/addFriend`, { addUsername, email });
         setFriends([...friends, addUsername]);
         alert('Friend added');
+        setShowDropdown(false);
+        setSearchFriendQuery('');
       }
     } catch (err) {
-      alert('Friend already added');
       console.error(err);
     }
   };
