@@ -25,6 +25,9 @@ const getScrabbleGame = async (req, res) => {
   const { gameKey } = req.params;
     ScrabbleSession.findOne({ _id: gameKey })
       .then((gameState) => {
+        if (gameState === null) {
+          throw new Error
+        }
         res.status(200).send(gameState);
       })
       .catch((err) => {
@@ -47,7 +50,7 @@ const updateScrabbleGame = async (req, res) => {
     await game.save();
     res.status(200).send(game);
   } catch (err) {
-    res.status(500).send('Server Error: ', err);
+    res.status(500).send('Server Error: ' + err);
   }
 }
 

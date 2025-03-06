@@ -8,6 +8,7 @@ const UserSchema = mongoose.Schema({
     data: { type: Buffer, default: null },
     contentType: { type: String, default: null }
   },
+  gamesInProgress: { type: [String], default: []},
   gamesPlayed: { type: Number, default: 0 },
   gameHistory: { type: Array, default: [] },
   friends: { type: Array, default: [] },
