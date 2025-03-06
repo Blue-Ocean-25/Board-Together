@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AddFriendModal from '../friends/AddFriendModal.jsx';
 import axios from 'axios';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
+import { format } from 'date-fns';
 
 const demoUser = {
   id: '01234',
@@ -16,6 +17,7 @@ const demoUser = {
 const Profile = ({ openFriendModal }) => {
   const [user, setUser] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [gameHistory, setGameHistory] = useState([]);
   const [edit, setEdit] = useState(false);
   const [profilePicBlob, setProfilePicBlob] = useState(null);
 
@@ -31,7 +33,13 @@ const Profile = ({ openFriendModal }) => {
         }).catch((err) => {
           console.error(err);
         });
+      axios.get(`api/gameHistory/${email}`)
+      .then((results) => {
+        console.log(results.data)
+        setGameHistory(results.data)
+      })
     }
+
   }, [email]);
 
   const editView = (
@@ -92,8 +100,21 @@ const Profile = ({ openFriendModal }) => {
       <div id="profile-details" className="text-center mt-4">
         <h1 className="text-2xl">Profile Details</h1>
         <p className="text-lg">Email: {user.email}</p>
-        <p className="text-lg">Games Played: {user.gamesPlayed}</p>
+        <p className="text-lg">Games Played: {gameHistory.length}</p>
         <p className="text-lg">Game History: {user.gameHistory}</p>
+        {gameHistory?.length ? (
+          gameHistory.map((game) => {
+          return (
+            <div>
+              <p>Game: {game.game}</p>
+              <p>Game Key: {game.gameKey}</p>
+              <p>Date: {format(game.createdAt, 'MM/dd/yyyy')}</p>
+              <p>Players: {game.players.join(', ')}</p>
+              <p>Winner: {game.winner}</p>
+            </div>
+          )
+          })
+        ) : <p>No games played</p>}
       </div>
     </div>
   );

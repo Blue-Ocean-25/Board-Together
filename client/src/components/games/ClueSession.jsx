@@ -20,7 +20,7 @@ export default function ClueSession({data}) {
       </select>
     </div>
     {
-      playerId !== '' && <ClueCard playerData={data.players[playerId]} gameSession={data._id} />
+      playerId !== '' && <ClueCard data={data} playerData={data.players[playerId]} gameSession={data._id} />
     }
 
     </>

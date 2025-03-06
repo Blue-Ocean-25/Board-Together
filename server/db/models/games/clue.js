@@ -33,8 +33,9 @@ const cluePlayerCardSchema = new Schema({
 })
 
 const clueSchema = new Schema({
-  room_name: {type: String},
+  room_name: { type: String},
   players: [cluePlayerCardSchema],
+  completed: { type: Boolean, required: true, default: false},
 });
 
 const ClueSession = mongoose.model("ClueSession", clueSchema);
