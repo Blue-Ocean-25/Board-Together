@@ -3,12 +3,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ClueSession from "./ClueSession.jsx";
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
+import gameNotFound from './../utils/gameNotFound.js';
+
 
 const Clue = () => {
   const [roomName, setRoomName] = useState('');
   const [players, setPlayers] = useState(1);
   const [gameKey, setGameKey] = useState('');
   const queryClient = useQueryClient();
+  const [invalid, setInvalid] = useState(false);
 
   const createGame = async () => {
     if (players < 1 || players > 5) {
@@ -25,9 +28,15 @@ const Clue = () => {
   const findGame = async (event) => {
     event.preventDefault();
     var gkey = event.target[0].value;
-    const response = await axios.get(`/api/clue/${gkey}`);
-    setGameKey(response.data._id);
-    return response.data;
+    axios.get(`/api/clue/${gkey}`)
+      .then(response => {
+        setGameKey(response.data._id);
+        return response.data;
+      })
+      .catch((err) => {
+        setGameKey('');
+        setInvalid(true);
+      })
   }
 
   const mutation = useMutation({
@@ -52,12 +61,19 @@ const Clue = () => {
     .then((res) => {
       return res.data;
     })
-    .catch((err) => console.error(err));
-  }
+    .catch((err) => {
 
+      throw new Error;
+    })
+  }
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
   const { data, isLoading, error } = useQuery({
     queryKey: ['clueState'],
     queryFn: fetchGame,
+    retry: 0,
     refetchInterval: 1000
   });
 

@@ -4,6 +4,7 @@ import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
+import gameNotFound from './../utils/gameNotFound.js';
 
 const Yahtzee = () => {
   const [roomName, setRoomName] = useState('');
@@ -11,6 +12,7 @@ const Yahtzee = () => {
   const [gameKey, setGameKey] = useState('');
   const [saveButton, setSaveButton] = useState(false);
   const [dataClone, setDataClone] = useState({});
+  const [invalid, setInvalid] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -62,13 +64,19 @@ const Yahtzee = () => {
       return res.data;
     })
     .catch((err) => {
-      console.error(err);
+      setGameKey('');
+      setInvalid(true);
+      throw new Error;
     })
   }
-
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
   const { data, isLoading, error } = useQuery({
     queryKey: ['yahtzeeState'],
     queryFn: fetchGame,
+    retry: 0,
     refetchInterval: 1000
   });
 

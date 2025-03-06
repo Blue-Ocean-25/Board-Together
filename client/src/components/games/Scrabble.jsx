@@ -13,6 +13,7 @@ const Scrabble = () => {
   const [gameKey, setGameKey] = useState('');
   const [dataClone, setDataClone] = useState({});
   const [saveButton, setSaveButton] = useState(false);
+  const [invalid, setInvalid] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -43,17 +44,11 @@ const Scrabble = () => {
       },
       showCancelButton: true,
       confirmButtonText: 'Join',
-      showLoaderOnConfirm: true,
     }).then((result) => {
-      console.log('result: ');
-      console.log(result);
-      if(result.value)
+      if (result.value) {
         setGameKey(result.value);
-      else{
-        gameNotFound();
       }
     })
-    .catch(() => navigate('/404'))
   }
 
 
@@ -77,6 +72,7 @@ const Scrabble = () => {
     })
     .catch((err) => {
       setGameKey('');
+      setInvalid(true);
       throw new Error;
     })
   }
@@ -85,12 +81,14 @@ const Scrabble = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['scrabbleState'],
     queryFn: fetchGame,
+    retry: 0,
     refetchInterval: (query) => {
-      if (query.state.error) {
-        return false;
-      } else {
-        return 1000;
-      }
+      // if (query.state.error) {
+      //   return false;
+      // } else {
+      //   return 1000;
+      // }
+      return 1000;
     },
   });
 
@@ -122,7 +120,12 @@ const Scrabble = () => {
     .catch((err) => console.error(err));
   }
 
-  if (data?.isError) {
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
+
+  if (data?.er) {
     console.log('error')
     return 'Error';
   }
