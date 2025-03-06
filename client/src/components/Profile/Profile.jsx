@@ -86,7 +86,7 @@ const Profile = ({ openFriendModal }) => {
   }
 
 
-  if (!user || !gameHistory.length) {
+  if (!user) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-base-300">
         <h1 className="text-6xl font-bold mb-25">Loading...</h1>
