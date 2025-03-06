@@ -105,7 +105,7 @@ const Profile = ({ friends, setFriends }) => {
         <p className="text-lg">Email: {user.email}</p>
         <p className="text-lg">Games Played: {gameHistory.length}</p>
         <p className="text-lg">Game History: {user.gameHistory}</p>
-        <div className = "flex flex-row flex-wrap gap-2">
+        <div className = "flex flex-row flex-wrap gap-2 justify-center">
         {gameHistory?.length ? (
           gameHistory.map((game) => {
           return (
