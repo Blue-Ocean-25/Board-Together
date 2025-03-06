@@ -25,7 +25,7 @@ const createMessage = (req, res) => {
 const findMessages = (req, res) => {
   const gameId = req.params.gameKey;
   Message.find({ gameId })
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: 1 })
     .then((messages) => {
       console.log(messages);
       res.status(200).send(messages);
