@@ -4,6 +4,10 @@ const UserSchema = mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   phoneNumber: { type: String },
+  profilePic: {
+    data: { type: Buffer, default: null },
+    contentType: { type: String, default: null }
+  },
   gamesPlayed: { type: Number, default: 0 },
   gameHistory: { type: Array, default: [] },
   friends: { type: Array, default: [] },

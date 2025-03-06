@@ -1,9 +1,13 @@
 const express = require('express');
+const multer = require('multer');
 
 const router = express.Router();
 const { login, signup, verifyLogin, logOut } = require('../controller/auth.js');
-const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueName, updateClueGame } = require('../controller/index');
-const { createProfile, getProfile, addFriend, getFriendsByUsername, deleteFriend } = require('../controller/profile/profile');
+const { makeYahtzee, makeClue, makeScrabble, getScrabbleGame, getYahtzeeGame, getClueGame, updateYahtzeeGame, updateScrabbleGame, updateClueGame, updateClueName, saveGameHistory, getGameHistory } = require('../controller/index');
+const { createProfile, getProfile, addFriend, addProfilePic, getFriendsByUsername, deleteFriend } = require('../controller/profile/profile');
+const { createMessage, findMessages } = require('../controller/messages/messages.js')
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Example route
 router.get('/', (req, res) => {
@@ -29,10 +33,17 @@ router.put('/yahtzee/:gameKey', updateYahtzeeGame);
 router.put('/scrabble/:gameKey', updateScrabbleGame);
 
 // Profile routes
+router.post('/messages', createMessage);
+router.get('/messages/:gameKey', findMessages);
+
 router.post('/profile', createProfile);
 router.get('/profile/:email', getProfile);
 router.get('/profile/username/:username', getFriendsByUsername);
 router.post('/profile/addFriend', addFriend);
 router.put('/profile/deleteFriend', deleteFriend);
+router.post('/profile/:id/addFriend', addFriend);
+router.put('/profile/:id/profilePicture', upload.single('imageBlob'), addProfilePic);
+router.post('/gameHistory', saveGameHistory);
+router.get('/gameHistory/:email', getGameHistory);
 
 module.exports = router;

@@ -1,8 +1,10 @@
 import React, { useState, useRef }  from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import WinnerModal from './WinnerModal.jsx';
 import axios from 'axios';
 
-export default function ClueCard({ playerData, gameSession }) {
+export default function ClueCard({ data, playerData, gameSession }) {
+  console.log(data);
   const queryClient = useQueryClient();
 
   const updateGame = async ([category, name]) => {
@@ -25,6 +27,10 @@ export default function ClueCard({ playerData, gameSession }) {
     mutation.mutate([e.target.dataset.category, e.target.dataset.name]);
   }
 
+  const handleCompleteGame = () => {
+    document.getElementById('winner_modal').showModal()
+  }
+
   const updateName = async (e) => {
     e.preventDefault();
     const username = e.target[0].value;
@@ -43,11 +49,12 @@ export default function ClueCard({ playerData, gameSession }) {
 
   return (
   <div>
-    <div className="pt-4 pb-4">
+    <div className="pt-4 pb-4 flex flex-row gap-4">
       <form onSubmit={(e) => mutationName.mutate(e)}>
         <input id="setName" className="input input-accent shadow-lg w-43" placeholder="Set your Username"/>
         <button className="btn btn-md btn-accent shadow-lg w-43" type="submit">Set Name</button>
       </form>
+      <button onClick = {handleCompleteGame} className="btn btn-md btn-accent shadow-lg w-43">Complete Game</button>
     </div>
       <div>
       <table id="suspects" className="table">
@@ -103,7 +110,7 @@ export default function ClueCard({ playerData, gameSession }) {
         </tbody>
       </table>
       </div>
-
+      <WinnerModal players = {data.players.map((player) => {return player.player_id})} gameKey = {gameSession} game = {"Clue"}/>
     </div>
   )
 }

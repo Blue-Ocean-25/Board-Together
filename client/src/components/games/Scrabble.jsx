@@ -1,7 +1,9 @@
 import React, { useState }  from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import MessageBoard from './messages/MessageBoard.jsx';
 
 const Scrabble = () => {
   const [roomName, setRoomName] = useState('');
@@ -49,7 +51,7 @@ const Scrabble = () => {
   const mutation = useMutation({
     mutationFn: createGame,
     onSuccess: (data) => {
-      console.log('mutate data: ', data);
+      //console.log('mutate data: ', data);
       queryClient.setQueryData(['scrabbleState'], data);
 
     }
@@ -61,7 +63,7 @@ const Scrabble = () => {
     }
     return axios.get(`/api/scrabble/${gameKey}`)
     .then((res) => {
-      console.log('GET DATA: ', res.data);
+      //console.log('GET DATA: ', res.data);
       return res.data;
     })
     .catch((err) => {
@@ -83,6 +85,10 @@ const Scrabble = () => {
   const handleChangeScore = (e, key, playerId) => {
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = data.players[playerId - 1][key] + e;
+  }
+
+  const handleCompleteGame = () => {
+    document.getElementById('winner_modal').showModal()
   }
 
   const saveChanges = () => {
@@ -147,7 +153,7 @@ const Scrabble = () => {
       </div>
       <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
       <table className="table table-compact">
-        <caption>Scrabble Scorecard</caption>
+        <caption className="font-bold text-primary text-lg/7 underline">Scrabble Scorecard</caption>
         <thead className="border border-primary">
           <tr className="text-neutral border border-primary">
             <th className="text-neutral border border-primary">Player </th>
@@ -167,7 +173,12 @@ const Scrabble = () => {
         </tbody>
       </table>
       </div>
-      {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
+      <WinnerModal players = {data.players.map((player) => {return player.name})} gameKey = {gameKey} game = {"Scrabble"}/>
+      <div className="flex flex-row gap-4">
+        {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
+        <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
+      </div>
+      <MessageBoard gameId={gameKey}/>
     </div>
   )
 }
