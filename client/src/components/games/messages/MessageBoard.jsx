@@ -18,13 +18,10 @@ const MessageBoard = ({ gameId }) => {
   const anchor = () =>{
     setAnchored(false);
     if (messagesEndRef.current) {
-      console.log('top', messagesEndRef.current.scrollTop)
-      console.log('height', messagesEndRef.current.scrollHeight)
       if ((messagesEndRef.current.scrollTop)>=0){
         setAnchored(true);
       }
     }
-    console.log(anchored);
   }
 
   const postMessage = (e) => {
