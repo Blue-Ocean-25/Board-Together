@@ -16,49 +16,47 @@ const AddFriendDropdown = ({ email }) => {
       .catch(err => console.error(''));
   }, [email]);
 
-  const handleSearch = (event) => {
-    if (event.key === 'Enter') {
-      const friendUsername = event.target.value;
-
-      if (!friends.includes(friendUsername) && friends) {
-        handleAddFriend(friendUsername);
-        setFriends([...friends, friendUsername]);
-        window.alert('Friend added');
-      } else {
-        window.alert('Friend already added');
-      }
-    }
-  };
-
-  const handleAddFriend = async (addUsername) => {
-    try {
-      await axios.post(`/api/profile/addFriend`, { addUsername, email });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // async
-  const handleChange = async (e) => {
-    setShowDropdown(!showDropdown);
-    const value = e.target.value;
-    console.log('VALUE', value)
-    setSearchFriendQuery(value);
-    try {
-      const res = await axios.get(`/api/profile/${value}`);
-      console.log('RES', res.data);
-      // setSearchResults(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-
-  // const handleSelect = () => {
-  //   handleAddFriend()
+  // const handleSearch = (event) => {
+  //   if (event.key === 'Enter') {
+  //     const friendUsername = event.target.value;
+  //     if (!friends.includes(friendUsername) && friends) {
+  //       handleAddFriend(friendUsername);
+  //       setFriends([...friends, friendUsername]);
+  //       window.alert('Friend added');
+  //     } else {
+  //       window.
+  //     }
+  //   }
   // };
 
-  console.log('FRIENDS', friends)
+  const handleAddFriend = async (event) => {
+    try {
+      const addUsername = event.target.value;
+      if (!friends.includes(addUsername)) {
+        await axios.post(`/api/profile/addFriend`, { addUsername, email });
+        setFriends([...friends, addUsername]);
+        alert('Friend added');
+      }
+    } catch (err) {
+      alert('Friend already added');
+      console.error(err);
+    }
+  };
+
+  const handleChange = async (e) => {
+    const username = e.target.value;
+    setShowDropdown(!!username);
+    setSearchFriendQuery(username);
+    axios.get(`/api/profile/username/${username}`)
+      .then(res => {
+        console.log(res);
+        setSearchResults(res.data);
+      })
+      .catch(err => console.error(err));
+  };
+
+
+  console.log('RESULTS', searchResults);
 
   return (
     <div>
@@ -66,20 +64,23 @@ const AddFriendDropdown = ({ email }) => {
         type="text"
         id="friendUsername"
         name="friendUsername"
-        className="input input-bordered w-full max-w-xs bg-white"
+        className="input input-bordered w-full max-w-xs bg-white text-black"
         placeholder='Add Friend By Username'
+        value={searchFriendQuery}
         onChange={handleChange}
-        onKeyDown={handleSearch}
       />
-      {showDropdown && (
+      {showDropdown && searchResults?.length > 0 && (
         <div>
-          <ul>
-            {searchResults.length > 0 && (searchResults.map((result) => {
-              <li key={result._id} onClick={() => handleAddFriend(result.username)}>
-                <p>{result.username}</p>
-                <button onClick={() => handleAddFriend(result.username)}>Add Friend</button>
+          <ul className='dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow'>
+            {searchResults.map((result, index) => (
+              <li
+                key={index}
+                onClick={() => handleAddFriend(result.username)}
+                className='text-black'
+              >
+                {result.username}
               </li>
-            }))}
+            ))}
           </ul>
         </div>
       )}
