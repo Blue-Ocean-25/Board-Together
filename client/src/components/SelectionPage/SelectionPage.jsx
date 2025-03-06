@@ -26,14 +26,6 @@ const SelectionPage = () => {
   }
 
 
-  // useEffect(() => {
-  //   axios.get('/api/sessions')
-  //     .then((results) => {
-  //       setSessions(results.data)
-  //     })
-  // }, [])
-
-
   return (
     <div className="flex flex-col items-center mt-40">
       <div className="gameSelection flex flex-col items-center">
@@ -51,7 +43,7 @@ const SelectionPage = () => {
           sessions.map(session => (
             <li className="list-row flex justify-between" key={session.id}>
               <div className=''>
-                <h3 className="text-xl mr-5">{session.name + ': '}</h3>
+                <h3 className="text-xl mr-40">{session.name}</h3>
               </div>
               <div className="join">
                 <Link className="btn btn-neutral join-item" to={`/session/${session.id}`}>Continue</Link>

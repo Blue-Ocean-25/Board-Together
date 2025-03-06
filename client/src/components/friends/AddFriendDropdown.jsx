@@ -6,7 +6,7 @@ const AddFriendDropdown = ({ email, friends, setFriends }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchFriendQuery, setSearchFriendQuery] = useState('');
-  // const [friends, setFriends] = useState([]);
+
 
   useEffect(() => {
     axios.get(`/api/profile/${email}`)
@@ -20,16 +20,33 @@ const AddFriendDropdown = ({ email, friends, setFriends }) => {
   const handleAddFriend = async (addUsername) => {
     try {
       if (friends.includes(addUsername)) {
-        alert('Friend already added');
-        return;
+        Swal.fire({
+          customClass: {
+            title: 'text-lg font-bold text-center mt-3',
+            confirmButtonColor: '#FDF0D5'
+          },
+          icon: "error",
+          title: `${addUsername} is already in your friends list`,
+          confirmButtonText: 'OK'
+        });
       }
+
       if (!friends.includes(addUsername)) {
         await axios.post(`/api/profile/addFriend`, { addUsername, email });
         setFriends((prev) => [...prev, addUsername]);
-        alert('Friend added');
-        setShowDropdown(false);
-        setSearchFriendQuery('');
+        Swal.fire({
+          customClass: {
+            title: 'text-lg font-bold text-center mt-3',
+            confirmButtonColor: '#FDF0D5'
+          },
+          icon: 'success',
+          title: `${addUsername} has been added to your friends list!`,
+          confirmButtonText: 'OK'
+        });
       }
+
+      setShowDropdown(false);
+      setSearchFriendQuery('');
     } catch (err) {
       console.error(err);
     }
@@ -48,29 +65,25 @@ const AddFriendDropdown = ({ email, friends, setFriends }) => {
   };
 
 
-  console.log('REsults', searchResults)
-
-
-
   return (
-    <div>
+    <div className="relative">
       <input
         type="text"
         id="friendUsername"
         name="friendUsername"
-        className="input input-bordered w-full max-w-xs bg-white text-black"
+        className="input input-bordered w-full max-w-xs bg-white text-black mr-10"
         placeholder='Add Friend By Username'
         value={searchFriendQuery}
         onChange={handleChange}
       />
       {showDropdown && searchResults?.length > 0 && (
-        <div>
-          <ul className='dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow'>
+        <div className="absolute w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+          <ul className='max-h-60 overflow-y-auto'>
             {searchResults.map((result, index) => (
               <li
                 key={index}
                 onClick={() => handleAddFriend(result.username)}
-                className='text-black'
+                className='cursor-pointer p-2 hover:bg-base-200'
               >
                 {result.username}
               </li>
@@ -82,7 +95,4 @@ const AddFriendDropdown = ({ email, friends, setFriends }) => {
   )
 };
 
-
 export default AddFriendDropdown;
-
-
