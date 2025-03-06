@@ -49,14 +49,13 @@ const AddFriendDropdown = ({ email }) => {
     setSearchFriendQuery(username);
     axios.get(`/api/profile/username/${username}`)
       .then(res => {
-        console.log(res);
-        setSearchResults(res.data);
+        const filtered = res.data.filter(user => user.email !== email);
+        setSearchResults(filtered);
       })
       .catch(err => console.error(err));
   };
 
 
-  console.log('RESULTS', searchResults);
 
   return (
     <div>

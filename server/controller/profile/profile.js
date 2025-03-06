@@ -20,7 +20,7 @@ const getProfile = (req, res) => {
 };
 
 const getFriendsByUsername = (req, res) => {
-  User.find({ username: { $regex: req.params.username, $options: 'i' } })
+  User.find({ username: { $regex: `^${req.params.username}`, $options: 'i' } })
     .then((profile) => {
       res.status(200).send(profile)
     })
