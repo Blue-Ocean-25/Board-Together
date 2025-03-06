@@ -21,15 +21,49 @@ const getProfile = (req, res) => {
     })
 };
 
+const getFriendsByUsername = (req, res) => {
+  User.find({ username: { $regex: `^${req.params.username}`, $options: 'i' } })
+    .then((profile) => {
+      res.status(200).send(profile)
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    })
+};
+
+
 const addFriend = async (req, res) => {
-  const userId = req.params.userId;
-  const friendId = req.body.friendId;
+  const userEmail = req.body.email;
+  const friendUsername = req.body.addUsername;
+
   try {
-    await User.findByIdAndUpdate(userId, { $push: { friends: friendId } });
+    const user = await User.findOneAndUpdate(
+      { email: userEmail },
+      { $addToSet: { friends: friendUsername } },
+      { new: true });
     res.status(200).send('Friend added');
   } catch (err) {
-    res.status(404).send(err);
     console.error(err);
+    res.status(404).send(err);
+  }
+};
+
+
+const deleteFriend = async (req, res) => {
+  const userEmail = req.body.email;
+  const friendUsername = req.body.friendName;
+
+  try {
+    const
+      user = await User.findOneAndUpdate
+        ({ email: userEmail },
+          { $pull: { friends: friendUsername } },
+          { new: true });
+    res.status(200).send('Friend deleted');
+  }
+  catch (err) {
+    console.error(err);
+    res.status(404).send(err);
   }
 };
 
@@ -52,4 +86,4 @@ const addProfilePic = async (req, res) => {
   }
 }
 
-module.exports = { createProfile, getProfile, addFriend, addProfilePic };
+module.exports = { createProfile, getProfile, addFriend, addProfilePic, getFriendsByUsername, deleteFriend };
