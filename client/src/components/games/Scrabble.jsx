@@ -4,6 +4,8 @@ import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
+import gameNotFound from './../utils/gameNotFound.js';
+import { useNavigate } from 'react-router-dom';
 
 const Scrabble = () => {
   const [roomName, setRoomName] = useState('');
@@ -11,7 +13,7 @@ const Scrabble = () => {
   const [gameKey, setGameKey] = useState('');
   const [dataClone, setDataClone] = useState({});
   const [saveButton, setSaveButton] = useState(false);
-
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const handlePlayers = (e) => {
@@ -43,8 +45,15 @@ const Scrabble = () => {
       confirmButtonText: 'Join',
       showLoaderOnConfirm: true,
     }).then((result) => {
-      setGameKey(result.value);
-    });
+      console.log('result: ');
+      console.log(result);
+      if(result.value)
+        setGameKey(result.value);
+      else{
+        gameNotFound();
+      }
+    })
+    .catch(() => navigate('/404'))
   }
 
 
@@ -59,23 +68,32 @@ const Scrabble = () => {
 
   const fetchGame = () => {
     if (!gameKey) {
-      return null;
+      throw new Error;
     }
     return axios.get(`/api/scrabble/${gameKey}`)
     .then((res) => {
-      //console.log('GET DATA: ', res.data);
+      // console.log('GET DATA: ', res.data);
       return res.data;
     })
     .catch((err) => {
-      console.error(err);
+      setGameKey('');
+      throw new Error;
     })
   }
+
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['scrabbleState'],
     queryFn: fetchGame,
-    refetchInterval: 1000
+    refetchInterval: (query) => {
+      if (query.state.error) {
+        return false;
+      } else {
+        return 1000;
+      }
+    },
   });
+
 
   const handleChangeName = (e, key, playerId) => {
     setSaveButton(true);
@@ -102,6 +120,11 @@ const Scrabble = () => {
       });
     })
     .catch((err) => console.error(err));
+  }
+
+  if (data?.isError) {
+    console.log('error')
+    return 'Error';
   }
 
   if (JSON.stringify(dataClone) === '{}' && data) {
@@ -153,7 +176,7 @@ const Scrabble = () => {
       </div>
       <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
       <table className="table table-compact">
-        <caption className="font-bold text-primary text-lg/7 underline">Scrabble Scorecard</caption>
+        <caption>Scrabble Scorecard</caption>
         <thead className="border border-primary">
           <tr className="text-neutral border border-primary">
             <th className="text-neutral border border-primary">Player </th>
