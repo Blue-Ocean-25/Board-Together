@@ -9,7 +9,7 @@ import NavBar from './NavBar.jsx';
 import SelectionPage from './SelectionPage/SelectionPage.jsx';
 import { Routes, Route } from 'react-router-dom';
 import Profile from './Profile/Profile.jsx';
-
+import NotFound from './404/NotFound.jsx'
 const App = () => {
   const [friends, setFriends] = useState([]);
 
@@ -25,6 +25,7 @@ const App = () => {
         <Route path="/scrabble" element={<Scrabble />} />
         <Route path="/clue" element={<Clue />} />
         <Route path="/selection" element={<SelectionPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

@@ -4,6 +4,7 @@ import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
+import gameNotFound from './../utils/gameNotFound.js';
 
 const Yahtzee = () => {
   const [roomName, setRoomName] = useState('');
@@ -11,6 +12,7 @@ const Yahtzee = () => {
   const [gameKey, setGameKey] = useState('');
   const [saveButton, setSaveButton] = useState(false);
   const [dataClone, setDataClone] = useState({});
+  const [invalid, setInvalid] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -69,13 +71,19 @@ const Yahtzee = () => {
       return res.data;
     })
     .catch((err) => {
-      console.error(err);
+      setGameKey('');
+      setInvalid(true);
+      throw new Error;
     })
   }
-
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
   const { data, isLoading, error } = useQuery({
     queryKey: ['yahtzeeState'],
     queryFn: fetchGame,
+    retry: 0,
     refetchInterval: 1000
   });
 
@@ -230,9 +238,8 @@ const Yahtzee = () => {
             <div>
               {lowerScoreSheet}
             </div>
-            {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
           </div>
-          <div className="flex flex-row gap-4">
+          <div className={saveButton ? "flex flex-row gap-4 justify-between m-2" : "flex flex-row gap-4 justify-end m-2"}>
             {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
             <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
           </div>

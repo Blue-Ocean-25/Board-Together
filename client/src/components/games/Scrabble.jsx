@@ -4,6 +4,8 @@ import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
+import gameNotFound from './../utils/gameNotFound.js';
+import { useNavigate } from 'react-router-dom';
 
 const Scrabble = () => {
   const [roomName, setRoomName] = useState('');
@@ -11,7 +13,8 @@ const Scrabble = () => {
   const [gameKey, setGameKey] = useState('');
   const [dataClone, setDataClone] = useState({});
   const [saveButton, setSaveButton] = useState(false);
-
+  const [invalid, setInvalid] = useState(false);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const handlePlayers = (e) => {
@@ -42,16 +45,18 @@ const Scrabble = () => {
       showCancelButton: true,
       confirmButtonText: 'Join',
       background: "#ffdba6",
-          customClass: {
-            popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
-            icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
-            title: 'text-lg font-bold text-center mt-3',
-            htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
-            confirmButton: 'btn-lg btn-accent',
-          },
+        customClass: {
+          popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+          icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+          title: 'text-lg font-bold text-center mt-3',
+          htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+          confirmButton: 'btn-lg btn-accent',
+        },
     }).then((result) => {
-      setGameKey(result.value);
-    });
+      if (result.value) {
+        setGameKey(result.value);
+      }
+    })
   }
 
 
@@ -66,23 +71,35 @@ const Scrabble = () => {
 
   const fetchGame = () => {
     if (!gameKey) {
-      return null;
+      throw new Error;
     }
     return axios.get(`/api/scrabble/${gameKey}`)
     .then((res) => {
-      //console.log('GET DATA: ', res.data);
+      // console.log('GET DATA: ', res.data);
       return res.data;
     })
     .catch((err) => {
-      console.error(err);
+      setGameKey('');
+      setInvalid(true);
+      throw new Error;
     })
   }
+
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['scrabbleState'],
     queryFn: fetchGame,
-    refetchInterval: 1000
+    retry: 0,
+    refetchInterval: (query) => {
+      // if (query.state.error) {
+      //   return false;
+      // } else {
+      //   return 1000;
+      // }
+      return 1000;
+    },
   });
+
 
   const handleChangeName = (e, key, playerId) => {
     setSaveButton(true);
@@ -109,6 +126,16 @@ const Scrabble = () => {
       });
     })
     .catch((err) => console.error(err));
+  }
+
+  if (invalid) {
+    setInvalid(false);
+    gameNotFound();
+  }
+
+  if (data?.er) {
+    console.log('error')
+    return 'Error';
   }
 
   if (JSON.stringify(dataClone) === '{}' && data) {
@@ -160,7 +187,7 @@ const Scrabble = () => {
       </div>
       <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
       <table className="table table-compact">
-        <caption className="font-bold text-primary text-lg/7 underline">Scrabble Scorecard</caption>
+        <caption>Scrabble Scorecard</caption>
         <thead className="border border-primary">
           <tr className="text-neutral border border-primary">
             <th className="text-neutral border border-primary">Player </th>
@@ -181,7 +208,7 @@ const Scrabble = () => {
       </table>
       </div>
       <WinnerModal players = {data.players.map((player) => {return player.name})} gameKey = {gameKey} game = {"Scrabble"}/>
-      <div className="flex flex-row gap-4">
+      <div className={saveButton ? "flex flex-row gap-4 justify-between m-2" : "flex flex-row gap-4 justify-end m-2"}>
         {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
         <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
       </div>
