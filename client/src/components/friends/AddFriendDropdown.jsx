@@ -16,18 +16,6 @@ const AddFriendDropdown = ({ email }) => {
       .catch(err => console.error(''));
   }, [email]);
 
-  // const handleSearch = (event) => {
-  //   if (event.key === 'Enter') {
-  //     const friendUsername = event.target.value;
-  //     if (!friends.includes(friendUsername) && friends) {
-  //       handleAddFriend(friendUsername);
-  //       setFriends([...friends, friendUsername]);
-  //       window.alert('Friend added');
-  //     } else {
-  //       window.
-  //     }
-  //   }
-  // };
 
   const handleAddFriend = async (addUsername) => {
     try {
@@ -37,7 +25,7 @@ const AddFriendDropdown = ({ email }) => {
       }
       if (!friends.includes(addUsername)) {
         await axios.post(`/api/profile/addFriend`, { addUsername, email });
-        setFriends([...friends, addUsername]);
+        setFriends((prev) => [...prev, addUsername]);
         alert('Friend added');
         setShowDropdown(false);
         setSearchFriendQuery('');
@@ -58,6 +46,9 @@ const AddFriendDropdown = ({ email }) => {
       })
       .catch(err => console.error(err));
   };
+
+
+  console.log('REsults', searchResults)
 
 
 

@@ -4,14 +4,6 @@ import AddFriendDropdown from '../friends/AddFriendDropdown.jsx';
 import axios from 'axios';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
-const demoUser = {
-  id: '01234',
-  username: 'test',
-  email: 'test@gmail.com',
-  gamesPlayed: 2,
-  gameHistory: ['abc', '123'],
-  friends: ['12345', '67890'],
-}
 
 const Profile = () => {
   const [user, setUser] = useState([]);
@@ -23,12 +15,22 @@ const Profile = () => {
       axios.get(`/api/profile/${email}`)
         .then((results) => {
           setUser(results.data[0]);
-          setFriends(results.data.friends);
+          setFriends(results.data[0].friends);
         }).catch((err) => {
           console.error(err);
         });
     }
   }, [email]);
+
+  const handleDelete = async (friendName) => {
+    try {
+      await axios.put('/api/profile/deleteFriend', { email, friendName });
+      setFriends((prev) => prev.filter((friend) => friend !== friendName));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   return (
     <div id="profile" className="flex flex-col items-center mt-30">
@@ -43,11 +45,18 @@ const Profile = () => {
         <p className="text-lg">Game History: {user.gameHistory}</p>
       </div>
       <div className='divider'></div>
-      {demoUser.friends !== undefined && demoUser.friends.map((friend, index) => (
+      <h3>Friends List</h3>
+      {friends?.length > 0 ? (friends.map((friend, index) => (
         <div key={index}>
-          <Link to='/profile/:username'>{friend.username}</Link>
+          <Link to='/profile'>{friend}</Link>
+          <button
+            className='btn btn-ghost btn-circle'
+            onClick={() => handleDelete(friend)}
+          >Delete</button>
         </div>
-      ))}
+      ))) : (
+        <p>No Friends Found</p>
+      )}
     </div>
   );
 };

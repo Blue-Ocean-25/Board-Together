@@ -47,8 +47,24 @@ const addFriend = async (req, res) => {
 };
 
 
+const deleteFriend = async (req, res) => {
+  const userEmail = req.body.email;
+  const friendUsername = req.body.friendName;
+
+  try {
+    const
+      user = await User.findOneAndUpdate
+        ({ email: userEmail },
+          { $pull: { friends: friendUsername } },
+          { new: true });
+    res.status(200).send('Friend deleted');
+  }
+  catch (err) {
+    console.error(err);
+    res.status(404).send(err);
+  }
+};
 
 
 
-
-module.exports = { createProfile, getProfile, addFriend, getFriendsByUsername };
+module.exports = { createProfile, getProfile, addFriend, getFriendsByUsername, deleteFriend };
