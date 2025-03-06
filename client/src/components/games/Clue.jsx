@@ -5,7 +5,7 @@ import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
 import Swal from 'sweetalert2';
 import gameNotFound from './../utils/gameNotFound.js';
-
+import useVerifyLogin from './../utils/useVerifyLogin.jsx';
 
 const Clue = () => {
   const [roomName, setRoomName] = useState('');
@@ -13,6 +13,7 @@ const Clue = () => {
   const [gameKey, setGameKey] = useState('');
   const queryClient = useQueryClient();
   const [invalid, setInvalid] = useState(false);
+  const { email } = useVerifyLogin(false);
 
     const joinGame = () => {
       Swal.fire({
@@ -42,7 +43,8 @@ const Clue = () => {
     }
     const response = await axios.post('/api/clue', {
       room_name: roomName,
-      players: players
+      players: players,
+      email
     });
     setGameKey(response.data._id);
     return response.data;
