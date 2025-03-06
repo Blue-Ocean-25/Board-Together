@@ -5,9 +5,7 @@ import useVerifyLogin from '../../utils/useVerifyLogin.jsx'
 
 
 const MessageBoard = ({ gameId }) => {
-  // const {messages} = useQuery({
-  //   queryKey: ['messages']
-  // })
+  const [anchored, setAnchored] = useState(true);
   const { loggedIn, email } = useVerifyLogin(false);
   const messagesEndRef = useRef(null);
   const getMessages = () => {
@@ -15,6 +13,18 @@ const MessageBoard = ({ gameId }) => {
     .then((messages) => {
       return messages.data;
     })
+  }
+
+  const anchor = () =>{
+    setAnchored(false);
+    if (messagesEndRef.current) {
+      console.log('top', messagesEndRef.current.scrollTop)
+      console.log('height', messagesEndRef.current.scrollHeight)
+      if (Math.abs(messagesEndRef.current.scrollTop-messagesEndRef.current.scrollHeight)<256){
+        setAnchored(true);
+      }
+    }
+    console.log(anchored);
   }
 
   const postMessage = (e) => {
@@ -31,7 +41,7 @@ const MessageBoard = ({ gameId }) => {
   })
 
   useEffect(() => {
-    if (messagesEndRef.current) {
+    if (messagesEndRef.current && anchored) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   }, [data])
@@ -39,7 +49,7 @@ const MessageBoard = ({ gameId }) => {
   return (
     <div className="flex flex-col mt-5 bg-base-200 border border-primary p-4 bottom-0 left-0 right-0 max-h-100">
       {console.log(data)}
-      <div id="messages" ref={messagesEndRef} className="max-h-1/2 overflow-y-auto ">
+      <div id="messages" onScroll={anchor} ref={messagesEndRef} className="max-h-1/2 flex flex-col-reverse overflow-y-auto ">
         {data ? data.map(message => (
           <div className="border bg-base-300" key={message.id}>
             <p className="chat-bubble">{message.message}</p>
