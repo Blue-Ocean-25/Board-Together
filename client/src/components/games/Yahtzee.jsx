@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import WinnerModal from './WinnerModal.jsx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
@@ -74,6 +75,10 @@ const Yahtzee = () => {
   const handleChange = (e, key, playerId) => {
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = e;
+  }
+
+  const handleCompleteGame = () => {
+    document.getElementById('winner_modal').showModal()
   }
 
   const saveChanges = () => {
@@ -220,7 +225,11 @@ const Yahtzee = () => {
             </div>
             {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
           </div>
-
+          <div className="flex flex-row gap-4">
+            {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
+            <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
+          </div>
+          <WinnerModal players = {data.players.map((player) => {return player.player_name})} gameKey = {gameKey} game = {"yahtzee"}/>
         </div>
       </div>
       <MessageBoard gameId={gameKey}/>
