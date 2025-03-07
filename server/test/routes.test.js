@@ -41,19 +41,19 @@ describe('API Routes', () => {
 
 
   describe('Auth Routes', () => {
-    // it('should allow a user to signup', async () => {
-    //   const testUser = `jestTestUser${Math.floor(Math.random() * 1000)}`;
-    //   const res = await request(app)
-    //     .post('/api/signup')
-    //     .send({
-    //       email: `${testUser}@test.com`,
-    //       username: testUser,
-    //       password: testPassword
-    //     });
+    it('should allow a user to signup', async () => {
+      const testUser = `jestTestUser${Math.floor(Math.random() * 1000)}`;
+      const res = await request(app)
+        .post('/api/signup')
+        .send({
+          email: `${testUser}@test.com`,
+          username: testUser,
+          password: testPassword
+        });
 
-    //     expect(res.statusCode).toBe(200);
-    //     expect(res.text).toBe('User created');
-    // });
+        expect(res.statusCode).toBe(200);
+        expect(res.text).toBe('User created');
+    });
 
     it('should allow a user to login', async () => {
       const res = await request(app)
