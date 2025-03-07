@@ -97,7 +97,7 @@ const Profile = ({ friends, setFriends }) => {
     <div id="profile" className="flex flex-col justify-items-center content-center mt-30">
       <div id="profile-header" className="profile text-center">
         {profilePicBlob ? <img src={profilePicBlob} alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" /> : <img src='https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png' alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" />}
-        {edit ? editView : <button className="btn btn-sm mt-2" onClick={() => setEdit(true)}>Edit Profile</button>}
+        {edit ? editView : <button data-testid="edit-profile" className="btn btn-sm mt-2" onClick={() => setEdit(true)}>Edit Profile</button>}
         <h1 className="text-3xl">Welcome, {user.username}!</h1>
       </div>
       <div id="profile-details" className="text-center mt-4">
