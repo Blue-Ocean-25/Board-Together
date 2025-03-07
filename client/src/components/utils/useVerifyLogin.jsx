@@ -35,7 +35,7 @@ const useVerifyLogin = (restricted) => {
           });
         }
       })
-  })
+  }, [])
   return { loggedIn, email };
 };
 
