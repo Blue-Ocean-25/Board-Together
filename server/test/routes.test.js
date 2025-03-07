@@ -4,6 +4,8 @@
 const app = require('../index.js');
 const request = require('supertest');
 const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
 
 require('dotenv').config();
 
@@ -30,7 +32,6 @@ const testPassword = 'jestTestUser123';
 describe('API Routes', () => {
 
   describe('Default Routes', () => {
-
     it('should return intermediate index.html page for non-existent route', async () => {
       const response = await request(app).get('/api/dfjdsfk')
       expect(response.statusCode).toBe(200);
@@ -81,6 +82,8 @@ describe('API Routes', () => {
   describe('Game Routes', () => {
 
     describe('Yahtzee Routes', () => {
+      let testGameId;
+
       it('should create a new Yahtzee game', async () => {
         const res = await request(app)
           .post('/api/yahtzee')
@@ -93,10 +96,21 @@ describe('API Routes', () => {
         expect(res.statusCode).toBe(201);
         expect(res.body.room_name).toBe('jestTestRoom');
         expect(res.body.players.length).toBe(2);
+        testGameId = res.body._id;
         });
+
+      it('should fetch an existing Yahtzee game', async () => {
+        const res = await request(app)
+          .get(`/api/yahtzee/${testGameId}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body._id).toBe(testGameId);
+      });
     });
 
     describe('Scrabble Routes', () => {
+      let testGameId;
+
       it('should create a new Scrabble game', async () => {
         const res = await request(app)
           .post('/api/scrabble')
@@ -109,10 +123,21 @@ describe('API Routes', () => {
         expect(res.statusCode).toBe(201);
         expect(res.body.room_name).toBe('jestTestRoom');
         expect(res.body.players.length).toBe(2);
+        testGameId = res.body._id;
+      });
+
+      it('should fetch an existing Scrabble game', async () => {
+        const res = await request(app)
+          .get(`/api/scrabble/${testGameId}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body._id).toBe(testGameId);
       });
     });
 
     describe('Clue Routes', () => {
+      let testGameId;
+
       it('should create a new Clue game', async () => {
         const res = await request(app)
           .post('/api/clue')
@@ -125,9 +150,17 @@ describe('API Routes', () => {
         expect(res.statusCode).toBe(201);
         expect(res.body.room_name).toBe('jestTestRoom');
         expect(res.body.players.length).toBe(2);
+        testGameId = res.body._id;
+      });
+
+      it('should fetch an existing Clue game', async () => {
+        const res = await request(app)
+          .get(`/api/clue/${testGameId}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body._id).toBe(testGameId);
       });
     });
-
   });
 
 
@@ -183,10 +216,37 @@ describe('API Routes', () => {
             email: testEmail,
             friendName: 'jestTestFriend'
           });
-          console.log(res.statusCode, res.text, res.body);
 
         expect(res.statusCode).toBe(200);
         expect(res.text).toBe('Friend deleted');
+      });
+
+      it('should add a profile picture to a user profile', async () => {
+        const imgPath = path.resolve(__dirname, 'testImage.jpg');
+        const res = await request(app)
+          .put(`/api/profile/${testId}/profilePicture`)
+          .attach('imageBlob', fs.readFileSync(imgPath), 'testImage.jpg');
+
+        expect(res.statusCode).toBe(200);
+      });
+
+      it('should delete a game from a user profile', async () => {
+        const testGameId = 'jestTestGameId';
+        await request(app)
+          .post(`/api/gameHistory`)
+          .send({
+            winner: 'testWinner',
+            players: ['testPlayer1', 'testPlayer2'],
+            gameKey: testGameId,
+            email: testEmail,
+            game: 'testGame'
+          });
+
+        const res = await request(app)
+          .delete(`/api/profile/${testEmail}/${testGameId}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.text).toBe('Game deleted');
       });
 
     });
