@@ -4,4 +4,4 @@ node_modules
 dist
 coverage
 selectionKey
-.DS_Store
+*.DS_Store
