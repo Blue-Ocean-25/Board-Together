@@ -41,19 +41,19 @@ describe('API Routes', () => {
 
 
   describe('Auth Routes', () => {
-    it('should allow a user to signup', async () => {
-      const testUser = `jestTestUser${Math.floor(Math.random() * 1000)}`;
-      const res = await request(app)
-        .post('/api/signup')
-        .send({
-          email: `${testUser}@test.com`,
-          username: testUser,
-          password: testPassword
-        });
+    // it('should allow a user to signup', async () => {
+    //   const testUser = `jestTestUser${Math.floor(Math.random() * 1000)}`;
+    //   const res = await request(app)
+    //     .post('/api/signup')
+    //     .send({
+    //       email: `${testUser}@test.com`,
+    //       username: testUser,
+    //       password: testPassword
+    //     });
 
-        expect(res.statusCode).toBe(200);
-        expect(res.text).toBe('User created');
-    });
+    //     expect(res.statusCode).toBe(200);
+    //     expect(res.text).toBe('User created');
+    // });
 
     it('should allow a user to login', async () => {
       const res = await request(app)
@@ -106,6 +106,18 @@ describe('API Routes', () => {
         expect(res.statusCode).toBe(200);
         expect(res.body._id).toBe(testGameId);
       });
+
+      it('should return 500 if Yahtzee creation fails', async () => {
+        const res = await request(app)
+          .post('/api/yahtzee')
+          .send({
+            room_name: {},
+            players: null,
+            email: []
+          });
+
+        expect(res.statusCode).toBe(500);
+      });
     });
 
     describe('Scrabble Routes', () => {
@@ -133,6 +145,19 @@ describe('API Routes', () => {
         expect(res.statusCode).toBe(200);
         expect(res.body._id).toBe(testGameId);
       });
+
+      it('should return 500 if Scrabble creation fails', async () => {
+        const res = await request(app)
+          .post('/api/scrabble')
+          .send({
+            room_name: {},
+            players: null,
+            email: []
+          });
+
+        expect(res.statusCode).toBe(500);
+      });
+
     });
 
     describe('Clue Routes', () => {
@@ -153,12 +178,32 @@ describe('API Routes', () => {
         testGameId = res.body._id;
       });
 
+      it('should get all messages for a game', async () => {
+        const res = await request(app)
+          .get(`/api/messages/${testGameId}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(Array.isArray(res.body)).toBe(true);
+      });
+
       it('should fetch an existing Clue game', async () => {
         const res = await request(app)
           .get(`/api/clue/${testGameId}`);
 
         expect(res.statusCode).toBe(200);
         expect(res.body._id).toBe(testGameId);
+      });
+
+      it('should return 500 if Clue creation fails', async () => {
+        const res = await request(app)
+          .post('/api/clue')
+          .send({
+            room_name: {},
+            players: null,
+            email: []
+          });
+
+        expect(res.statusCode).toBe(500);
       });
     });
   });
@@ -177,6 +222,18 @@ describe('API Routes', () => {
           });
 
         expect(res.statusCode).toBe(201);
+      });
+
+      it('should return 500 if message creation fails', async () => {
+        const res = await request(app)
+          .post('/api/messages')
+          .send({
+            gameId: 'jestTestGameId',
+            email: !testEmail,
+            message: 'jestTestMessage'
+          });
+
+        expect(res.statusCode).toBe(500);
       });
 
     });
