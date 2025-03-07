@@ -6,25 +6,47 @@ import Profile from '../Profile/Profile.jsx';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
 
-const sessions = [
-  { id: 1, name: 'Clue' },
-  { id: 2, name: 'Yahtzee' },
-  { id: 3, name: 'Scrabble' },
-]
+// const sessions = [
+//   { id: 1, name: 'Clue' },
+//   { id: 2, name: 'Yahtzee' },
+//   { id: 3, name: 'Scrabble' },
+// ]
 
 const SelectionPage = () => {
 
-  // const [sessions, setSessions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [sessions, setSessions] = useState([]);
+  const { email } = useVerifyLogin(false);
 
   useVerifyLogin(true);
+
   const handleDelete = (event) => {
     var sessionId = event.target.value;
-    axios.delete(`/games/${sessionid}`)
+    axios.delete(`/api/profile/${email}/${sessionId}`)
       .then(() => {
         console.log('successfully deleted game session')
+        setSessions(sessions.filter(session => session !== sessionId));
       })
   }
 
+  useEffect(() => {
+    setIsLoading(true);
+    if (email.length > 0) {
+      axios.get(`api/profile/${email}`)
+      .then((res) => {
+        setSessions(res.data[0].gamesInProgress);
+      })
+      .finally(() => setIsLoading(false));
+    }
+  }, [email]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-base-300">
+        <h1 className="text-6xl font-bold mb-25">Loading...</h1>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col items-center mt-40">
@@ -39,16 +61,13 @@ const SelectionPage = () => {
       <div className="divider mt-10 mb-10" />
       <h1 className="text-3xl mb-10 font-bold">Games in Progress:</h1>
       <ul className="list bg-base-100 rounded-box shadow-md mt-10">
-        {sessions.length ? (
-          sessions.map(session => (
-            <li className="list-row flex justify-between" key={session.id}>
+        {sessions?.length ? (
+          sessions.map((session, index) => (
+            <li className="list-row flex justify-between" key={index}>
               <div className=''>
-                <h3 className="text-xl mr-40">{session.name}</h3>
+                <h3 className="text-xl mr-40">{session}</h3>
               </div>
-              <div className="join">
-                <Link className="btn btn-neutral join-item" to={`/session/${session.id}`}>Continue</Link>
-                <button className="btn btn-secondary join-item" value={session.id} onClick={handleDelete}>Delete</button>
-              </div>
+                <button className="btn btn-secondary join-item" value={session} onClick={handleDelete}>Delete</button>
             </li>
           ))
         ) : (
