@@ -160,7 +160,7 @@ const Scrabble = () => {
             </label>
           </div>
           <div className="pt-4 pb-4">
-            <button className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
+            <button data-testid="start-scrabble" className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
             <div className="divider">OR</div>
             <button className="btn btn-md btn-accent shadow-lg w-43" onClick={joinGame}>Join Game</button>
           </div>
