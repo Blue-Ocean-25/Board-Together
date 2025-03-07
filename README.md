@@ -59,6 +59,13 @@ An app that digitizes scoresheets for classic games like Clue, Yahtzee, and Scra
    - Search for a friend's username
    - Add to friends list
    - Delete from friends list
+ 
+
+## BoardTogether Setup
+1. Clone this repo: `git clone https://github.com/Blue-Ocean-25/Board-Together.git`
+2. Install dependencies: `npm install`
+3. Create `.env` file based on example
+4. Run commands `npm run "build-dev"` and `npm run start-dev` in two separate terminals
   
 
 # ------------------------------------------------------------------------------ #
