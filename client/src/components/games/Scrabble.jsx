@@ -6,6 +6,7 @@ import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
 import gameNotFound from './../utils/gameNotFound.js';
 import { useNavigate } from 'react-router-dom';
+import useVerifyLogin from './../utils/useVerifyLogin.jsx';
 
 const Scrabble = () => {
   const [roomName, setRoomName] = useState('');
@@ -16,6 +17,7 @@ const Scrabble = () => {
   const [invalid, setInvalid] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { email } = useVerifyLogin(false);
 
   const handlePlayers = (e) => {
     const value = e.target.value;
@@ -29,7 +31,8 @@ const Scrabble = () => {
   const createGame = async () => {
     const response = await axios.post('/api/scrabble', {
       room_name: roomName,
-      players: players
+      players: players,
+      email
     });
     setGameKey(response.data._id);
     return response.data;

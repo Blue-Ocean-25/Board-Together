@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import MessageBoard from './messages/MessageBoard.jsx';
 import gameNotFound from './../utils/gameNotFound.js';
+import useVerifyLogin from './../utils/useVerifyLogin.jsx';
 
 const Yahtzee = () => {
   const [roomName, setRoomName] = useState('');
@@ -13,6 +14,7 @@ const Yahtzee = () => {
   const [saveButton, setSaveButton] = useState(false);
   const [dataClone, setDataClone] = useState({});
   const [invalid, setInvalid] = useState(false);
+  const { email } = useVerifyLogin(false);
 
   const queryClient = useQueryClient();
 
@@ -27,7 +29,8 @@ const Yahtzee = () => {
   const createGame = async () => {
     const response = await axios.post('/api/yahtzee', {
       room_name: roomName,
-      players: players
+      players: players,
+      email
     });
     setGameKey(response.data._id);
     return response.data;

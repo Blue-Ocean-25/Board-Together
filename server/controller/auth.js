@@ -15,7 +15,7 @@ const login = (req, res) => {
         const expiresIn = 60 * 60 * 24 * 5 * 1000;
         createCookie(idToken, expiresIn)
           .then((cookie) => {
-            res.cookie('session', cookie, { maxAge: expiresIn, httpOnly: true, secure: true });
+            res.cookie('session', cookie, { maxAge: expiresIn, httpOnly: true, secure: false });
             res.status(200).send();
           })
           .catch((error) => {
