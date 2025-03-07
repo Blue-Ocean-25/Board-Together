@@ -16,7 +16,7 @@ describe('Messages', () => {
   it ('Message Board should be rendered in Scrabble', async () => {
 
     //Create a fire event to increase the amount of players (that is pretty much it and then you can reply with the gameId which will start the game I believe, but I was too tired last night to actually implement it because I am lazy)
-    mock.onPOST('/api/messages/:gameId').reply(200, {
+    mock.onPost('/api/messages/:gameId').reply(200, {
       gameId: 'TestID',
       message: 'Test',
       createdAt: Date.now()
