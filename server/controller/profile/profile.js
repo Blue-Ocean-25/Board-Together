@@ -86,4 +86,16 @@ const addProfilePic = async (req, res) => {
   }
 }
 
-module.exports = { createProfile, getProfile, addFriend, addProfilePic, getFriendsByUsername, deleteFriend };
+const deleteGame = async (req, res) => {
+  const { email, sessionId } = req.params;
+
+  await User.updateOne({ email }, { $pull: { gamesInProgress: sessionId } })
+    .then((result) => {
+      res.status(200).send('Game deleted');
+    })
+    .catch((err) => {
+      res.status(500).send('Server Error: ', err)})
+
+}
+
+module.exports = { createProfile, getProfile, addFriend, addProfilePic, getFriendsByUsername, deleteFriend, deleteGame };

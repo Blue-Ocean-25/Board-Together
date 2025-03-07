@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const { YahtzeeSession, YahtzeePlayer } = require('../../db/models/games/yahtzee');
+const User =  require('../../db/models/profile/profile.js');
 
 const makeYahtzee = async (req, res) => {
-  const { room_name, players } = req.body;
+  const { room_name, players, email } = req.body;
 
   let newPlayers = Array.from({ length: players }, (_, index) => ({
     player_id: index + 1,
@@ -16,7 +17,13 @@ const makeYahtzee = async (req, res) => {
 
   newGame.save()
     .then((game) => {
-      res.status(201).send(game);
+      User.updateOne({email}, {$push: {gamesInProgress: `Yahtzee: ${JSON.parse(JSON.stringify(game._id))}`}})
+      .then((result) => {
+        res.status(201).send(game);
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      })
     })
     .catch((err) => res.status(500).send(err));
 }

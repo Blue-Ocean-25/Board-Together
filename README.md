@@ -1,5 +1,68 @@
 # Board-Together
 
+## Overview 
+An app that digitizes scoresheets for classic games like Clue, Yahtzee, and Scrabble, promoting social interaction by uniting people through universally enjoyed games.
+
+## Contributors
+- [Aaron Taylor](https://github.com/Flourish1201)
+- [Alberto Lovell](https://github.com/albertolovell)
+- [Andrew Myronchuk](https://github.com/andrewmyronchuk) 
+- [Austin Mallison](https://github.com/silvercricket)
+- [Bonnie Tran](https://github.com/tranbonnie) 
+- [Byron Work](https://github.com/bwork22) 
+- [Kevin Laracuente](https://github.com/kevvarlar) 
+- [Lucas Monteiro](https://github.com/lucascostamonteiro)
+
+## Project Architecture
+### Frontend
+- React
+- React Router Dom
+- React Query for state management
+- Tailwind (using PostCSS) with Daisy UI plugin
+- Axios
+- Webpack (HtmlWebpackPlugin for structuring initial HTML)
+- PostCSS loader and Babel loader in conjunction with Webpack
+- Swal for alerts
+- Date Fns 
+
+### Backend
+- ExpressJS
+- NodeJS
+- MongoDB
+- Mongoose 
+- Firebase Auth
+- Nodemon
+- Multer
+
+### Testing
+- Jest
+- Axios Mock Adapter
+- React Testing
+- Mocha
+- Chai
+- Supertest
+
+## Features List
+- User authentication
+- Profile
+   - Details
+   - Profile image upload
+- Games
+   - Game selection (Clue, Scrabble or Yahtzee)
+   - Number of players selection
+   - Scoresheets for each game
+   - Join a game
+   - Game history
+   - Resume game
+   - 
+- Friends
+   - Search for a friend's username
+   - Add to friends list
+   - Delete from friends list
+  
+
+# ------------------------------------------------------------------------------ #
+Template
 Catchy headline / cool graphic
 Who are the contributors (names should link to their github or portfolio page)
 Introduction

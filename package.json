@@ -9,7 +9,7 @@
     "build-dev": "webpack --watch",
     "build": "npx webpack",
     "frontend": "jest client",
-    "backend": "mocha server/test"
+    "backend": "jest server/test"
   },
   "repository": {
     "type": "git",
