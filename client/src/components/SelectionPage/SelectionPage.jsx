@@ -30,12 +30,10 @@ const SelectionPage = () => {
   }
 
   useEffect(() => {
-    console.log(email)
     setIsLoading(true);
     if (email.length > 0) {
       axios.get(`api/profile/${email}`)
       .then((res) => {
-        console.log(res)
         setSessions(res.data[0].gamesInProgress);
       })
       .finally(() => setIsLoading(false));
