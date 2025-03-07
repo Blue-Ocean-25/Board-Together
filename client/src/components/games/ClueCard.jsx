@@ -4,7 +4,6 @@ import WinnerModal from './WinnerModal.jsx';
 import axios from 'axios';
 
 export default function ClueCard({ data, playerData, gameSession }) {
-  console.log(data);
   const queryClient = useQueryClient();
 
   const updateGame = async ([category, name]) => {
