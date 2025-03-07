@@ -15,8 +15,8 @@ const login = (req, res) => {
         const expiresIn = 60 * 60 * 24 * 5 * 1000;
         createCookie(idToken, expiresIn)
           .then((cookie) => {
-            res.cookie('session', cookie, { maxAge: expiresIn, httpOnly: true, secure: true });
-            res.status(200).send();
+            res.cookie('session', cookie, { maxAge: expiresIn, httpOnly: true, secure: false });
+            res.status(200).send('Logged In');
           })
           .catch((error) => {
             console.error('Error creating session cookie:', error.message);
@@ -39,7 +39,7 @@ const signup = (req, res) => {
       const user = userCredential.user;
       createProfile(username, email, phoneNumber)
         .then(() => {
-          res.status(200).send();
+          res.status(200).send('User created');
         })
         .catch((error) => {
           res.status(500).send('Error creating user' + error.message);

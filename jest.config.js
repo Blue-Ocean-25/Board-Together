@@ -20,6 +20,7 @@ const config = {
     '^.+\\.css$': 'jest-transform-css'
   },
   moduleFileExtensions: ['js', 'jsx', 'css'],
+  setupFiles: ['./client/test/setupFiles.js'],
 };
 
 module.exports = config;
