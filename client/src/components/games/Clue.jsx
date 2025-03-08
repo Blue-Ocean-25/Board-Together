@@ -51,8 +51,14 @@ const Clue = () => {
   }
 
   const findGame = async (gkey) => {
-    const response = await axios.get(`/api/clue/${gkey}`);
-    setGameKey(response.data._id);
+    const response = await axios.get(`/api/clue/${gkey}`).then((data) => {
+      setGameKey(data._id);
+      return data
+    })
+    .catch((err) => {
+      setInvalid(true);
+      throw new Error;
+    })
     return response.data;
   }
 
@@ -79,7 +85,7 @@ const Clue = () => {
       return res.data;
     })
     .catch((err) => {
-
+      setInvalid(true);
       throw new Error;
     })
   }
@@ -96,7 +102,7 @@ const Clue = () => {
 
   if (!gameKey) {
     return (
-      <div className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen content-center">
+      <div data-testid="clue-start" className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen content-center">
         <h1 className="text-xl font-bold">Clue</h1>
         <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
