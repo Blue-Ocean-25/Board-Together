@@ -9,6 +9,7 @@
     "build-dev": "webpack --watch",
     "build": "npx webpack",
     "frontend": "jest client",
+    "profile": "jest client/test/profile/Profile.test.js",
     "backend": "jest server/test",
     "test-friends": "npx jest /client/test/Friends/Friends.test.jsx"
   },

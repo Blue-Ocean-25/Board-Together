@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 import { format } from 'date-fns';
-
+import transformBuffer from '../utils/TransformBuffer.jsx';
 
 const Profile = ({ friends, setFriends }) => {
   const [user, setUser] = useState([]);
@@ -76,13 +76,6 @@ const Profile = ({ friends, setFriends }) => {
     }
     reader.readAsArrayBuffer(file);
     setEdit(false);
-  }
-
-  const transformBuffer = (buffer, contentType) => {
-    const byteArray = new Uint8Array(buffer);
-    const blob = new Blob([byteArray], { type: contentType });
-    const url = URL.createObjectURL(blob);
-    return url;
   }
 
   if (user.length === 0 || isLoading) {

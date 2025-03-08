@@ -5,6 +5,7 @@ import Profile from '../../src/components/Profile/Profile.jsx';
 import renderWithRouter from '../utils/renderRouter.js';
 import useVerifyLogin from '../../src/components/utils/useVerifyLogin.jsx';
 import swal from 'sweetalert2';
+import transformBuffer from '../../src/components/utils/TransformBuffer.jsx';
 
 const axios = require("axios");
 const AxiosMockAdapter = require("axios-mock-adapter");
@@ -134,6 +135,12 @@ describe('Profile Page', () => {
     });
 
   })
+
+  it('Should transform a buffer into a url', async () => {
+
+    expect(transformBuffer()).toContain('blob:');
+
+  });
 
 });
 
