@@ -46,7 +46,8 @@ const getYahtzeeGame = async (req, res) => {
 const updateYahtzeeGame = async (req, res) => {
   const { gameKey } = req.params;
   const { players } = req.body;
-
+  console.log('players:');
+  console.log(players);
   try {
     const game = await YahtzeeSession.findOne({ _id: gameKey });
     if (!game) {

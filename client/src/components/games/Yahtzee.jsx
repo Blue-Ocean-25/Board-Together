@@ -17,7 +17,6 @@ const Yahtzee = () => {
   const { email } = useVerifyLogin(false);
 
   const queryClient = useQueryClient();
-
   const handlePlayers = (e) => {
     const value = e.target.value;
     if (value < 1 || value > 5) {
@@ -27,6 +26,7 @@ const Yahtzee = () => {
   }
 
   const createGame = async () => {
+    setDataClone({});
     const response = await axios.post('/api/yahtzee', {
       room_name: roomName,
       players: players,
@@ -37,6 +37,7 @@ const Yahtzee = () => {
   }
 
   const joinGame = () => {
+    setDataClone({});
     Swal.fire({
       title: 'Enter Room Key',
       input: 'text',
@@ -65,10 +66,13 @@ const Yahtzee = () => {
     }
   })
 
+
+
   const fetchGame = () => {
     if (!gameKey) {
       return null;
     }
+
     return axios.get(`/api/yahtzee/${gameKey}`)
     .then((res) => {
       return res.data;
@@ -100,10 +104,13 @@ const Yahtzee = () => {
   }
 
   const saveChanges = () => {
+    console.log(gameKey);
+
     axios.put(`/api/yahtzee/${gameKey}`, dataClone)
     .then((res) => {
       setSaveButton(false);
       setDataClone(res.data);
+      queryClient.invalidateQueries('yahtzeeState')
       const input = document.querySelectorAll('.input');
       input.forEach((element) => {
         element.value = '';
