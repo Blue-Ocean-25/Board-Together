@@ -62,6 +62,9 @@ const Scrabble = () => {
         setGameKey(result.value);
       }
     })
+    .catch((err)=>{
+      console.log(err);
+    })
   }
 
 
@@ -75,7 +78,6 @@ const Scrabble = () => {
   })
 
   const fetchGame = () => {
-    console.log('ping');
     if (!gameKey) {
       throw new Error;
     }
@@ -172,11 +174,11 @@ const Scrabble = () => {
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Number of Players</span>
-              <input type="number" placeholder="Enter Number of Players"  min="2" max="5" value={players} onChange={handlePlayers} />
+              <input data-testid='scrabble-player-number' type="number" placeholder="Enter Number of Players"  min="2" max="5" value={players} onChange={handlePlayers} />
             </label>
           </div>
           <div className="pt-4 pb-4">
-            <button data-testid="start-scrabble" className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
+            <button data-testid='start-scrabble' className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
             <div className="divider">OR</div>
             <button data-testid='join-scrabble' className="btn btn-md btn-accent shadow-lg w-43" onClick={joinGame}>Join Game</button>
           </div>
@@ -217,7 +219,7 @@ const Scrabble = () => {
             <td className="border border-primary">{player.score}</td> */}
 
             <td  className="border border-primary"><p data-testid={'scrabble-playerName'+index} >{player.name}</p><input data-testid={'scrabble-playerNamer'+index} className="input w-21" min='0' type='text' placeholder="" onChange={() => handleChangeName(event.target.value, 'name', player.player_id)}/></td>
-            <td className="border border-primary"><p data-testid={'scrabble-score'+index} >{player.score}</p><input data-testid={'scrabble-scorer'+index} className="input w-21"  type='number' placeholder="0" onBlur={() => handleChangeScore(Number(event.target.value), 'score', player.player_id)}/><span>add to score</span></td>
+            <td className="border border-primary"><p data-testid={'scrabble-score'+index} >{player.score}</p><input data-testid={'scrabble-scorer'+index} className="input w-21"  type='number' placeholder="0" onChange={() => handleChangeScore(Number(event.target.value), 'score', player.player_id)}/><span>add to score</span></td>
           </tr>
           ))}
         </tbody>
