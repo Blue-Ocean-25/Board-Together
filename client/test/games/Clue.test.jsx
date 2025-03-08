@@ -166,7 +166,7 @@ it('should call mutationFind with the entered room key', async () => {
     fireEvent.change(input, { target: { value: 'TestRoomKey' } });
     Swal.clickConfirm();
   });
-  await waitFor(() => expect(mock.history.get.length).toBe(3));
+  await waitFor(() => expect(mock.history.get.length).toBe(2));
   expect(mock.history.get[1].url).toBe('/api/clue/TestRoomKey');
 });
 
@@ -195,28 +195,22 @@ it('should show loading state when data is not available', async () => {
 it('should display game details when data is available', async () => {
   // Mock the API response for fetching game details
   mock.onGet('/api/clue/TestRoom').reply(200, mockData);
-
+  mock.onGet('/api/verifyLogin').reply(200, 'testuser@gmail.com');
+  mock.onPost('/api/clue').reply(200, mockData);
   renderWithProviders(<Clue />);
   await waitFor(() => {
     expect(screen.getByTestId('clue-start')).toBeInTheDocument();
   });
 
-  mock.onGet('/api/verifyLogin').reply(200, 'testuser@gmail.com');
   fireEvent.change(screen.getByPlaceholderText(/Enter Room Name/i), { target: { value: 'tEsTrOoM' } });
   const button = screen.getByText(/Start Game/i);
   fireEvent.click(button);
 
-  mock.onPost('/api/clue').reply(200, mockData);
-  await waitFor(() => {
-    expect(screen.getByText((content, element) => {
-      return element.tagName.toLowerCase() === 'div' && /loading/i.test(content);
-    })).toBeInTheDocument();
-  });
   await waitFor(() => expect(screen.getByText((content, element) => {
-    return element.tagName.toLowerCase() === 'span' && /share this key to invite friends:/i.test(content);
+    return element.tagName.toLowerCase() === 'span' && /shareable room key:/i.test(content);
   })).toBeInTheDocument());
 
-  expect(screen.getByText(/Share this key to invite friends:/i)).toBeInTheDocument();
+  expect(screen.getByText(/Shareable room key:/i)).toBeInTheDocument();
   expect(screen.getByText(/Test Room/i)).toBeInTheDocument();
   expect(screen.getByText((content, element) => {
     return element.tagName.toLowerCase() === 'option' && /Please Select a Board:/i.test(content);

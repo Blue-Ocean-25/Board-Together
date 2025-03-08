@@ -69,37 +69,40 @@ const Signup = () => {
       });
   }
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-300">
-      <div className="w-full max-w-md p-8 space-y-6 rounded shadow-inner shadow-base-200 bg-base-200">
+    <div
+    className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center"
+    style={{ backgroundImage: "url('https://media.licdn.com/dms/image/v2/C4E12AQE-IwX7taZwqg/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1628813539387?e=1746662400&v=beta&t=Wo4rhA13J0GmepdQqX4Gs_kOHnJE2NakDJUX1xyCZ9o')"}}
+  >
+      <div className="w-full max-w-md p-8 space-y-6 rounded shadow-inner shadow-base-200 glass">
         <h1 className="text-2xl font-bold text-center">Signup To Board Together</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Email Address:</span>
+              <span className="label-text font-bold">Email Address:</span>
             </label>
             <input data-testid="email" type="email" id="email" name="email" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Username:</span>
+              <span className="label-text font-bold">Username:</span>
             </label>
             <input data-testid="username" type="text" id="username" name="username" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
-              <span className="label-text">{'Phone Number (optional):'}</span>
+              <span className="label-text font-bold">{'Phone Number (optional):'}</span>
             </label>
             <input type="tel" id="phoneNumber" name="phoneNumber" className="input input-bordered" />
           </div>
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Password:</span>
+              <span className="label-text font-bold">Password:</span>
             </label>
             <input data-testid="password" type="password" id="password" name="password" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Confirm Password:</span>
+              <span className="label-text font-bold">Confirm Password:</span>
             </label>
             <input data-testid="confirmPassword" type="password" id="confirmPassword" name="confirmPassword" className="input input-bordered" required />
           </div>

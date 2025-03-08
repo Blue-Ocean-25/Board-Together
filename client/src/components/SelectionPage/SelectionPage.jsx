@@ -47,6 +47,11 @@ const SelectionPage = () => {
 
   return (
     <div className="flex flex-col items-center mt-40">
+      <img
+            src="https://cdn-icons-png.flaticon.com/512/3351/3351767.png"
+            alt="Dice"
+            className="absolute left-50 top-25 w-70 h-70 z-10"
+          />
       <div className="gameSelection flex flex-col items-center">
         <h1 className="text-3xl mb-20 font-bold">Choose a game:</h1>
         <div className="flex justify-between w-full max-w-md mb-10">
