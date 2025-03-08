@@ -55,7 +55,7 @@ const updateScrabbleGame = async (req, res) => {
     }
     game.players = players;
     await game.save();
-    res.status(200).send(game);
+    res.status(200).json(game);
   } catch (err) {
     res.status(500).send('Server Error: ' + err);
   }

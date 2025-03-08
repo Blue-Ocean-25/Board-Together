@@ -11,12 +11,11 @@ describe('Home Page', () => {
 
   afterEach(() => {
     mock.reset();
+    mock.resetHistory();
   });
 
   it ('Should render Home Page with the correct welcome message and ability to go to a selection page if logged in', async () => {
-    mock.onGet('/api/verifyLogin').reply(200, {
-      email: 'testuser@gmail.com'
-    });
+    mock.onGet('/api/verifyLogin').reply(200, 'testuser@gmail.com');
     const app = renderWithRouter(<App />);
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     await waitFor(() => {
@@ -37,9 +36,7 @@ describe('Home Page', () => {
   });
 
   it ('Should send you to Selection page on click', async () => {
-    mock.onGet('/api/verifyLogin').reply(200, {
-      email: 'testuser@gmail.com'
-    })
+    mock.onGet('/api/verifyLogin').reply(200, 'testuser@gmail.com').onGet('/api/profile/testuser@gmail.com').reply(200, [{gamesInProgress: []}])
     const app = renderWithRouter(<App />);
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     await waitFor(() => {
@@ -47,7 +44,9 @@ describe('Home Page', () => {
       expect(app.getByTestId('selection')).toBeInTheDocument();
     });
     await app.user.click(app.getByTestId('selection'));
-    expect(screen.getByText(/Choose a game:/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Choose a game:/i)).toBeInTheDocument();
+    })
   });
 
   it ('Should send you to Login page on click', async () => {

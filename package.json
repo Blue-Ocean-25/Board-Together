@@ -9,7 +9,8 @@
     "build-dev": "webpack --watch",
     "build": "npx webpack",
     "frontend": "jest client",
-    "backend": "jest server/test"
+    "backend": "jest server/test",
+    "test-friends": "npx jest /client/test/Friends/Friends.test.jsx"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "autoprefixer": "^10.4.20",
+    "axios-mock-adapter": "^2.1.0",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.2.1",
     "chai": "^5.2.0",
@@ -56,7 +58,6 @@
   "dependencies": {
     "@tanstack/react-query": "^5.66.11",
     "axios": "^1.7.9",
-    "axios-mock-adapter": "^2.1.0",
     "cookie-parser": "^1.4.7",
     "daisyui": "^5.0.0-beta.8",
     "date-fns": "^4.1.0",
