@@ -108,5 +108,5 @@ describe('AddFriendDropdown', () => {
     await waitFor(() => expect(mock.history.post.length).toBe(0));
   });
 
-}
+});
 
