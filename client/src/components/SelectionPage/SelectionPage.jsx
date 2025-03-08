@@ -14,6 +14,7 @@ const SelectionPage = () => {
   useVerifyLogin(true);
 
   const copyToClipboard = (e) => {
+    console.log(e.target.value);
     navigator.clipboard.writeText(e.target.value);
   }
 
@@ -70,13 +71,7 @@ const SelectionPage = () => {
                 <h3 className="text-xl mr-40" value={session}>{session}</h3>
               </div>
               <div className="flex flex-row justify-end gap-2">
-                <button className="btn btn-accent join-item" value={session.split(' ')[1]} onClick={copyToClipboard} title="Copy to clipboard">
-                  {navigator.clipboard ? (
-                    <i className="fa-regular fa-copy text-white"></i>
-                  ) : (
-                    'Copy to Clipboard'
-                  )}
-                </button>
+                <button className="btn btn-accent join-item fa-regular fa-copy text-white" value={session.split(' ')[1]} onClick={copyToClipboard} title="Copy to clipboard"></button>
                 <button className="btn btn-secondary join-item" value={session} onClick={handleDelete}>Delete</button>
               </div>
             </li>
