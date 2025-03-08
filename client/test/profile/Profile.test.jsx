@@ -14,6 +14,8 @@ jest.mock('sweetalert2', () => ({
   fire: jest.fn().mockResolvedValue({ isConfirmed: true }),
 }));
 
+const buffer = Buffer.from('fake-image-data')
+
 const user = [{
   "profilePic": {
       "data": null,
