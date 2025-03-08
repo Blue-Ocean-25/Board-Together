@@ -29,6 +29,7 @@ const Scrabble = () => {
 
 
   const createGame = async () => {
+    setDataClone({});
     const response = await axios.post('/api/scrabble', {
       room_name: roomName,
       players: players,
@@ -39,6 +40,7 @@ const Scrabble = () => {
   }
 
   const joinGame = () => {
+    setDataClone({});
     Swal.fire({
       title: 'Enter Room Key',
       input: 'text',
@@ -59,6 +61,9 @@ const Scrabble = () => {
       if (result.value) {
         setGameKey(result.value);
       }
+    })
+    .catch((err)=>{
+      console.log(err);
     })
   }
 
@@ -103,13 +108,19 @@ const Scrabble = () => {
 
 
   const handleChangeName = (e, key, playerId) => {
+
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = e;
+    //setDataClone(dataClone);
+    console.log(dataClone.players);
   }
 
   const handleChangeScore = (e, key, playerId) => {
     setSaveButton(true);
-    dataClone.players[playerId - 1][key] = data.players[playerId - 1][key] + e;
+    dataClone.players[playerId - 1][key] = dataClone.players[playerId - 1][key] + e;
+
+    //setDataClone(dataClone);
+    console.log(dataClone.players);
   }
 
   const handleCompleteGame = () => {
@@ -117,10 +128,12 @@ const Scrabble = () => {
   }
 
   const saveChanges = () => {
+    console.log('if you didn\'t click save changes...');
     axios.put(`/api/scrabble/${gameKey}`, dataClone)
     .then((res) => {
       setSaveButton(false);
       setDataClone(res.data);
+      console.log(JSON.stringify(res.data));
       const input = document.querySelectorAll('.input');
       input.forEach((element) => {
         element.value = '';
@@ -139,6 +152,8 @@ const Scrabble = () => {
   }
 
   if (JSON.stringify(dataClone) === '{}' && data) {
+
+    console.log(JSON.stringify(data))
     setDataClone(data);
   }
 
@@ -156,13 +171,13 @@ const Scrabble = () => {
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Number of Players</span>
-              <input type="number" placeholder="Enter Number of Players"  min="2" max="5" value={players} onChange={handlePlayers} />
+              <input data-testid='scrabble-player-number' type="number" placeholder="Enter Number of Players"  min="2" max="5" value={players} onChange={handlePlayers} />
             </label>
           </div>
           <div className="pt-4 pb-4">
-            <button data-testid="start-scrabble" className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
+            <button data-testid='start-scrabble' className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
             <div className="divider">OR</div>
-            <button className="btn btn-md btn-accent shadow-lg w-43" onClick={joinGame}>Join Game</button>
+            <button data-testid='join-scrabble' className="btn btn-md btn-accent shadow-lg w-43" onClick={joinGame}>Join Game</button>
           </div>
         </div>
       </div>
@@ -203,7 +218,7 @@ const Scrabble = () => {
       </div>
       <WinnerModal players = {data.players.map((player) => {return player.name})} gameKey = {gameKey} game = {"Scrabble"}/>
       <div className={saveButton ? "flex flex-row gap-4 justify-between m-2" : "flex flex-row gap-4 justify-end m-2"}>
-        {saveButton ? <div><button className="btn btn-md btn-accent shadow-lg w-43" onClick={saveChanges}>Save Changes</button></div> : null}
+        {saveButton ? <div><button data-testid='scrabble-save' className="btn btn-md btn-accent shadow-lg w-43" onClick={()=>{saveChanges()}}>Save Changes</button></div> : null}
         <button className="btn btn-md btn-accent shadow-lg w-43" onClick={handleCompleteGame}>Complete Game</button>
       </div>
       <MessageBoard gameId={gameKey}/>

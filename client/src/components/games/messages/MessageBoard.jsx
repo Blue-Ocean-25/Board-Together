@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef }  from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import useVerifyLogin from '../../utils/useVerifyLogin.jsx'
-
+import useVerifyLogin from '../../utils/useVerifyLogin.jsx';
+import Swal from 'sweetalert2';
 
 const MessageBoard = ({ gameId }) => {
   const [anchored, setAnchored] = useState(true);
@@ -12,6 +12,23 @@ const MessageBoard = ({ gameId }) => {
     return axios.get('/api/messages/' + gameId)
     .then((messages) => {
       return messages.data;
+    })
+    .catch((err) => {
+      Swal.fire({
+        buttonsStyling: false,
+        icon: 'error',
+        background: "#ffdba6",
+        customClass: {
+        popup: 'bg-base-200 text-base-content rounded-lg shadow-xl',
+        icon: 'mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-base-100 mt-5',
+        title: 'text-lg font-bold text-center mt-3',
+        htmlContainer: 'text-sm text-gray-500 mt-2 text-center',
+        confirmButton: 'btn btn-accent',
+        },
+        title: 'Server Error',
+        text: 'Sorry messages could not be loaded.',
+      });
+      return [];
     })
   }
 
@@ -64,9 +81,9 @@ const MessageBoard = ({ gameId }) => {
 
   return (
     <div className="flex flex-col mt-5 bg-base-200 border border-primary p-4 bottom-0 left-0 right-0 max-h-100">
-      <div id="messages" onScroll={anchor} ref={messagesEndRef} className="max-h-1/2 flex flex-col-reverse overflow-y-auto ">
+      <div id="messages" data-testid="messages" onScroll={anchor} ref={messagesEndRef} className="max-h-1/2 flex flex-col-reverse overflow-y-auto ">
         {data ? data.map(message => (
-          <div className="border bg-base-300" key={message.id}>
+          <div className="border bg-base-300" key={message._id}>
             <p className="chat-bubble">{message.message}</p>
           </div>
         )) : <div>Loading...</div>}
@@ -74,9 +91,9 @@ const MessageBoard = ({ gameId }) => {
       </div>
       <div className="divider"/>
       <form id="message-form" onSubmit={postMessage}>
-        <input className="text neutral border btn-accent input w-4/5" name="message"
+        <input data-testid="message-input" className="text neutral border btn-accent float-left input pl-100 mr-5 pr-50 w-4/5" name="message"
         type="text" required></input>
-        <button className="btn btn-accent" type="submit">Submit Message</button>
+        <button data-testid="message-submit" className="btn btn-accent relative border-x-10  float-left" type="submit">Submit Message</button>
       </form>
     </div>
   );

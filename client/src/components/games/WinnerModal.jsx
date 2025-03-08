@@ -34,8 +34,8 @@ const WinnerModal = ({players, gameKey, game}) => {
           {/* if there is a button in form, it will close the modal */}
           <select className = "select select-accent" value={winner} onChange = {(e) => {setWinner(e.target.value)}}>
             <option>Select Winner</option>
-            {players.map((player) => {
-              return <option value = {player}>{player}</option>
+            {players.map((player, index) => {
+              return <option value = {player} key = {index}>{player}</option>
             })}
           </select>
           <button type="submit" className="btn btn-md btn-accent shadow-lg w-43">Submit</button>
