@@ -5,13 +5,6 @@ import AddFriendDropdown from '../friends/AddFriendDropdown.jsx';
 import Profile from '../Profile/Profile.jsx';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 
-
-// const sessions = [
-//   { id: 1, name: 'Clue' },
-//   { id: 2, name: 'Yahtzee' },
-//   { id: 3, name: 'Scrabble' },
-// ]
-
 const SelectionPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);

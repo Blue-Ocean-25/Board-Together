@@ -7,7 +7,6 @@ const AddFriendDropdown = ({ email, friends, setFriends }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchFriendQuery, setSearchFriendQuery] = useState('');
 
-
   useEffect(() => {
     axios.get(`/api/profile/${email}`)
       .then(res => {

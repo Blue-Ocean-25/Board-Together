@@ -9,7 +9,8 @@
     "build-dev": "webpack --watch",
     "build": "npx webpack",
     "frontend": "jest client",
-    "backend": "jest server/test"
+    "backend": "jest server/test",
+    "test-friends": "npx jest /client/test/Friends/Friends.test.jsx"
   },
   "repository": {
     "type": "git",

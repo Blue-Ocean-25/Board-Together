@@ -71,6 +71,7 @@ const Yahtzee = () => {
     }
     return axios.get(`/api/yahtzee/${gameKey}`)
     .then((res) => {
+      console.log('FETCH DATA: ', res.data);
       return res.data;
     })
     .catch((err) => {
@@ -100,6 +101,8 @@ const Yahtzee = () => {
   }
 
   const saveChanges = () => {
+    console.log('DATA CLONE: ', dataClone);
+    console.log('DATA: ', data);
     axios.put(`/api/yahtzee/${gameKey}`, dataClone)
     .then((res) => {
       setSaveButton(false);
@@ -135,9 +138,9 @@ const Yahtzee = () => {
             </label>
           </div>
           <div className="pt-4 pb-4">
-            <button className="btn btn-md btn-accent shadow-lg w-43" onClick={() => mutation.mutate()}>Start Game</button>
+            <button className="btn btn-md btn-accent shadow-lg w-43" data-testid="start-game" onClick={() => mutation.mutate()}>Start Game</button>
             <div className="divider">OR</div>
-            <button className="btn btn-md btn-accent shadow-lg w-43" onClick={joinGame}>Join Game</button>
+            <button className="btn btn-md btn-accent shadow-lg w-43" data-testid="join-game" onClick={joinGame}>Join Game</button>
           </div>
         </div>
       </div>
@@ -169,7 +172,7 @@ const Yahtzee = () => {
             {data.players.map((player, index) => {
               return (
                 <tr key={player._id} className="border border-primary">
-                  <th><p>{player.player_name}</p><input className="input ml-3 w-43" type="text" placeholder="edit player name" onChange={() => {handleChange(event.target.value, 'player_name', player.player_id)}}/></th>
+                  <th><p data-testid="name">{player.player_name}</p><input className="input ml-3 w-43" data-testid="testinput" type="text" placeholder="edit player name" onChange={() => {handleChange(event.target.value, 'player_name', player.player_id)}}/></th>
                   <td className="border border-primary"><p>{player.aces}</p><input className="input w-21" min='0' max='5' type='number' placeholder="0" onChange={() => handleChange(event.target.value, 'aces', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.twos}</p><input className="input w-21" min='0' max='10'  type='number' placeholder="0" onChange={() => handleChange(event.target.value, 'twos', player.player_id)}/></td>
                   <td className="border border-primary"><p>{player.threes}</p><input className="input w-21" min='0' max='15'  type='number' placeholder="0" onChange={() => handleChange(event.target.value, 'threes', player.player_id)}/></td>
