@@ -30,10 +30,10 @@ const SelectionPage = () => {
     setIsLoading(true);
     if (email.length > 0) {
       axios.get(`api/profile/${email}`)
-      .then((res) => {
-        setSessions(res.data[0].gamesInProgress);
-      })
-      .finally(() => setIsLoading(false));
+        .then((res) => {
+          setSessions(res.data[0].gamesInProgress);
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [email]);
 
@@ -57,21 +57,23 @@ const SelectionPage = () => {
       </div>
       <div className="divider mt-10 mb-10" />
       <h1 className="text-3xl mb-10 font-bold">Games in Progress:</h1>
-      <ul className="list bg-base-100 rounded-box shadow-md mt-10">
+      <ul className="list bg-base-100 mt-10">
         {sessions?.length ? (
           sessions.map((session, index) => (
-            <li className="list-row flex justify-between" key={index}>
+            <li className="list-row flex rounded-box shadow-md justify-between" key={index}>
               <div className=''>
-                <h3 className="text-xl mr-40" value = {session}>{session}</h3>
+                <h3 className="text-xl mr-40" value={session}>{session}</h3>
               </div>
               <div className="flex flex-row justify-end gap-2">
-                <button className="btn btn-accent join-item" value={session.split(' ')[1]} onClick={copyToClipboard}>Copy To Clipboard</button>
+                <button className="btn btn-accent join-item" value={session.split(' ')[1]} onClick={copyToClipboard} title="Copy to clipboard">
+                  <i className="fa-regular fa-copy text-white"></i>
+                </button>
                 <button className="btn btn-secondary join-item" value={session} onClick={handleDelete}>Delete</button>
               </div>
             </li>
           ))
         ) : (
-          <p>No games in progress</p>
+          <p className="text-lg font-semibold">No games in progress</p>
         )}
       </ul>
     </div>
