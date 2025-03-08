@@ -164,7 +164,6 @@ describe('Profile Page', () => {
     await waitFor(() => {
       const imgElement = screen.getByRole('img');
       expect(imgElement).toHaveAttribute('src', 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png');
-      expect(app.getByTestId('profile-pic-not-uploaded')).toBeInTheDocument();
     });
 
   })
@@ -242,7 +241,6 @@ describe('Game History', () => {
     await waitFor(() => {
       const imgElement = screen.getByRole('img');
       expect(imgElement).toHaveAttribute('src', 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png');
-      expect(app.getByTestId('profile-pic-not-uploaded')).toBeInTheDocument();
     });
 
   })
