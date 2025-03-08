@@ -21,7 +21,7 @@ const SelectionPage = () => {
     var sessionId = event.target.value;
     axios.delete(`/api/profile/${email}/${sessionId}`)
       .then(() => {
-        console.log('successfully deleted game session')
+
         setSessions(sessions.filter(session => session !== sessionId));
       })
   }

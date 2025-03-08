@@ -4,7 +4,7 @@ const { ScrabbleSession, ScrabblePlayer } = require('../../db/models/games/scrab
 const User = require('../../db/models/profile/profile.js');
 
 const makeScrabble = async (req, res) => {
-  console.log('makeScrabble');
+
   const { room_name, players, email } = req.body;
 
   let newPlayers = Array.from({ length: players }, (_, index) => ({
@@ -30,7 +30,7 @@ const makeScrabble = async (req, res) => {
 }
 
 const getScrabbleGame = async (req, res) => {
-  console.log('getScrabble');
+
   const { gameKey } = req.params;
     ScrabbleSession.findOne({ _id: gameKey })
       .then((gameState) => {
@@ -45,13 +45,10 @@ const getScrabbleGame = async (req, res) => {
 }
 
 const updateScrabbleGame = async (req, res) => {
-  console.log('updateScrabble');
-  console.log(req.params);
 
   const { gameKey } = req.params;
   const { players } = req.body;
-  console.log('players:');
-  console.log(players);
+
   try {
     const game = await ScrabbleSession.findOne({ _id: gameKey });
     if (!game) {
