@@ -28,6 +28,7 @@ const MessageBoard = ({ gameId }) => {
         title: 'Server Error',
         text: 'Sorry messages could not be loaded.',
       });
+      return [];
     })
   }
 
