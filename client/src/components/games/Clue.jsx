@@ -103,6 +103,11 @@ const Clue = () => {
   if (!gameKey) {
     return (
       <div data-testid="clue-start" className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen content-center">
+        <img
+            src="https://cdn-icons-png.flaticon.com/512/3088/3088866.png"
+            alt="Dice"
+            className="absolute left-50 bottom-40 w-90 h-90 z-10"
+          />
         <h1 className="text-xl font-bold">Clue</h1>
         <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
