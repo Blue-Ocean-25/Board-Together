@@ -74,9 +74,9 @@ const MessageBoard = ({ gameId }) => {
       </div>
       <div className="divider"/>
       <form id="message-form" onSubmit={postMessage}>
-        <input className="text neutral border btn-accent input w-4/5" name="message"
+        <input className="text neutral border btn-accent float-left input pl-100 mr-5 pr-50 w-4/5" name="message"
         type="text" required></input>
-        <button className="btn btn-accent" type="submit">Submit Message</button>
+        <button className="btn btn-accent relative border-x-10  float-left" type="submit">Submit Message</button>
       </form>
     </div>
   );
