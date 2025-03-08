@@ -46,7 +46,8 @@ const Profile = ({ friends, setFriends }) => {
   const editView = (
     <div className="mt-2">
       <form>
-        <input type="file" accept="image/*" className="file-input" onChange={(e) => {
+        <label htmlFor="profile-pic" className="floating-label">Upload File</label>
+        <input id="profile-pic" type="file" accept="image/*" className="file-input" onChange={(e) => {
           handleFileUpload(e.target.files[0]);
         }} />
         <p className="mt-2">
@@ -102,7 +103,7 @@ const Profile = ({ friends, setFriends }) => {
           {gameHistory?.length ? (
             gameHistory.map((game) => {
               return (
-                <div className="bg-base-100 rounded-box shadow-md p-4 border-base-200">
+                <div key={game.game} className="bg-base-100 rounded-box shadow-md p-4 border-base-200">
                   <p>Game: {game.game}</p>
                   <p>Game Key: {game.gameKey}</p>
                   <p>Date: {format(game.createdAt, 'MM/dd/yyyy')}</p>
