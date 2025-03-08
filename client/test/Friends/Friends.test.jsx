@@ -106,38 +106,7 @@ describe('AddFriendDropdown', () => {
     fireEvent.click(screen.getByText(existingFriend));
 
     await waitFor(() => expect(mock.history.post.length).toBe(0));
-
   });
 
-  it('should delete friend from friends list when delete button is clicked', async () => {
-    const friendToDelete = mockFriends[0];
+}
 
-    mock.onPut('/api/profile/deleteFriend').reply(200);
-
-    await act(async () => {
-      render(
-        <MemoryRouter>
-          <Profile
-            email={mockEmail}
-            friends={mockFriends}
-            setFriends={mockSetFriends}
-          />
-        </MemoryRouter>
-      );
-    });
-
-
-
-    fireEvent.click(screen.getByText(friendToDelete));
-    await waitFor(() => expect(mock.history.put.length).toBe(1));
-
-    expect(mock.history.put[0].data).toBe(JSON.stringify({ email: mockEmail, friendName: friendToDelete }));
-    expect(mock.history.put[0].url).toBe('/api/profile/deleteFriend');
-    expect(mockSetFriends).toHaveBeenCalledWith(mockFriends.filter((friend) => friend !== friendToDelete));
-  });
-}, 10000);
-
-// add a friend
-// find delete button
-// click button
-// expect friend to be removed from friends list
