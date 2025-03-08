@@ -1,3 +1,7 @@
+
+test('true', () => {
+  expect(true).toBe(true);
+})
 export default [
   {
     _id: '67c8e0618dccee724d233f44',

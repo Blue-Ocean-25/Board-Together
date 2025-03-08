@@ -8,10 +8,9 @@
     "start": "npx webpack && node server",
     "build-dev": "webpack --watch",
     "build": "npx webpack",
-    "frontend": "jest client",
-    "profile": "jest client/test/profile/Profile.test.js",
+    "frontend": "jest client --silent",
     "backend": "jest server/test",
-    "test-friends": "npx jest /client/test/Friends/Friends.test.jsx"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
