@@ -57,10 +57,10 @@ const SelectionPage = () => {
       </div>
       <div className="divider mt-10 mb-10" />
       <h1 className="text-3xl mb-10 font-bold">Games in Progress:</h1>
-      <ul className="list bg-base-100 rounded-box shadow-md mt-10">
+      <ul className="list bg-base-100 mt-10">
         {sessions?.length ? (
           sessions.map((session, index) => (
-            <li className="list-row flex justify-between" key={index}>
+            <li className="list-row flex rounded-box shadow-md justify-between" key={index}>
               <div className=''>
                 <h3 className="text-xl mr-40" value={session}>{session}</h3>
               </div>
@@ -73,7 +73,7 @@ const SelectionPage = () => {
             </li>
           ))
         ) : (
-          <p>No games in progress</p>
+          <p className="text-lg font-semibold">No games in progress</p>
         )}
       </ul>
     </div>
