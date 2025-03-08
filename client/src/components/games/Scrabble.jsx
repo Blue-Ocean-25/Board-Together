@@ -72,7 +72,6 @@ const Scrabble = () => {
     mutationFn: createGame,
     onSuccess: (data) => {
       queryClient.setQueryData(['scrabbleState'], data);
-
     }
   })
 
