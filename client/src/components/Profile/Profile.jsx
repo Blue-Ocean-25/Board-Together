@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import useVerifyLogin from '../utils/useVerifyLogin.jsx';
 import { format } from 'date-fns';
-
+import transformBuffer from '../utils/TransformBuffer.jsx';
 
 const Profile = ({ friends, setFriends }) => {
   const [user, setUser] = useState([]);
@@ -24,7 +24,7 @@ const Profile = ({ friends, setFriends }) => {
           setGameHistory(history.data);
           setUser(profile.data[0]);
           setFriends(profile.data[0].friends);
-          let url = transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType);
+          let url = profile.data[0].profilePic.data ? transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType) : 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png';
           setProfilePicBlob(url);
         })
         .catch((err) => console.error(err))
@@ -46,7 +46,8 @@ const Profile = ({ friends, setFriends }) => {
   const editView = (
     <div className="mt-2">
       <form>
-        <input type="file" accept="image/*" className="file-input" onChange={(e) => {
+        <label htmlFor="profile-pic" className="floating-label">Upload File</label>
+        <input id="profile-pic" type="file" accept="image/*" className="file-input" onChange={(e) => {
           handleFileUpload(e.target.files[0]);
         }} />
         <p className="mt-2">
@@ -78,13 +79,6 @@ const Profile = ({ friends, setFriends }) => {
     setEdit(false);
   }
 
-  const transformBuffer = (buffer, contentType) => {
-    const byteArray = new Uint8Array(buffer);
-    const blob = new Blob([byteArray], { type: contentType });
-    const url = URL.createObjectURL(blob);
-    return url;
-  }
-
   if (user.length === 0 || isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-base-300">
@@ -95,6 +89,11 @@ const Profile = ({ friends, setFriends }) => {
 
   return (
     <div id="profile" className="flex flex-col justify-items-center content-center mt-30">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3578/3578801.png"
+        alt="Dice"
+        className="fixed left-[-100px] bottom-[-100px] w-100 h-100 transform rotate-45 opacity-30 mix-blend-multiply z-10"
+      />
       <div id="profile-header" className="profile text-center">
         {profilePicBlob ? <img src={profilePicBlob} data-testid="profile-pic-uploaded" alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" /> : <img src='https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png' data-testid = "profile-pic-not-uploaded" alt="profile-pic" className="w-50 h-50 mx-auto rounded-full" />}
         {edit ? editView : <button data-testid="edit-profile" className="btn btn-sm mt-2" onClick={() => setEdit(true)}>Edit Profile</button>}
@@ -109,7 +108,7 @@ const Profile = ({ friends, setFriends }) => {
           {gameHistory?.length ? (
             gameHistory.map((game) => {
               return (
-                <div className="bg-base-100 rounded-box shadow-md p-4 border-base-200">
+                <div key={game.game} className="bg-base-100 rounded-box shadow-md p-4 border-base-200">
                   <p>Game: {game.game}</p>
                   <p>Game Key: {game.gameKey}</p>
                   <p>Date: {format(game.createdAt, 'MM/dd/yyyy')}</p>

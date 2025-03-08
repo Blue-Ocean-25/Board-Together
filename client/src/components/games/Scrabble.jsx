@@ -63,7 +63,7 @@ const Scrabble = () => {
       }
     })
     .catch((err)=>{
-      console.log(err);
+      throw new err
     })
   }
 
@@ -111,15 +111,13 @@ const Scrabble = () => {
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = e;
     //setDataClone(dataClone);
-    console.log(dataClone.players);
+
   }
 
   const handleChangeScore = (e, key, playerId) => {
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = dataClone.players[playerId - 1][key] + e;
 
-    //setDataClone(dataClone);
-    console.log(dataClone.players);
   }
 
   const handleCompleteGame = () => {
@@ -127,12 +125,12 @@ const Scrabble = () => {
   }
 
   const saveChanges = () => {
-    console.log('if you didn\'t click save changes...');
+
     axios.put(`/api/scrabble/${gameKey}`, dataClone)
     .then((res) => {
       setSaveButton(false);
       setDataClone(res.data);
-      console.log(JSON.stringify(res.data));
+
       const input = document.querySelectorAll('.input');
       input.forEach((element) => {
         element.value = '';
@@ -151,14 +149,17 @@ const Scrabble = () => {
   }
 
   if (JSON.stringify(dataClone) === '{}' && data) {
-
-    console.log(JSON.stringify(data))
     setDataClone(data);
   }
 
   if (!gameKey) {
     return (
       <div className="bg-base-300 flex-col justify-items-center content-center w-screen h-screen">
+        <img
+            src="https://cdn-icons-png.freepik.com/512/17096/17096130.png"
+            alt="Dice"
+            className="absolute left-50 top-40 w-90 h-90 z-10"
+          />
         <h1 className="text-xl font-bold">Scrabble</h1>
         <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
