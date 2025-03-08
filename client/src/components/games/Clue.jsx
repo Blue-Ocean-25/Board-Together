@@ -106,10 +106,10 @@ const Clue = () => {
         <img
             src="https://cdn-icons-png.flaticon.com/512/3088/3088866.png"
             alt="Dice"
-            className="absolute left-50 bottom-40 w-90 h-90 z-10"
+            className="fixed left-[-100px] bottom-[-100px] w-100 h-100 opacity-30 mix-blend-multiply"
           />
-        <h1 className="text-xl font-bold">Clue</h1>
-        <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
+        <h1 className="relative text-xl font-bold z-99">Clue</h1>
+        <div className="relative z-99 bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Room Name</span>

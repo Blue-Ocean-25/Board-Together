@@ -50,10 +50,10 @@ const SelectionPage = () => {
       <img
             src="https://cdn-icons-png.flaticon.com/512/3351/3351767.png"
             alt="Dice"
-            className="absolute left-50 top-25 w-70 h-70 z-10"
+            className="fixed left-[-100px] bottom-[-100px] w-100 h-100 opacity-30 mix-blend-multiply"
           />
-      <div className="gameSelection flex flex-col items-center">
-        <h1 className="text-3xl mb-20 font-bold">Choose a game:</h1>
+      <div className="relative z-99 gameSelection flex flex-col items-center">
+        <h1 className="relative z-99 text-3xl mb-20 font-bold">Choose a game:</h1>
         <div className="flex justify-between w-full max-w-md mb-10">
           <Link className="btn btn-lg btn-accent mx-6 " id="clue" to='/clue'>Clue</Link>
           <Link className="btn btn-lg btn-accent mx-6" id="yahtzee" to='/yahtzee'>Yahtzee</Link>
