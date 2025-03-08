@@ -135,7 +135,6 @@ const Scrabble = () => {
   }
 
   if (data?.er) {
-    console.log('error')
     return 'Error';
   }
 
