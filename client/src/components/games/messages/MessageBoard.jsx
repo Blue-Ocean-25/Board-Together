@@ -91,15 +91,9 @@ const MessageBoard = ({ gameId }) => {
       </div>
       <div className="divider"/>
       <form id="message-form" onSubmit={postMessage}>
-<<<<<<< HEAD
-        <input className="text neutral border btn-accent float-left input pl-100 mr-5 pr-50 w-4/5" name="message"
+        <input data-testid="message-input" className="text neutral border btn-accent float-left input pl-100 mr-5 pr-50 w-4/5" name="message"
         type="text" required></input>
-        <button className="btn btn-accent relative border-x-10  float-left" type="submit">Submit Message</button>
-=======
-        <input data-testid="message-input" className="text neutral border btn-accent input w-4/5" name="message"
-        type="text" required></input>
-        <button data-testid="message-submit" className="btn btn-accent" type="submit">Submit Message</button>
->>>>>>> c698b41f6fb4baf27a5fdb7147a04b98a627f84b
+        <button data-testid="message-submit" className="btn btn-accent relative border-x-10  float-left" type="submit">Submit Message</button>
       </form>
     </div>
   );

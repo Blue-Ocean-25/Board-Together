@@ -56,16 +56,16 @@ const Login = () => {
           <label className="label">
             <span className="label-text">Email Address:</span>
           </label>
-          <input type="email" id="email" name="email" className="input input-bordered" required />
+          <input data-testid="email" type="email" id="email" name="email" className="input input-bordered" required />
         </div>
         <div className="form-control">
             <label className="label">
               <span className="label-text">Password:</span>
             </label>
-            <input type="password" id="password" name="password" className="input input-bordered" required />
+            <input data-testid="password" type="password" id="password" name="password" className="input input-bordered" required />
           </div>
-          <button className="btn btn-accent w-full" type="submit">Login</button>
-          <Link className="btn btn-neutral w-full" to='/signup'>Go To Signup</Link>
+          <button data-testid="login-button" className="btn btn-accent w-full" type="submit">Login</button>
+          <Link data-testid="go-signup" className="btn btn-neutral w-full" to='/signup'>Go To Signup</Link>
         </form>
       </div>
     </div>
