@@ -63,7 +63,7 @@ const Scrabble = () => {
       }
     })
     .catch((err)=>{
-      console.log(err);
+      throw new err
     })
   }
 
@@ -71,7 +71,6 @@ const Scrabble = () => {
   const mutation = useMutation({
     mutationFn: createGame,
     onSuccess: (data) => {
-      //console.log('mutate data: ', data);
       queryClient.setQueryData(['scrabbleState'], data);
 
     }
@@ -83,7 +82,6 @@ const Scrabble = () => {
     }
     return axios.get(`/api/scrabble/${gameKey}`)
     .then((res) => {
-      // console.log('GET DATA: ', res.data);
       return res.data;
     })
     .catch((err) => {
@@ -114,15 +112,13 @@ const Scrabble = () => {
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = e;
     //setDataClone(dataClone);
-    console.log(dataClone.players);
+
   }
 
   const handleChangeScore = (e, key, playerId) => {
     setSaveButton(true);
     dataClone.players[playerId - 1][key] = dataClone.players[playerId - 1][key] + e;
 
-    //setDataClone(dataClone);
-    console.log(dataClone.players);
   }
 
   const handleCompleteGame = () => {
@@ -130,12 +126,12 @@ const Scrabble = () => {
   }
 
   const saveChanges = () => {
-    console.log('if you didn\'t click save changes...');
+
     axios.put(`/api/scrabble/${gameKey}`, dataClone)
     .then((res) => {
       setSaveButton(false);
       setDataClone(res.data);
-      console.log(JSON.stringify(res.data));
+
       const input = document.querySelectorAll('.input');
       input.forEach((element) => {
         element.value = '';
@@ -150,13 +146,10 @@ const Scrabble = () => {
   }
 
   if (data?.er) {
-    console.log('error')
     return 'Error';
   }
 
   if (JSON.stringify(dataClone) === '{}' && data) {
-
-    console.log(JSON.stringify(data))
     setDataClone(data);
   }
 

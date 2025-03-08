@@ -18,7 +18,7 @@ export default function ClueCard({ data, playerData, gameSession }) {
   const mutation = useMutation({
     mutationFn: updateGame,
     onSuccess: (data) => {
-      queryClient.setQueryData(['scrabbleState'], data);
+      queryClient.setQueryData(['clueState'], data);
     }
   })
 
@@ -42,14 +42,14 @@ export default function ClueCard({ data, playerData, gameSession }) {
   const mutationName = useMutation({
     mutationFn: updateName,
     onSuccess: (data) => {
-      queryClient.setQueryData(['scrabbleState'], data);
+      queryClient.setQueryData(['clueState'], data);
     }
   })
 
   return (
-  <div>
+  <div data-testid="clue-card-test">
     <div className="pt-4 pb-4 flex flex-row gap-4">
-      <form onSubmit={(e) => mutationName.mutate(e)}>
+      <form data-testid="change-name-test" onSubmit={(e) => mutationName.mutate(e)}>
         <input id="setName" className="input input-accent shadow-lg w-43" placeholder="Set your Username"/>
         <button className="btn btn-md btn-accent shadow-lg w-43" type="submit">Set Name</button>
       </form>
@@ -66,7 +66,7 @@ export default function ClueCard({ data, playerData, gameSession }) {
           {Object.entries(playerData.suspects).map(([suspect,value]) => (
           <tr>
             <td>
-            <input type="checkbox" className="checkbox" name={suspect} checked={value} data-category='suspects' data-name={suspect} onChange={(e) => handleChange(e)} /><span className="ml-4">{suspect}</span>
+            <input data-testid={`${suspect}-test`} type="checkbox" className="checkbox" name={suspect} checked={value} data-category='suspects' data-name={suspect} onChange={(e) => handleChange(e)} /><span className="ml-4">{suspect}</span>
             </td>
           </tr>
           ))}

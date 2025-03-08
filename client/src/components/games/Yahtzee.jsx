@@ -75,7 +75,6 @@ const Yahtzee = () => {
 
     return axios.get(`/api/yahtzee/${gameKey}`)
     .then((res) => {
-      console.log('FETCH DATA: ', res.data);
       return res.data;
     })
     .catch((err) => {

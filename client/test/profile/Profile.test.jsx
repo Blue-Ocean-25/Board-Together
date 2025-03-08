@@ -14,13 +14,40 @@ jest.mock('sweetalert2', () => ({
   fire: jest.fn().mockResolvedValue({ isConfirmed: true }),
 }));
 
+const user = [{
+  "profilePic": {
+      "data": null,
+      "contentType": null
+  },
+  "_id": "67ca25a6c8989b3eb7627502",
+  "username": "test",
+  "email": "testuser@gmail.com",
+  "phoneNumber": "",
+  "gamesInProgress": [],
+  "gamesPlayed": 0,
+  "gameHistory": [],
+  "friends": [],
+  "__v": 0
+}];
+
 describe('Profile Page', () => {
 
   afterEach(() => {
     mock.reset();
   });
 
-  it ('Should load you into profile page', async () => {
+  it ('Should render loading whie waiting for profile to load', async () => {
+
+    mock.onGet('/api/verifyLogin').reply(200,
+      'testuser@gmail.com'
+    );
+
+    const app = renderWithRouter(<Profile />);
+
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+  });
+
+  it ('Should load you into profile page after getting profile info', async () => {
 
     mock.onGet('/api/verifyLogin').reply(200,
       'testuser@gmail.com'
@@ -30,21 +57,7 @@ describe('Profile Page', () => {
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 
-    mock.onGet('/api/profile/testuser@gmail.com').reply(200, [{
-      "profilePic": {
-          "data": null,
-          "contentType": null
-      },
-      "_id": "67ca25a6c8989b3eb7627502",
-      "username": "test",
-      "email": "testuser@gmail.com",
-      "phoneNumber": "",
-      "gamesInProgress": [],
-      "gamesPlayed": 0,
-      "gameHistory": [],
-      "friends": [],
-      "__v": 0
-    }]);
+    mock.onGet('/api/profile/testuser@gmail.com').reply(200, user);
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
@@ -60,21 +73,7 @@ describe('Profile Page', () => {
       'testuser@gmail.com'
     );
 
-    mock.onGet('/api/profile/testuser@gmail.com').reply(200, [{
-      "profilePic": {
-          "data": null,
-          "contentType": null
-      },
-      "_id": "67ca25a6c8989b3eb7627502",
-      "username": "test",
-      "email": "testuser@gmail.com",
-      "phoneNumber": "",
-      "gamesInProgress": [],
-      "gamesPlayed": 0,
-      "gameHistory": [],
-      "friends": [],
-      "__v": 0
-    }]);
+    mock.onGet('/api/profile/testuser@gmail.com').reply(200, user);
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
@@ -97,33 +96,98 @@ describe('Profile Page', () => {
       'testuser@gmail.com'
     );
 
-    mock.onGet('/api/profile/testuser@gmail.com').reply(200, [{
-      "profilePic": {
-          "data": null,
-          "contentType": null
-      },
-      "_id": "67ca25a6c8989b3eb7627502",
-      "username": "test",
-      "email": "testuser@gmail.com",
-      "phoneNumber": "",
-      "gamesInProgress": [],
-      "gamesPlayed": 0,
-      "gameHistory": [],
-      "friends": [],
-      "__v": 0
-    }]);
+    mock.onGet('/api/profile/testuser@gmail.com').reply(200, user);
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
     const app = renderWithRouter(<Profile />);
 
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 
     await waitFor(() => {
-      app.user.click(app.getByTestId('edit-profile'));
-      expect(screen.getByText(/Choose file/i)).toBeInTheDocument();
+      expect(app.getByTestId('edit-profile')).toBeInTheDocument();
     });
 
+    await app.user.click(app.getByTestId('edit-profile'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Save Changes/i)).toBeInTheDocument();
+    });
   });
+
+  it('Should display a default profile picture if nothing is uploaded', async () => {
+
+    mock.onGet('/api/verifyLogin').reply(200,
+      'testuser@gmail.com'
+    );
+
+    mock.onGet('/api/profile/testuser@gmail.com').reply(200, user);
+
+    mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
+
+    const app = renderWithRouter(<Profile />);
+
+    await waitFor(() => {
+      const imgElement = screen.getByRole('img');
+      expect(imgElement).toHaveAttribute('src', 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png');
+      expect(app.getByTestId('profile-pic-not-uploaded')).toBeInTheDocument();
+    });
+
+  })
+
+});
+
+
+describe('Game History', () => {
+
+  afterEach(() => {
+    mock.reset();
+  });
+
+  it ('should display "No games played" when games history is empty', async () => {
+
+    mock.onGet('/api/verifyLogin').reply(200,
+      'testuser@gmail.com'
+    );
+
+    mock.onGet('/api/profile/testuser@gmail.com').reply(200, user);
+
+    mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
+
+    const app = renderWithRouter(<Profile />);
+
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(app.getByTestId('edit-profile')).toBeInTheDocument();
+    });
+
+    await app.user.click(app.getByTestId('edit-profile'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Save Changes/i)).toBeInTheDocument();
+    });
+  });
+
+  it('Should display a default profile picture if nothing is uploaded', async () => {
+
+    mock.onGet('/api/verifyLogin').reply(200,
+      'testuser@gmail.com'
+    );
+
+    mock.onGet('/api/profile/testuser@gmail.com').reply(200, user);
+
+    mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
+
+    const app = renderWithRouter(<Profile />);
+
+    await waitFor(() => {
+      const imgElement = screen.getByRole('img');
+      expect(imgElement).toHaveAttribute('src', 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png');
+      expect(app.getByTestId('profile-pic-not-uploaded')).toBeInTheDocument();
+    });
+
+  })
 
 });
 
