@@ -77,13 +77,13 @@ const Signup = () => {
             <label className="label">
               <span className="label-text">Email Address:</span>
             </label>
-            <input type="email" id="email" name="email" className="input input-bordered" required />
+            <input data-testid="email" type="email" id="email" name="email" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Username:</span>
             </label>
-            <input type="text" id="username" name="username" className="input input-bordered" required />
+            <input data-testid="username" type="text" id="username" name="username" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
@@ -95,17 +95,17 @@ const Signup = () => {
             <label className="label">
               <span className="label-text">Password:</span>
             </label>
-            <input type="password" id="password" name="password" className="input input-bordered" required />
+            <input data-testid="password" type="password" id="password" name="password" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Confirm Password:</span>
             </label>
-            <input type="password" id="confirmPassword" name="confirmPassword" className="input input-bordered" required />
+            <input data-testid="confirmPassword" type="password" id="confirmPassword" name="confirmPassword" className="input input-bordered" required />
           </div>
-          <button className="btn btn-accent w-full" type="submit">Signup</button>
+          <button data-testid="signup-button" className="btn btn-accent w-full" type="submit">Signup</button>
 
-          <Link className="btn btn-neutral w-full" to='/login'>Go To Login</Link>
+          <Link data-testid="go-login" className="btn btn-neutral w-full" to='/login'>Go To Login</Link>
         </form>
       </div>
     </div>
