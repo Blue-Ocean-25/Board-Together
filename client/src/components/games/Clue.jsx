@@ -33,6 +33,7 @@ const Clue = () => {
               confirmButton: 'btn-lg btn-accent',
             },
       }).then((result) => {
+        setGameKey(result.value);
         mutationFind.mutate(result.value);
       });
     }
@@ -51,15 +52,15 @@ const Clue = () => {
   }
 
   const findGame = async (gkey) => {
-    const response = await axios.get(`/api/clue/${gkey}`).then((data) => {
-      setGameKey(data._id);
-      return data
-    })
-    .catch((err) => {
-      setInvalid(true);
-      throw new Error;
-    })
-    return response.data;
+    return axios.get(`/api/clue/${gkey}`)
+      .then((response) => {
+        setGameKey(response.data._id);
+        return response.data
+      })
+      .catch((err) => {
+        setInvalid(true);
+        throw new Error;
+      })
   }
 
   const mutation = useMutation({
