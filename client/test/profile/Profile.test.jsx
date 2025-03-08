@@ -1,7 +1,9 @@
 import React from 'react';
 import {screen, waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Profile from '../../src/components/Profile/Profile.jsx';
+import App from '../../src/components/App.jsx';
 import renderWithRouter from '../utils/renderRouter.js';
 import useVerifyLogin from '../../src/components/utils/useVerifyLogin.jsx';
 import swal from 'sweetalert2';
@@ -15,10 +17,31 @@ jest.mock('sweetalert2', () => ({
   fire: jest.fn().mockResolvedValue({ isConfirmed: true }),
 }));
 
-const user = [{
+const user = [
+  {
+      "profilePic": {
+          "data": null,
+          "contentType": null
+      },
+      "_id": "67ca25a6c8989b3eb7627502",
+      "username": "test",
+      "email": "testuser@gmail.com",
+      "phoneNumber": "",
+      "gamesInProgress": [],
+      "gamesPlayed": 0,
+      "gameHistory": [],
+      "friends": [],
+      "__v": 0
+  }
+];
+
+const userWithPic = [{
   "profilePic": {
-      "data": null,
-      "contentType": null
+      "data": {
+        "type": "Buffer",
+        "data":
+        [1, 2, 3]},
+      "contentType": 'image/jpg'
   },
   "_id": "67ca25a6c8989b3eb7627502",
   "username": "test",
@@ -43,7 +66,7 @@ describe('Profile Page', () => {
       'testuser@gmail.com'
     );
 
-    const app = renderWithRouter(<Profile />);
+    const app = renderWithRouter(<App />, {route: '/profile'});
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
@@ -54,13 +77,13 @@ describe('Profile Page', () => {
       'testuser@gmail.com'
     );
 
-    const app = renderWithRouter(<Profile />);
-
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
-
     mock.onGet('/api/profile/testuser@gmail.com').reply(200, user);
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
+
+    const app = renderWithRouter(<App />, {route: '/profile'});
+
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText(/Profile Details/i)).toBeInTheDocument();
@@ -78,7 +101,7 @@ describe('Profile Page', () => {
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
-    const app = renderWithRouter(<Profile />);
+    const app = renderWithRouter(<App />, {route: '/profile'});
 
     await waitFor(() => {
       expect(screen.getByText(/Welcome, test!/i)).toBeInTheDocument();
@@ -93,6 +116,8 @@ describe('Profile Page', () => {
 
   it ('Should allow upload of a profile picture', async () => {
 
+    const file = new File(["dummy content"], "test.jpg", { type: "image/jpg" });
+
     mock.onGet('/api/verifyLogin').reply(200,
       'testuser@gmail.com'
     );
@@ -101,7 +126,9 @@ describe('Profile Page', () => {
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
-    const app = renderWithRouter(<Profile />);
+    mock.onPut('/api/profile/67ca25a6c8989b3eb7627502/profilePicture').reply(204);
+
+    const app = renderWithRouter(<App />, {route: '/profile'});
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 
@@ -111,9 +138,15 @@ describe('Profile Page', () => {
 
     await app.user.click(app.getByTestId('edit-profile'));
 
+    const inputElement = screen.getByLabelText(/Upload File/i);
+
     await waitFor(() => {
       expect(screen.getByText(/Save Changes/i)).toBeInTheDocument();
     });
+
+    await userEvent.upload(inputElement, file);
+    expect(inputElement.files[0]).toStrictEqual(file);
+    expect(inputElement.files.length).toBe(1);
   });
 
   it('Should display a default profile picture if nothing is uploaded', async () => {
@@ -126,7 +159,7 @@ describe('Profile Page', () => {
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
-    const app = renderWithRouter(<Profile />);
+    const app = renderWithRouter(<App />, {route: '/profile'});
 
     await waitFor(() => {
       const imgElement = screen.getByRole('img');
@@ -141,6 +174,24 @@ describe('Profile Page', () => {
     expect(transformBuffer()).toContain('blob:');
 
   });
+
+  it('Should display a profile picture if something is loaded', async () => {
+
+    mock.onGet('/api/verifyLogin').reply(200,
+      'testuser@gmail.com'
+    );
+
+    mock.onGet('/api/profile/testuser@gmail.com').reply(200, userWithPic);
+
+    mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
+
+    const app = renderWithRouter(<App />, {route: '/profile'});
+
+    await waitFor(() => {
+      expect(app.getByTestId('profile-pic-uploaded')).toBeInTheDocument();
+    });
+
+  })
 
 });
 
@@ -161,7 +212,7 @@ describe('Game History', () => {
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
-    const app = renderWithRouter(<Profile />);
+    const app = renderWithRouter(<App />, {route: '/profile'});
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 
@@ -186,7 +237,7 @@ describe('Game History', () => {
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
-    const app = renderWithRouter(<Profile />);
+    const app = renderWithRouter(<App />, {route: '/profile'});
 
     await waitFor(() => {
       const imgElement = screen.getByRole('img');
@@ -229,7 +280,7 @@ describe('Game History', () => {
 
     mock.onGet('/api/gameHistory/testuser@gmail.com').reply(200, []);
 
-    const profile = renderWithRouter(<Profile />);
+    const profile = renderWithRouter(<App />, {route: '/profile'});
 
     await waitFor(() => {
       expect(screen.getByText(/No games played/i)).toBeInTheDocument();
@@ -291,7 +342,7 @@ describe('Game History', () => {
       }
   ]);
 
-    const profile = renderWithRouter(<Profile />);
+    const profile = renderWithRouter(<App />, {route: '/profile'});
 
     await waitFor(() => {
       expect(screen.getByText(/Games Played:\s+2/i)).toBeInTheDocument();
