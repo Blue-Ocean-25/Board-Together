@@ -24,7 +24,7 @@ const Profile = ({ friends, setFriends }) => {
           setGameHistory(history.data);
           setUser(profile.data[0]);
           setFriends(profile.data[0].friends);
-          let url = transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType);
+          let url = profile.data[0].profilePic.data ? transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType) : 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png';
           setProfilePicBlob(url);
         })
         .catch((err) => console.error(err))
