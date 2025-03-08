@@ -71,7 +71,11 @@ const SelectionPage = () => {
               </div>
               <div className="flex flex-row justify-end gap-2">
                 <button className="btn btn-accent join-item" value={session.split(' ')[1]} onClick={copyToClipboard} title="Copy to clipboard">
-                  <i className="fa-regular fa-copy text-white"></i>
+                  {navigator.clipboard ? (
+                    <i className="fa-regular fa-copy text-white"></i>
+                  ) : (
+                    'Copy to Clipboard'
+                  )}
                 </button>
                 <button className="btn btn-secondary join-item" value={session} onClick={handleDelete}>Delete</button>
               </div>
