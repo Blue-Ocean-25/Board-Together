@@ -20,15 +20,15 @@ const Profile = ({ friends, setFriends }) => {
         axios.get(`/api/profile/${email}`),
         axios.get(`/api/gameHistory/${email}`)
       ])
-      .then(([profile, history]) => {
-        setGameHistory(history.data);
-        setUser(profile.data[0]);
-        setFriends(profile.data[0].friends);
-        let url = transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType);
-        setProfilePicBlob(url);
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setIsLoading(false));
+        .then(([profile, history]) => {
+          setGameHistory(history.data);
+          setUser(profile.data[0]);
+          setFriends(profile.data[0].friends);
+          let url = transformBuffer(profile.data[0].profilePic.data.data, profile.data[0].profilePic.contentType);
+          setProfilePicBlob(url);
+        })
+        .catch((err) => console.error(err))
+        .finally(() => setIsLoading(false));
     }
   }, [email]);
 
@@ -46,12 +46,12 @@ const Profile = ({ friends, setFriends }) => {
   const editView = (
     <div className="mt-2">
       <form>
-      <input type="file" accept="image/*" className="file-input" onChange={(e) => {
-        handleFileUpload(e.target.files[0]);
-      }}/>
-      <p className="mt-2">
-        <button  type="submit" className="btn btn-sm w-40">Save Changes</button>
-      </p>
+        <input type="file" accept="image/*" className="file-input" onChange={(e) => {
+          handleFileUpload(e.target.files[0]);
+        }} />
+        <p className="mt-2">
+          <button type="submit" className="btn btn-sm w-40">Save Changes</button>
+        </p>
       </form>
     </div>
   );
@@ -65,7 +65,7 @@ const Profile = ({ friends, setFriends }) => {
       const formData = new FormData();
       formData.append('imageBlob', blob, file.name);
 
-      axios.put( `/api/profile/${user._id}/profilePicture`, formData)
+      axios.put(`/api/profile/${user._id}/profilePicture`, formData)
         .then(response => {
           let url = transformBuffer(arrayBuffer, file.type)
           setProfilePicBlob(url);
@@ -73,7 +73,7 @@ const Profile = ({ friends, setFriends }) => {
         .catch(error => {
           console.error(error);
         });
-      }
+    }
     reader.readAsArrayBuffer(file);
     setEdit(false);
   }
@@ -105,42 +105,43 @@ const Profile = ({ friends, setFriends }) => {
         <p className="text-lg">Email: {user.email}</p>
         <p className="text-lg">Games Played: {gameHistory.length}</p>
         <p className="text-lg">Game History: {user.gameHistory}</p>
-        <div className = "flex flex-row flex-wrap gap-2 justify-center">
-        {gameHistory?.length ? (
-          gameHistory.map((game) => {
-          return (
-            <div className = "bg-base-100 rounded-box shadow-md p-4 border-base-200">
-              <p>Game: {game.game}</p>
-              <p>Game Key: {game.gameKey}</p>
-              <p>Date: {format(game.createdAt, 'MM/dd/yyyy')}</p>
-              <p>Players: {game.players.join(', ')}</p>
-              <p>Winner: {game.winner}</p>
-            </div>
-          )
-          })
-        ) : <p>No games played</p>}
+        <div className="flex flex-row flex-wrap gap-2 justify-center">
+          {gameHistory?.length ? (
+            gameHistory.map((game) => {
+              return (
+                <div className="bg-base-100 rounded-box shadow-md p-4 border-base-200">
+                  <p>Game: {game.game}</p>
+                  <p>Game Key: {game.gameKey}</p>
+                  <p>Date: {format(game.createdAt, 'MM/dd/yyyy')}</p>
+                  <p>Players: {game.players.join(', ')}</p>
+                  <p>Winner: {game.winner}</p>
+                </div>
+              )
+            })
+          ) : <p className="text-lg font-semibold">No games played</p>}
         </div>
         <div className='divider'></div>
 
-          <h3 className='text-3xl mb-10 font-bold'>Friends List</h3>
-          {friends?.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4">
-              {friends.map((friend, index) => (
-                <div key={index} className="card shadow-lg compact bg-base-100">
-                  <div className="card-body flex flex-row justify-between items-center">
-                    <Link to='/profile' className="text-lg font-semibold mr-40">{friend}</Link>
-                    <button
-                      className='btn btn-error btn-sm'
-                      onClick={() => handleDelete(friend)}>
-                      Delete
-                    </button>
-                  </div>
+        <h3 className='text-3xl mb-10 font-bold'>Friends List</h3>
+        {friends?.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
+            {friends.map((friend, index) => (
+              <div key={index} className="card shadow-lg bg-base-100">
+                <div className="card-body flex flex-row items-center justify-between max-w-xs mx-auto">
+                  <Link to='/profile' className="text-lg font-semibold mr-40">{friend}</Link>
+                  <button
+                    data-testid="delete-friend-button"
+                    className='btn btn-error btn-sm'
+                    onClick={() => handleDelete(friend)}>
+                    Delete
+                  </button>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <p>No Friends Found</p>
-          )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-lg font-semibold">No Friends Found</p>
+        )}
       </div>
     </div>
   );
