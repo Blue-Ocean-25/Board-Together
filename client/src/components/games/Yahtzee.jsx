@@ -228,9 +228,9 @@ const Yahtzee = () => {
 
   return (
     <div className="flex flex-col mt-20">
-      <div className="overflow-y-scroll flex-grow max-h-1/2">
+      <div className="overflow-y-scroll flex-grow max-h-1/2 ml-8 mr-8">
         <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Yahtzee</h1>
-        <div >
+        <div>
           <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
           <span className="font-bold text-lg/7 underline">{data._id}</span>
         </div>

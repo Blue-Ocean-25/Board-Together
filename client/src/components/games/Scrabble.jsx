@@ -177,7 +177,7 @@ const Scrabble = () => {
   }
 
   return (
-    <div className="mt-20">
+    <div className="mt-20 ml-8 mr-8">
       <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Scrabble</h1>
       <div className="pb-16">
         <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
