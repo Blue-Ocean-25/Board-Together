@@ -13,6 +13,10 @@ const SelectionPage = () => {
 
   useVerifyLogin(true);
 
+  const copyToClipboard = (e) => {
+    navigator.clipboard.writeText(e.target.value);
+  }
+
   const handleDelete = (event) => {
     var sessionId = event.target.value;
     axios.delete(`/api/profile/${email}/${sessionId}`)
@@ -58,9 +62,12 @@ const SelectionPage = () => {
           sessions.map((session, index) => (
             <li className="list-row flex justify-between" key={index}>
               <div className=''>
-                <h3 className="text-xl mr-40">{session}</h3>
+                <h3 className="text-xl mr-40" value = {session}>{session}</h3>
               </div>
+              <div className="flex flex-row justify-end gap-2">
+                <button className="btn btn-accent join-item" value={session.split(' ')[1]} onClick={copyToClipboard}>Copy To Clipboard</button>
                 <button className="btn btn-secondary join-item" value={session} onClick={handleDelete}>Delete</button>
+              </div>
             </li>
           ))
         ) : (

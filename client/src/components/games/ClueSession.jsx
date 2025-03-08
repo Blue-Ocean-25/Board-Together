@@ -14,7 +14,7 @@ export default function ClueSession({data}) {
   return (
     <>
     <div>
-      <select id="player-select" onChange={handlePlayerChange} value={playerId}>
+      <select data-testid='player-select' id="player-select" onChange={handlePlayerChange} value={playerId}>
         <option value={"no player selected"}>Please Select a Board:</option>
         {data.players.map((player, index) => (<option value={index}>{player.player_id}</option>))}
       </select>
