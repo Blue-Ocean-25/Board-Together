@@ -138,8 +138,12 @@ const Clue = () => {
   return (
     <>
       <div className="mt-20">
-        <h1>{data.room_name}</h1>
-        <h2><span className="font-bold">Share this key to invite friends:</span> {gameKey}</h2>
+        <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Clue</h1>
+        <h2 className="text-primary font-black text-xl/10 underline">Room Name: <span className="text-primary font-bold text-lg/7">{data.room_name}</span></h2>
+        <div >
+          <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
+          <span className="font-bold text-lg/7 underline">{gameKey}</span>
+        </div>
         {data.players.map((player, index) => <div key={player._id}>{player.name}</div>)}
       </div>
       <div>
