@@ -25,11 +25,11 @@ const defaultScrabble2 = {
   "room_name":"",
   "players":[{
     "player_id":1,
-    "name":"Player",
+    "name":"bramblino",
     "score":0,
     "_id":"67cbbd09404b3bda0ff9e846"},
     {"player_id":2,
-    "name":"Player",
+    "name":"bramblino",
     "score":0,
     "_id":"67cbbd09404b3bda0ff9e847"}],
 "_id":"67cbbd09404b3bda0ff9e845","__v":0
@@ -112,9 +112,9 @@ describe('Scrabble page', ()=>{
 
     await Apple.user.click(screen.getByTestId('start-scrabble'));
 
-    const names = await screen.findAllByText('Player');
+    const names = await screen.findAllByText('bramblino');
 
-    expect(names.length).toEqual(2);
+    expect(names.length).toEqual(2*2);
   });
 
   it('should render and update usernames when entered.', async ()=>{
