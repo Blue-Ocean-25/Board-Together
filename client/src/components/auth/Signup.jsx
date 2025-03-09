@@ -10,10 +10,12 @@ const Signup = () => {
     event.preventDefault()
     const formData = new FormData(event.target);
     const username = formData.get('username');
-    const email = formData.get('email');
+    var email = formData.get('email');
+    email = email.toLowerCase();
     const phoneNumber = formData.get('phoneNumber')
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
+    console.log(email);
     if (password !== confirmPassword) {
       Swal.fire({
         buttonsStyling: false,
