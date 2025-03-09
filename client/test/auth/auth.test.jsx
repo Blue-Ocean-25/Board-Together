@@ -18,6 +18,7 @@ describe('Authorization Pages', () => {
   afterEach(() => {
     mock.reset();
     mock.resetHistory();
+    jest.clearAllMocks();
   });
 
   it ('Should render signup page', async () => {

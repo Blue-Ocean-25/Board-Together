@@ -72,7 +72,6 @@ const Scrabble = () => {
     mutationFn: createGame,
     onSuccess: (data) => {
       queryClient.setQueryData(['scrabbleState'], data);
-
     }
   })
 
@@ -155,9 +154,14 @@ const Scrabble = () => {
 
   if (!gameKey) {
     return (
-      <div className="bg-base-300 flex-col justify-items-center content-center w-screen h-screen">
-        <h1 className="text-xl font-bold">Scrabble</h1>
-        <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
+      <div className="bg-base-300 flex-col justify-items-center pt-4 pb-4 w-screen h-screen content-center">
+        <img
+            src="https://cdn-icons-png.freepik.com/512/17096/17096130.png"
+            alt="Dice"
+            className="fixed left-[-100px] bottom-[-100px] w-100 h-100 opacity-30 mix-blend-multiply"
+          />
+        <h1 className="relative z-99 text-xl font-bold">Scrabble</h1>
+        <div className="relative z-99 bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Room Name</span>
@@ -180,17 +184,14 @@ const Scrabble = () => {
     );
   }
 
-
-
   if (!data) {
     return (
       <div>...LOADING</div>
     )
   }
 
-
   return (
-    <div className="mt-20">
+    <div className="mt-20 ml-8 mr-8">
       <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Scrabble</h1>
       <div className="pb-16">
         <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
@@ -198,7 +199,7 @@ const Scrabble = () => {
       </div>
       <div className="max-w-7xl mx-auto border-6 border-primary rounded-box p-4">
       <table className="table table-compact">
-        <caption>Scrabble Scorecard</caption>
+        <caption className="font-bold text-primary text-lg/7 underline">Scrabble Scorecard</caption>
         <thead className="border border-primary">
           <tr className="text-neutral border border-primary">
             <th className="text-neutral border border-primary">Player </th>
@@ -208,11 +209,8 @@ const Scrabble = () => {
         <tbody>
         {data.players.map((player, index) => (
           <tr key={player._id} className="text-neutral border border-primary">
-            {/* <td className="border border-primary">{player.name}</td>
-            <td className="border border-primary">{player.score}</td> */}
-
-            <td  className="border border-primary"><p data-testid={'scrabble-playerName'+index} >{player.name}</p><input data-testid={'scrabble-playerNamer'+index} className="input w-21" min='0' type='text' placeholder="" onChange={() => handleChangeName(event.target.value, 'name', player.player_id)}/></td>
-            <td className="border border-primary"><p data-testid={'scrabble-score'+index} >{player.score}</p><input data-testid={'scrabble-scorer'+index} className="input w-21"  type='number' placeholder="0" onChange={() => handleChangeScore(Number(event.target.value), 'score', player.player_id)}/><span>add to score</span></td>
+            <td className="border border-primary"><p>{player.name}</p><input className="input w-21" min='0' type='text' placeholder="" onChange={() => handleChangeName(event.target.value, 'name', player.player_id)}/></td>
+            <td className="border border-primary"><p>{player.score}</p><input className="input w-21"  type='number' placeholder="0" onBlur={() => handleChangeScore(Number(event.target.value), 'score', player.player_id)}/><span onClick={saveChanges} className="ml-3 hover:underline cursor-pointer">add to score</span></td>
           </tr>
           ))}
         </tbody>

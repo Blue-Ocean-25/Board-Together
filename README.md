@@ -3,6 +3,9 @@
 ## Overview 
 An app that digitizes scoresheets for classic games like Clue, Yahtzee, and Scrabble, promoting social interaction by uniting people through universally enjoyed games.
 
+
+![Screenshot 2025-03-08 142400](https://github.com/user-attachments/assets/daed4d1d-f195-405d-ad11-37c8e6754418)
+
 ## Contributors
 - [Aaron Taylor](https://github.com/Flourish1201)
 - [Alberto Lovell](https://github.com/albertolovell)

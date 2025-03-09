@@ -125,8 +125,13 @@ const Yahtzee = () => {
   if (!gameKey) {
     return (
       <div className="bg-base-300 flex-col justify-items-center content-center w-screen h-screen">
-        <h1 className="text-xl font-bold">Yahtzee</h1>
-        <div className="bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
+          <img
+            src="https://pngimg.com/d/dice_PNG24.png"
+            alt="Dice"
+            className="fixed left-[-100px] bottom-[-100px] w-100 h-100 opacity-30 mix-blend-multiply"
+          />
+        <h1 className="relative z-99 text-xl font-bold">Yahtzee</h1>
+        <div className="relative z-99 bg-base-200 flex-col justify-items-center p-2 shadow-lg w-96 rounded-box border-2 border-base-100">
           <div className="pt-4">
             <label className="input w-86">
               <span className="label">Room Name</span>
@@ -230,9 +235,9 @@ const Yahtzee = () => {
 
   return (
     <div className="flex flex-col mt-20">
-      <div className="overflow-y-scroll flex-grow max-h-1/2">
+      <div className="overflow-y-scroll flex-grow max-h-1/2 ml-8 mr-8">
         <h1 className="text-primary font-black text-xl/10 tracking-widest underline">Yahtzee</h1>
-        <div >
+        <div>
           <span className="text-primary font-bold text-lg/7">Shareable Room Key: </span>
           <span className="font-bold text-lg/7 underline">{data._id}</span>
         </div>

@@ -162,7 +162,7 @@ describe('Profile Page', () => {
     const app = renderWithRouter(<App />, {route: '/profile'});
 
     await waitFor(() => {
-      const imgElement = screen.getByRole('img');
+      const imgElement = screen.getByTestId('profile-pic-uploaded');
       expect(imgElement).toHaveAttribute('src', 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png');
     });
 
@@ -239,7 +239,7 @@ describe('Game History', () => {
     const app = renderWithRouter(<App />, {route: '/profile'});
 
     await waitFor(() => {
-      const imgElement = screen.getByRole('img');
+      const imgElement = screen.getByTestId('profile-pic-uploaded');
       expect(imgElement).toHaveAttribute('src', 'https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png');
     });
 

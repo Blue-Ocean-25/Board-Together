@@ -4,7 +4,7 @@ const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   devtool: 'inline-source-map',
   entry: path.join(__dirname,'client/src/index.jsx'),
   output: {

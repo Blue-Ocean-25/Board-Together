@@ -127,7 +127,7 @@ describe('Messages', () => {
     await waitFor(() => {
       expect(screen.getAllByText(/TestUser: yes/i).length > 0).toBe(true);
     });
-    const messages = app.getByTestId('messages')
-    fireEvent.scroll(messages, { target: { scrollTop: messages.scrollHeight } });
+    const messages = app.getByTestId('messages');
+    await fireEvent.scroll(messages, { target: { scrollTop: messages.scrollHeight } });
   })
 });

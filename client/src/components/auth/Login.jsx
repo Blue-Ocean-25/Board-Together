@@ -48,21 +48,24 @@ const Login = () => {
       });
   }
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-300">
-      <div className="w-full max-w-md p-8 space-y-6 rounded shadow-inner shadow-base-200 bg-base-200">
+    <div
+    className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center"
+    style={{ backgroundImage: "url('https://media.licdn.com/dms/image/v2/C4E12AQE-IwX7taZwqg/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1628813539387?e=1746662400&v=beta&t=Wo4rhA13J0GmepdQqX4Gs_kOHnJE2NakDJUX1xyCZ9o')"}}
+  >
+      <div className="w-full max-w-md p-8 space-y-6 rounded shadow-inner shadow-base-200 glass">
         <h1 className="text-2xl font-bold text-center">Login To Board Together</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Email Address:</span>
+            <span className="label-text font-bold">Email Address:</span>
           </label>
-          <input data-testid="email" type="email" id="email" name="email" className="input input-bordered" required />
+          <input data-testid="email" autocomplete="email" type="email" id="email" name="email" className="input input-bordered" required />
         </div>
         <div className="form-control">
             <label className="label">
-              <span className="label-text">Password:</span>
+              <span className="label-text font-bold">Password:</span>
             </label>
-            <input data-testid="password" type="password" id="password" name="password" className="input input-bordered" required />
+            <input data-testid="password" autocomplete="current-password" type="password" id="password" name="password" className="input input-bordered" required />
           </div>
           <button data-testid="login-button" className="btn btn-accent w-full" type="submit">Login</button>
           <Link data-testid="go-signup" className="btn btn-neutral w-full" to='/signup'>Go To Signup</Link>
