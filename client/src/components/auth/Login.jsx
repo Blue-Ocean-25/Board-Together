@@ -28,6 +28,7 @@ const Login = () => {
           text: 'You have successfully logged in.',
         }).then(() => {
           navigate('/');
+          window.location.reload();
         });
       })
       .catch(error => {
@@ -59,13 +60,13 @@ const Login = () => {
           <label className="label">
             <span className="label-text font-bold">Email Address:</span>
           </label>
-          <input data-testid="email" autocomplete="email" type="email" id="email" name="email" className="input input-bordered" required />
+          <input data-testid="email" autoComplete="email" type="email" id="email" name="email" className="input input-bordered" required />
         </div>
         <div className="form-control">
             <label className="label">
               <span className="label-text font-bold">Password:</span>
             </label>
-            <input data-testid="password" autocomplete="current-password" type="password" id="password" name="password" className="input input-bordered" required />
+            <input data-testid="password" autoComplete="current-password" type="password" id="password" name="password" className="input input-bordered" required />
           </div>
           <button data-testid="login-button" className="btn btn-accent w-full" type="submit">Login</button>
           <Link data-testid="go-signup" className="btn btn-neutral w-full" to='/signup'>Go To Signup</Link>

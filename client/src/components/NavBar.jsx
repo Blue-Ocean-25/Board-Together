@@ -12,7 +12,10 @@ const NavBar = ({ friends, setFriends }) => {
 
   const handleLogout = () => {
     axios.put('/api/logOut')
-      .then(() => navigate('/login'))
+      .then(() => {
+        navigate('/login')
+        window.location.reload();
+      })
       .catch(err => console.error(err)) //make a swal if the server has an error
   }
 
