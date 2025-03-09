@@ -148,7 +148,7 @@ describe('Scrabble page', ()=>{
       fireEvent.change(namer, {target:{value:'bramblo'}});
     });
 
-    const saveBtn = Apple.getByTestId('scrabble-save');
+    const saveBtn = Apple.getByTestId("scrabble-save");
 
     await Apple.user.click(saveBtn);
 

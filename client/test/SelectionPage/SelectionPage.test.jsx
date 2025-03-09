@@ -154,18 +154,19 @@ describe('Selection page', ()=>{
     var sessions;
     var lastSession;
     await waitFor(()=>{
-       sessions = screen.getElementsByClassName("game-session-delete-button");
-       //lastSession = screen.getByTestId("session-delete-button"+(sessions.length - 1));
-       //Apple.user.click(screen.getByTestId("session-delete-button"+(sessions.length - 1)));
+       sessions = document.getElementsByClassName("game-session-delete-button");
+       lastSession = screen.getByTestId("session-delete-button"+(sessions.length - 1));
+       Apple.user.click(screen.getByTestId("session-delete-button"+(sessions.length - 1)));
+    })
+    mock.onGet('api/profile/testuser@gmail.com').reply(200, mockRes)
+    const initLen = sessions.length;
+     await waitFor(()=>{
+       sessions = document.getElementsByClassName('game-session-delete-button');
+
     })
 
-  //   await waitFor(()=>{
-  //     sessions = Apple.getElementsByClassName('game-session-delete-button');
-
-  //  })
-
-  //   //Apple.debug();
-  //   expect(blah[blah.length - 1].value).toEqual('bleh');
+     //Apple.debug();
+     expect(initLen).toEqual(sessions.length+1);
 
   });
 });
