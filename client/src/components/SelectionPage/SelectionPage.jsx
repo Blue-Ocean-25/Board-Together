@@ -50,9 +50,9 @@ const SelectionPage = () => {
       <div className="gameSelection flex flex-col items-center">
         <h1 className="text-3xl mb-20 font-bold">Choose a game:</h1>
         <div className="flex justify-between w-full max-w-md mb-10">
-          <Link className="btn btn-lg btn-accent mx-6 " id="clue" to='/clue'>Clue</Link>
-          <Link className="btn btn-lg btn-accent mx-6" id="yahtzee" to='/yahtzee'>Yahtzee</Link>
-          <Link className="btn btn-lg btn-accent mx-6" id="scrabble" to='/scrabble'>Scrabble</Link>
+          <Link data-testid="Selection-page-clue" className="btn btn-lg btn-accent mx-6 " id="clue" to='/clue'>Clue</Link>
+          <Link data-testid="Selection-page-yahtzee" className="btn btn-lg btn-accent mx-6" id="yahtzee" to='/yahtzee'>Yahtzee</Link>
+          <Link data-testid="Selection-page-scrabble" className="btn btn-lg btn-accent mx-6" id="scrabble" to='/scrabble'>Scrabble</Link>
         </div>
       </div>
       <div className="divider mt-10 mb-10" />
@@ -65,8 +65,8 @@ const SelectionPage = () => {
                 <h3 className="text-xl mr-40" value = {session}>{session}</h3>
               </div>
               <div className="flex flex-row justify-end gap-2">
-                <button className="btn btn-accent join-item" value={session.split(' ')[1]} onClick={copyToClipboard}>Copy To Clipboard</button>
-                <button className="btn btn-secondary join-item" value={session} onClick={handleDelete}>Delete</button>
+                <button className="btn btn-accent join-item " value={session.split(' ')[1]} onClick={copyToClipboard}>Copy To Clipboard</button>
+                <button data-testid={"session-delete-button"+index} className="btn btn-secondary join-item game-session-delete-button" value={session} onClick={handleDelete}>Delete</button>
               </div>
             </li>
           ))
