@@ -80,31 +80,31 @@ const Signup = () => {
             <label className="label">
               <span className="label-text font-bold">Email Address:</span>
             </label>
-            <input data-testid="email" type="email" id="email" name="email" className="input input-bordered" required />
+            <input data-testid="email" autocomplete="email" type="email" id="email" name="email" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text font-bold">Username:</span>
             </label>
-            <input data-testid="username" type="text" id="username" name="username" className="input input-bordered" required />
+            <input data-testid="username" autocomplete="username" type="text" id="username" name="username" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text font-bold">{'Phone Number (optional):'}</span>
             </label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" className="input input-bordered" />
+            <input type="tel" autocomplete="tel" id="phoneNumber" name="phoneNumber" className="input input-bordered" />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text font-bold">Password:</span>
             </label>
-            <input data-testid="password" type="password" id="password" name="password" className="input input-bordered" required />
+            <input data-testid="password" autocomplete="new-password" type="password" id="password" name="password" className="input input-bordered" required />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text font-bold">Confirm Password:</span>
             </label>
-            <input data-testid="confirmPassword" type="password" id="confirmPassword" name="confirmPassword" className="input input-bordered" required />
+            <input data-testid="confirmPassword" autocomplete="new-password" type="password" id="confirmPassword" name="confirmPassword" className="input input-bordered" required />
           </div>
           <button data-testid="signup-button" className="btn btn-accent w-full" type="submit">Signup</button>
 
