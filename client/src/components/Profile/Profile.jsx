@@ -123,11 +123,11 @@ const Profile = ({ friends, setFriends }) => {
 
         <h3 className='text-3xl mb-10 font-bold'>Friends List</h3>
         {friends?.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
+          <div className="flex flex-col items-center gap-4 w-screen mx-auto">
             {friends.map((friend, index) => (
-              <div key={index} className="card shadow-lg bg-base-100">
-                <div className="card-body flex flex-row items-center justify-between max-w-xs mx-auto">
-                  <Link to='/profile' className="text-lg font-semibold mr-40">{friend}</Link>
+              <div key={index} className="card shadow-lg bg-base-100 w-1/2">
+                <div className="card-body mx-auto flex flex-row w-full justify-between">
+                  <Link to='/profile' className="text-lg font-semibold">{friend}</Link>
                   <button
                     data-testid="delete-friend-button"
                     className='btn btn-error btn-sm'

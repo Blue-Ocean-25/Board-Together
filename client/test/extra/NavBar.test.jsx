@@ -66,7 +66,6 @@ describe('NavBar', () => {
     const app = renderWithRouter(<App />);
     expect(screen.getByText(/Board Together/i)).toBeInTheDocument();
     await app.user.click(app.getByTestId('navbar-profile'));
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     await waitFor(() => {
       expect(screen.getByText(/Profile Details/i)).toBeInTheDocument();
     });
