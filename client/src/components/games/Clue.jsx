@@ -90,7 +90,9 @@ const Clue = () => {
       throw new Error;
     })
   }
+
   if (invalid) {
+    setGameKey('');
     setInvalid(false);
     gameNotFound();
   }
