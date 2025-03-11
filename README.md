@@ -47,6 +47,7 @@ An app that digitizes scoresheets for classic games like Clue, Yahtzee, and Scra
 
 ## Features List
 - User authentication
+   - Signup/Login
 - Profile
    - Details
    - Profile image upload
