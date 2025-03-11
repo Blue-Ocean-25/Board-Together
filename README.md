@@ -68,7 +68,7 @@ An app that digitizes scoresheets for classic games like Clue, Yahtzee, and Scra
 1. Clone this repo: `git clone https://github.com/Blue-Ocean-25/Board-Together.git`
 2. Install dependencies: `npm install`
 3. Create `.env` file based on example
-4. Run commands `npm run "build-dev"` and `npm run start-dev` in two separate terminals
+4. Run commands `npm start`
   
 
 # ------------------------------------------------------------------------------ #
