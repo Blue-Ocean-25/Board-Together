@@ -1,16 +1,13 @@
 {
   "name": "board-together",
   "version": "1.0.0",
-  "description": "Catchy headline / cool graphic Who are the contributors (names should link to their github or portfolio page) Introduction This project was a brief 1-week sprint where our team tried to complete an MVP for an external user (Jane Doe)",
-  "main": "index.js",
+  "description": "An app that digitizes scoresheets for classic games like Clue, Yahtzee, and Scrabble, promoting social interaction by uniting people through universally enjoyed games.",
+  "main": "server/index.js",
   "scripts": {
-    "start-dev": "npx nodemon server",
     "start": "npx webpack && node server",
-    "build-dev": "webpack --watch",
-    "build": "npx webpack",
-    "frontend": "jest client --silent",
-    "backend": "jest server/test",
-    "test": "jest"
+    "server-dev": "npx nodemon server",
+    "client-dev": "webpack --watch",
+    "test": "jest --silent"
   },
   "repository": {
     "type": "git",
